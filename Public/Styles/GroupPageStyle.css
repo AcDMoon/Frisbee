@@ -1,0 +1,128 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Marck+Script&family=Marmelad&family=Montserrat:ital,wght@0,700;1,400&display=swap");
+body {
+  padding-top: 75px;
+  height: 100%; }
+
+.background {
+  background: url("back14.jpg") 0 0/cover no-repeat;
+  min-height: 100vh; }
+
+.navbar-brand {
+  font-family: Amatic SC;
+  font-size: 50px !important; }
+
+.navbar-nav li {
+  text-align: center; }
+
+.nav-item {
+  font-weight: 700;
+  font-size: 22px;
+  font-family: Montserrat; }
+
+.intro1 {
+  font-family: Marck Script;
+  font-weight: bold;
+  font-size: 12px; }
+
+/* на ssm */
+@media (min-width: 600px) {
+  .intro1 {
+    font-size: 18px; } }
+/* на sm */
+@media (min-width: 768px) {
+  .intro1 {
+    font-size: 24px; } }
+/* на md */
+@media (min-width: 992px) {
+  .intro1 {
+    font-size: 32px; } }
+/* на lg */
+@media (min-width: 1200px) {
+  .intro1 {
+    font-size: 38px; } }
+/* на lg */
+@media (min-width: 1400px) {
+  .intro1 {
+    font-size: 46px; } }
+/* на xl */
+@media (min-width: 2000px) {
+  .intro1 {
+    font-size: 62px; } }
+.description {
+  font-family: Marmelad;
+  font-weight: bold;
+  font-size: 30px;
+  font-style: italic; }
+
+.carousel-caption {
+  top: 5%; }
+
+.btn {
+  font-family: Montserrat;
+  font-weight: bold;
+  font-size: 8px !important; }
+
+/* на ssm */
+@media (min-width: 600px) {
+  .btn {
+    font-size: 18px !important; } }
+/* на sm */
+@media (min-width: 768px) {
+  .btn {
+    font-size: 22px !important; } }
+/* на md */
+@media (min-width: 992px) {
+  .btn {
+    font-size: 24px !important; } }
+/* на lg */
+@media (min-width: 1200px) {
+  .btn {
+    font-size: 30px !important; } }
+/* на lg */
+@media (min-width: 1400px) {
+  .btn {
+    font-size: 20px !important; } }
+/* на xl */
+@media (min-width: 2000px) {
+  .btn {
+    font-size: 24px !important; } }
+.profile_info {
+  font-size: 12px !important;
+  word-wrap: break-word !important; }
+
+@media (min-width: 768px) {
+  .profile_info {
+    font-size: 13px !important; } }
+@media (min-width: 992px) {
+  .profile_info {
+    font-size: 16px !important; } }
+@media (min-width: 1200px) {
+  .profile_info {
+    font-size: 20px !important; } }
+@media (min-width: 1400px) {
+  .profile_info {
+    font-size: 23px !important; } }
+@media (min-width: 2000px) {
+  .profile_info {
+    font-size: 23px !important; } }
+.avatar {
+  max-height: 400px;
+  max-width: 400px; }
+
+.radius {
+  border-radius: 18px; }
+
+.group-image {
+  overflow: hidden;
+  border-radius: 50%;
+  border: 2px; }
+
+.no_wrap {
+  word-wrap: break-word !important;
+  flex-wrap: nowrap; }
+
+.bg-custom {
+  background: url("back88.jpg") 0 0/cover no-repeat; }
+
+/*# sourceMappingURL=GroupPageStyle.css.map */
