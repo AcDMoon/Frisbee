@@ -19,8 +19,18 @@ Group
 Email-GroupID-tags
 -Email (1-key)          PRIMARY KEY     CREATE INDEX
 -GroupID (1-key)        PRIMARY KEY     CREATE INDEX
+-taglistID
 
--tag (key -> value)
+
+Taglist
+-taglistID
+-tagID
+
+
+Tags
+-tagID
+-tagName
+-tagDescription
 
 
 NOT NULL- Гарантирует, что столбец не может иметь значение NULL
