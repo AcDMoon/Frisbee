@@ -30,3 +30,27 @@ class Router
     }
 }
 
+Router::route('/AboutUs(/{0,1})', function(){
+    require "Applications/Vievs/AboutUs/About us.php";;
+});
+
+Router::route('/Support(/{0,1})', function(){
+    require "Applications/Vievs/Support/Support.php";;
+});
+
+Router::route('/Donation(/{0,1})', function(){
+    require "Applications/Vievs/Donation/Donation.php";;
+});
+
+Router::route('/SignUp(/{0,1})', function(){
+    require "Applications/Vievs/SignUp/Sign up.php";;
+});
+
+Router::route('/LogIn(/{0,1})', function(){
+    require "Applications/Vievs/LogIn/Log in.php";;
+});
+
+Router::route('/', function(){
+    require "Applications/Vievs/MainPage/Main page mobile.php";;
+});
+

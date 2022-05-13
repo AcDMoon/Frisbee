@@ -11,4 +11,6 @@ spl_autoload_register(function ($class) {
 
 
 
+
+Router::execute($_SERVER["REQUEST_URI"])
 ?>

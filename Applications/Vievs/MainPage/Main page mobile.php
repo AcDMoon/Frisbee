@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="../../../Public/Styles/style.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,49 +11,15 @@
 <body class="background">
 
 <!--md - параметр указыввающий границу коллапса-->
-<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark py-0" aria-label="Fourth navbar example">
-    <div class="container-fluid">
-
-        <a class="navbar-brand py-0 text-warning me-auto" href="#">Frisbee</a>
-
-        <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbars" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Переключить навигацию">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse " id="navbars">
-
-            <ul class="navbar-nav ms-auto">
-
-                <li class="nav-item px-3">
-                    <a class="nav-link active " aria-current="page" href="#">About Us</a>
-                </li>
-
-                <li class="nav-item px-3">
-                    <a class="nav-link active" aria-current="page" href="#">Support</a>
-                </li>
-
-                <li class="nav-item px-3">
-                    <a class="nav-link active" aria-current="page" href="#">Donation</a>
-                </li>
-
-                <li class="nav-item px-0">
-                    <div class="container-fluid d-flex justify-content-center"  >
-                        <a class="nav-link active px-0" aria-current="page" href="#">Log In</a>
-                        <p class="navbar-text mb-0" aria-current="page" >&nbsp / &nbsp</p>
-                        <a class="nav-link active px-0" aria-current="page" href="#">Sign Up</a>
-                    </div>
-                </li>
-
-            </ul>
-        </div>
-    </div>
-</nav>
+<?php
+include __DIR__ . "/../Navbar/Navbar.php";
+?>
 <main>
 
     <div>
         <div class="carousel-inner">
             <div class="carousel-item active " >
-                <img src="www.png " class=" d-block w-100" alt="...">
+                <img src="/Public/Images/www.png " class=" d-block w-100" alt="...">
                 <div class="carousel-caption intro1">
                     <p>Don't know what to start talking about with recent colleagues or people you have frequent contact with? This site will help you do just that!</p>
                 </div>
@@ -61,7 +27,7 @@
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active " >
-                <img src="lala.png" class="d-block w-100" alt="...">
+                <img src="/Public/Images/lala.png" class="d-block w-100" alt="...">
                 <div class="carousel-caption text-start col-4 intro1">
                     <!--                    <h5>Метка второго слайда</h5>-->
                     <p>Statistically, teams that communicate well are more effective at getting work done together. Our service provides effective tools for team building! </p>
@@ -72,7 +38,7 @@
 
         <div class="carousel-inner">
             <div class="carousel-item active ">
-                <img src="qqq.png" class="d-block w-100" alt="...">
+                <img src="/Public/Images/qqq.png" class="d-block w-100" alt="...">
                 <div class="carousel-caption text-start col-4 intro1">
                     <!--                    <h5>Метка третьего слайда</h5>-->
                     <p>Often forget your friends' birthdays? We'll remind you of that and advise you on what your friend might like!</p>
