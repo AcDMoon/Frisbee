@@ -11,27 +11,33 @@
 <body class="background text-center">
 
 <main>
-    <form class="border border-dark p-5 pb-1 radius">
+    <form class="border border-dark p-5 pb-1 radius" action="SignupController" method="post">
 
         <h1 class="mb-3 ">Sign up</h1>
 
-        <div class="form-floating my-4">
-            <input type="email" class="form-control form-control-lg" id="floatingEmail" placeholder="email">
+        <div class="form-floating">
+            <input type="email" class="form-control form-control-lg" name="E-mail" id="floatingEmail" placeholder="email">
             <label for="floatingEmail">Enter your email</label>
         </div>
 
-        <div class="form-floating my-4">
-            <input type="password" class="form-control form-control-lg" id="floatingPassword" placeholder="pass">
+        <p class="my-1"></p>
+
+        <div class="form-floating">
+            <input type="password" class="form-control form-control-lg" name="password" id="floatingPassword" placeholder="pass">
             <label for="floatingPassword">Enter password</label>
         </div>
 
-        <div class="form-floating my-4">
-            <input type="password" class="form-control form-control-lg" id="floatingName" placeholder="name">
+        <p class="my-1"></p>
+
+        <div class="form-floating">
+            <input type="text" class="form-control form-control-lg" name="name" id="floatingName" placeholder="name">
             <label for="floatingName">Enter your full name</label>
         </div>
 
-        <div class="form-floating my-4">
-            <input type="password" class="form-control form-control-lg" id="floatingDate" placeholder="date">
+        <p class="my-1"></p>
+
+        <div class="form-floating">
+            <input type="date" class="form-control form-control-lg" name="date of birth" id="floatingDate" placeholder="date">
             <label for="floatingDate">Enter your date of birth</label>
         </div>
 

@@ -9,8 +9,6 @@ class Router
     private function __construct() {}
     private function __clone() {}
 
-    public static function hi(){echo 'hi';}
-
     public static function route($pattern, $callback)
     {
         $pattern = '/^' . str_replace('/', '\/', $pattern) . '$/';
@@ -54,3 +52,11 @@ Router::route('/', function(){
     require "Applications/Vievs/MainPage/Main page mobile.php";;
 });
 
+Router::route('/signup(/{0,1})', function(){
+    require "Applications/Vievs/SignUp/signup.php";;
+});
+
+
+Router::route('/SignupController(/{0,1})', function(){
+    require "Applications/Vievs/SignUp/SignupController.php";;
+});
