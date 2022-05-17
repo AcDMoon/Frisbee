@@ -1,4 +1,5 @@
 <?php
+
 namespace Applications\Vievs\SignUp;
 
 
@@ -8,21 +9,50 @@ use PDOException;
 
 class DB
 {
-    private static $servername = "localhost";
-    private static $username = "root";
-    private static $password = "";
-    private static $dbname = "FRISBEE";
+    private static $conn;
 
-    public static function EmailIsset($Email)
+
+    //соединение с БД
+    private static function connect()
     {
+        $config = require 'db_config.php';
+        $dsn = 'mysql:host=' . $config['host'] . ';dbname=' . $config['db_name'] . ';charset=' . $config['charset'];
+        self::$conn = new PDO($dsn, $config['username'], $config['password']);
+        self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }
+
+    //Выполнение запроса
+    private static function execute($query, $param)
+    {
+        self::connect();
         try {
-            $conn = new PDO("mysql:host=localhost;dbname=FRISBEE", "dbadmin", "12435678");
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $stmt = $conn->prepare("SELECT * FROM User");
-            $result1=$stmt->execute();
-            $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $stmt = self::$conn->prepare($query);
+            $stmt->execute($param);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
         }
     }
+
+    //Проверяет существует ли Email в БД
+    public static function EmailIsset($Email)
+    {
+        $query = 'SELECT Email FROM User WHERE Email = :Email';
+        $param = ['Email' => $Email];
+        $result = self::execute($query, $param);
+        return $result;
+    }
+
+    //Создаёт запись о юзере в БД
+    public static function AddUser($Email, $Password, $Name, $Date){
+        $query  = "INSERT INTO User (Email, Password, FullName, DateOfBirth) VALUES (:Email, :Password, :Name, :Date)";
+        $param = ['Email' => $Email, 'Password'=> $Password, 'Name'=> $Name, 'Date'=> $Date];
+        self::execute($query, $param);
+    }
 }
+
+
+//$stmt = $conn->prepare('SELECT EXISTS(SELECT Email FROM User WHERE Email = :Email)');
+//$stmt->execute(['Email' => $Email]);
+//$result2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
