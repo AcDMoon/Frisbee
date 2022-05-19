@@ -1,25 +1,27 @@
 <?php
-namespace Applications\Vievs\SignUp;
+namespace Applications\Controllers\signup;
+use Applications\Core\model\DB;
 
 class Registration
 {
-    private static $Errors = array();
-//    private $Errors = [
-//        'Email_Error'=>'',
-//        'Password_Error'=>'',
-//        'Name_Error'=>'',
-//        'Date_Error'=>'',
-//    ];
+    private static $Errors = [];
+
 
     //Проверяет E-mail на корректность
-    private static function EmailCheck($Email){
+    private static function EmailCheck(string $Email){
         // проверяем не пустое ли поле
         if($Email !=='') {
             //если оно не пустое отсылаем запрос на проверку существования в базе данных
             $EmailIsset = DB::EmailIsset($Email);
             //Проверка на пустой массив
-            if (empty($EmailIsset) === False) {
+            if ($EmailIsset == True) {
                 $Email_Error = 'Этот E-mail уже занят!';
+            }elseif(preg_match('/\ /', $Email) == 1){
+                $Email_Error_Error = 'Email не должен содержать пробелов!';
+            }elseif(preg_match('/[а-яё]/iu', $Email) == 1){
+                $Email_Error = 'Email не должен содержать русского алфавита!';
+            }elseif(iconv_strlen($Email)>40){
+                $Email_Error = 'Email должен быть меньше или равен 40 символова!';
             }else {
                 return;
             }
@@ -30,7 +32,7 @@ class Registration
     }
 
     //Проверяет пароль на корректность
-    private static function PasswordCheck($Password){
+    private static function PasswordCheck(string $Password){
         if ($Password == ''){
             $Password_Error = 'Это поле является обязательным для заполнения!';
         }elseif(preg_match('/\ /', $Password) == 1){
@@ -48,7 +50,7 @@ class Registration
     }
 
     //Проверяет имя пользователя на корректность
-    private static function NameCheck($Name){
+    private static function NameCheck(string $Name){
         if ($Name == ''){
             $Name_Error = 'Это поле является обязательным для заполнения!';
         }elseif (iconv_strlen($Name) >40){
@@ -62,7 +64,7 @@ class Registration
     }
 
     //Проверяет дату рождения на корректность
-    private static function DateCheck($Date){
+    private static function DateCheck(string $Date){
         if (preg_match('/\d{4}(\-\d{2})(\-\d{2})/', $Date) ==1 ){
             return;
         }else {$Data_Error = 'Это поле является обязательным для заполнения!';}
@@ -70,7 +72,7 @@ class Registration
     }
 
     //Отсылает данные на проверку корректности. Если есть ошибки в заполнении возвращает массив с ошибками. Если ошибок нет возвращает NULL.
-    private static function Check($Email, $Password, $Name, $Date){
+    private static function Check(string $Email, string $Password, string $Name, string $Date){
         self::EmailCheck($Email);
         self::PasswordCheck($Password);
         self::NameCheck($Name);
@@ -85,12 +87,12 @@ class Registration
     }
 
     //Отсылает данные введённые пользователем на проверку. Если нет ошибок отправляет запрос в модель для создания записи в БД и возвращает NULL после создания записи. Если есть ошибки возвращает их в контроллер регистрации.
-    public static function Reg($Email, $Password, $Name, $Date){
+    public static function Reg(string $Email, string $Password, string $Name, string $Date){
         $result = self::Check($Email, $Password, $Name, $Date);
         if (is_null($result)) {
             DB::AddUser($Email, $Password, $Name, $Date);
             return NULL;
-        } else{
+        }else{
             return $result;
         }
     }

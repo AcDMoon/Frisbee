@@ -11,7 +11,7 @@
 <body class="background text-center">
 
 <main>
-    <form class="border border-dark p-5 pb-1 radius">
+    <form class="border border-dark p-5 pb-1 radius" action="profile">
 
         <h1 class="mb-3 ">Log In</h1>
 

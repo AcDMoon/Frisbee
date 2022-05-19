@@ -48,7 +48,7 @@ include __DIR__ . "/../Navbar/Navbar.php";
         </div>
 
         <div class="text-center">
-            <button class="btn-lg btn-dark border border-white my-5 py-4 w-50" href="#">Sign up today</button>
+            <button class="btn-lg btn-dark border border-white my-5 py-4 w-50" href="profile">Sign up today</button>
         </div>
     </div>
 

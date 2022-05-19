@@ -11,41 +11,42 @@
 <body class="background text-center">
 
 <main>
-    <form class="border border-dark p-5 pb-1 radius" action="SignupController" method="post">
+    <form class="border border-dark p-5 pb-1 radius" action="signupController" method="post">
 
         <h1 class="mb-3 ">Sign up</h1>
 
         <div class="form-floating">
-            <input type="email" class="form-control form-control-lg" name="E-mail" id="floatingEmail" placeholder="email">
+            <input type="email" class="form-control form-control-lg" name="E-mail" id="floatingEmail" placeholder="email" value="<?=$_POST['E-mail']?>">
             <label for="floatingEmail">Enter your email</label>
         </div>
 
-        <p class="my-1"></p>
+        <p class="my-1 text-danger"><?=$result['Email_Error']?></p>
 
         <div class="form-floating">
-            <input type="password" class="form-control form-control-lg" name="password" id="floatingPassword" placeholder="pass">
+            <input type="password" class="form-control form-control-lg" name="password" id="floatingPassword" placeholder="pass" >
             <label for="floatingPassword">Enter password</label>
         </div>
 
-        <p class="my-1"></p>
+        <p class="my-1 text-danger"><?=$result['Password_Error']?></p>
 
         <div class="form-floating">
-            <input type="text" class="form-control form-control-lg" name="name" id="floatingName" placeholder="name">
+            <input type="text" class="form-control form-control-lg" name="name" id="floatingName" placeholder="name" value="<?=$_POST['name']?>">
             <label for="floatingName">Enter your full name</label>
         </div>
 
-        <p class="my-1"></p>
+        <p class="my-1 text-danger"><?=$result['Name_Error']?></p>
 
         <div class="form-floating">
-            <input type="date" class="form-control form-control-lg" name="date of birth" id="floatingDate" placeholder="date">
+            <input type="date" class="form-control form-control-lg" name="date of birth" id="floatingDate" placeholder="date" value="<?=$_POST['date_of_birth']?>">
             <label for="floatingDate">Enter your date of birth</label>
         </div>
 
+        <p class="my-1 text-danger"><?=$result['Date_Error']?></p>
 
         <button class="mt-4 w-100 btn btn-lg btn-dark" type="submit">Sign up</button>
 
         <div class="my-3">
-            <a class="" href="frisbee.com" >Do you already have an account?</a>
+            <a class="" href="login" >Do you already have an account?</a>
         </div>
 
 

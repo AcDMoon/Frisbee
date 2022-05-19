@@ -1,6 +1,9 @@
 <?php
 
-namespace Applications\core;
+namespace Applications\Core;
+
+use Applications\Controllers\login\Authorization;
+use Applications\Controllers\signup\Registration;
 
 class Router
 {
@@ -11,7 +14,7 @@ class Router
 
     public static function route($pattern, $callback)
     {
-        $pattern = '/^' . str_replace('/', '\/', $pattern) . '$/';
+        $pattern = '/^' . str_replace('/', '\/', $pattern) . '$/iu';
         self::$routes[$pattern] = $callback;
     }
 
@@ -28,35 +31,53 @@ class Router
     }
 }
 
+
 Router::route('/AboutUs(/{0,1})', function(){
-    require "Applications/Vievs/AboutUs/About us.php";;
+    require "Applications/Views/AboutUs/About us.php";;
 });
 
 Router::route('/Support(/{0,1})', function(){
-    require "Applications/Vievs/Support/Support.php";;
+    require "Applications/Views/Support/Support.php";;
 });
 
 Router::route('/Donation(/{0,1})', function(){
-    require "Applications/Vievs/Donation/Donation.php";;
+    require "Applications/Views/Donation/Donation.php";;
 });
 
 Router::route('/SignUp(/{0,1})', function(){
-    require "Applications/Vievs/SignUp/Sign up.php";;
+    require "Applications/Views/signup.php";;
 });
 
 Router::route('/LogIn(/{0,1})', function(){
-    require "Applications/Vievs/LogIn/Log in.php";;
+    require "Applications/Views/login.php";;
 });
 
 Router::route('/', function(){
-    require "Applications/Vievs/MainPage/Main page mobile.php";;
+    require "Applications/Views/MainPage/Main page mobile.php";;
 });
 
-Router::route('/signup(/{0,1})', function(){
-    require "Applications/Vievs/SignUp/signup.php";;
+Router::route('/profile(/{0,1})', function(){
+    require "Applications/Views/Profile/Profile.php";;
 });
 
+Router::route('/Group(/{0,1})', function(){
+    require "Applications/Views/GrouPage/Group page.php";;
+});
 
-Router::route('/SignupController(/{0,1})', function(){
-    require "Applications/Vievs/SignUp/SignupController.php";;
+Router::route('/signupController(/{0,1})', function(){
+    $result = Registration::Reg($_POST['E-mail'], $_POST['password'], $_POST['name'],$_POST['date_of_birth']);
+    if (is_null($result)){
+        require __DIR__ . '/../Views/login.php';
+    }else {
+        require __DIR__ . '/../Views/signup.php';
+    }
+});
+
+Router::route('/loginController(/{0,1})', function(){
+    $result = Authorization::authorization($_POST['email'], $_POST['password']);
+    if (is_null($result)){
+        require __DIR__ . '/../Views/Profile/Profile.php';
+    }else {
+        require __DIR__ . '/../Views/login.php';
+    }
 });
