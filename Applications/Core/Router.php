@@ -2,8 +2,12 @@
 
 namespace Applications\Core;
 
+use Applications\Controllers\cookie\Cookie;
 use Applications\Controllers\login\Authorization;
+use Applications\Controllers\login\loginController;
+use Applications\Controllers\matchOperations\Match;
 use Applications\Controllers\signup\Registration;
+
 
 class Router
 {
@@ -48,7 +52,7 @@ Router::route('/SignUp(/{0,1})', function(){
     if (!$_POST['E-mail'] and !$_POST['password'] and !$_POST['name'] and !$_POST['date_of_birth']){
         require "Applications/Views/signup.php";
     }else{
-        $result = Registration::Reg($_POST['E-mail'], $_POST['password'], $_POST['name'],$_POST['date_of_birth']);
+        $result = Registration::reg($_POST['E-mail'], $_POST['password'], $_POST['name'],$_POST['date_of_birth']);
         if (is_null($result)){
             require __DIR__ . '/../Views/login.php';
         }else {
@@ -59,17 +63,8 @@ Router::route('/SignUp(/{0,1})', function(){
 });
 
 Router::route('/LogIn(/{0,1})', function(){
-    if (!$_POST['email'] and !$_POST['password']){
-        require "Applications/Views/login.php";
-    }else{
-        $result = Authorization::authorization($_POST['email'], $_POST['password']);
-        if (is_null($result)){
-            require __DIR__ . '/../Views/Profile/Profile.php';
-        }else {
-            require __DIR__ . '/../Views/login.php';
-        }
-    }
-
+//    Cookie::purgeCookie($_COOKIE['email'], $_COOKIE['password']);
+    loginController::loginRouter($_POST['email'], $_POST['password']);
 });
 
 Router::route('/', function(){
@@ -87,3 +82,6 @@ Router::route('/Group(/{0,1})', function(){
 
 
 
+Router::route('/test(/{0,1})', function(){
+    require "Applications/Controllers/CookieMatch.php";;
+});

@@ -51,7 +51,7 @@ class DB
 
     //Проверяет существует ли Email в БД (стоит переработать комманду - тащить из базы все данные о юзере и помещать их в массив, а потом проверять их)
     //Если есть совпадение возвращает проверяемый Email, если нет возвращает пустой массив
-    public static function EmailIsset($Email)
+    public static function emailIsset($Email)
     {
         self::collectUserData($Email);
         if (self::$data == false){
@@ -61,31 +61,20 @@ class DB
     }
 
     //Создаёт запись о юзере в БД
-    public static function AddUser($Email, $Password, $Name, $Date){
+    public static function addUser($Email, $Password, $Name, $Date){
         $query  = "INSERT INTO User (Email, Password, FullName, DateOfBirth) VALUES (:Email, :Password, :Name, :Date)";
         $param = ['Email' => $Email, 'Password'=> $Password, 'Name'=> $Name, 'Date'=> $Date];
         self::execute($query, $param);
     }
 
-    //Отдаёт данные о юзере которые запрашиваются
-    public static function GetUserInfo(string $email, bool $id = false, bool $password = false, bool $name = false, bool $phone = false, bool $role = false, bool $avatar = false, bool $date = false){
+    //Отдаёт данные о юзере которые запрашиваются (приходить они должны в массиве который содержит навания в соответсвии с названиями из БД)
+    public static function getUserObject(string $email, array $object=[]){
         self::collectUserData($email);
-        $userInfo['email'] = $email;
-
-        if ($id) {$userInfo['id'] = self::$data['UserID'];}
-
-        if ($password) {$userInfo['password'] = self::$data['Password'];}
-
-        if ($name) {$userInfo['name'] = self::$data['FullName'];}
-
-        if ($phone) {$userInfo['phone'] = self::$data['PhoneNumber'];}
-
-        if ($role) {$userInfo['role'] = self::$data['SiteRole'];}
-
-        if ($avatar) {$userInfo['avatar'] = self::$data['Avatar'];}
-
-        if ($date) {$userInfo['date'] = self::$data['DateOfBirth'];}
-        return $userInfo;
+        $userData['email'] = $email;
+        foreach ($object as $value){
+            $userData[$value] = self::$data[$value];
+        }
+        return $userData;
     }
 
 

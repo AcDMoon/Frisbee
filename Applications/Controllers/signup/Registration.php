@@ -8,11 +8,11 @@ class Registration
 
 
     //Проверяет E-mail на корректность
-    private static function EmailCheck(string $Email){
+    private static function emailCheck(string $Email){
         // проверяем не пустое ли поле
         if($Email !=='') {
             //если оно не пустое отсылаем запрос на проверку существования в базе данных
-            $EmailIsset = DB::EmailIsset($Email);
+            $EmailIsset = DB::emailIsset($Email);
             //Проверка на пустой массив
             if ($EmailIsset == True) {
                 $Email_Error = 'Этот E-mail уже занят!';
@@ -32,7 +32,7 @@ class Registration
     }
 
     //Проверяет пароль на корректность
-    private static function PasswordCheck(string $Password){
+    private static function passwordCheck(string $Password){
         if ($Password == ''){
             $Password_Error = 'Это поле является обязательным для заполнения!';
         }elseif(preg_match('/\ /', $Password) == 1){
@@ -50,7 +50,7 @@ class Registration
     }
 
     //Проверяет имя пользователя на корректность
-    private static function NameCheck(string $Name){
+    private static function nameCheck(string $Name){
         if ($Name == ''){
             $Name_Error = 'Это поле является обязательным для заполнения!';
         }elseif (iconv_strlen($Name) >40){
@@ -64,7 +64,7 @@ class Registration
     }
 
     //Проверяет дату рождения на корректность
-    private static function DateCheck(string $Date){
+    private static function dateCheck(string $Date){
         if (preg_match('/\d{4}(\-\d{2})(\-\d{2})/', $Date) ==1 ){
             return;
         }else {$Data_Error = 'Это поле является обязательным для заполнения!';}
@@ -72,11 +72,11 @@ class Registration
     }
 
     //Отсылает данные на проверку корректности. Если есть ошибки в заполнении возвращает массив с ошибками. Если ошибок нет возвращает NULL.
-    private static function Check(string $Email, string $Password, string $Name, string $Date){
-        self::EmailCheck($Email);
-        self::PasswordCheck($Password);
-        self::NameCheck($Name);
-        self::DateCheck($Date);
+    private static function check(string $Email, string $Password, string $Name, string $Date){
+        self::emailCheck($Email);
+        self::passwordCheck($Password);
+        self::nameCheck($Name);
+        self::dateCheck($Date);
 
         foreach (self::$Errors as $error => $errorName)
         {
@@ -87,10 +87,10 @@ class Registration
     }
 
     //Отсылает данные введённые пользователем на проверку. Если нет ошибок отправляет запрос в модель для создания записи в БД и возвращает NULL после создания записи. Если есть ошибки возвращает их в контроллер регистрации.
-    public static function Reg(string $Email, string $Password, string $Name, string $Date){
-        $result = self::Check($Email, $Password, $Name, $Date);
+    public static function reg(string $Email, string $Password, string $Name, string $Date){
+        $result = self::check($Email, $Password, $Name, $Date);
         if (is_null($result)) {
-            DB::AddUser($Email, $Password, $Name, $Date);
+            DB::addUser($Email, $Password, $Name, $Date);
             return NULL;
         }else{
             return $result;
