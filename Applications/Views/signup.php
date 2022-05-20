@@ -11,7 +11,7 @@
 <body class="background text-center">
 
 <main>
-    <form class="border border-dark p-5 pb-1 radius" action="signupController" method="post">
+    <form class="border border-dark p-5 pb-1 radius" action="signup" method="post">
 
         <h1 class="mb-3 ">Sign up</h1>
 

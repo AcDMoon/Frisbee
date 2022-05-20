@@ -11,7 +11,7 @@
 <body class="background text-center">
 
 <main>
-    <form class="border border-dark p-5 pb-1 radius" action="loginController" method="post">
+    <form class="border border-dark p-5 pb-1 radius" action="login" method="post">
 
         <h1 class="mb-3 ">Log In</h1>
 
@@ -23,7 +23,7 @@
         <p class="my-1 text-danger my-2"><?=$result['email_error']?></p>
 
         <div class="form-floating">
-            <input type="password" class="form-control form-control-lg" id="floatingPassword" name="password" placeholder="pass" value="<?=$_POST['password']?>">
+            <input type="password" class="form-control form-control-lg" id="floatingPassword" name="password" placeholder="pass" >
             <label for="floatingPassword">Enter password</label>
         </div>
 

@@ -45,11 +45,31 @@ Router::route('/Donation(/{0,1})', function(){
 });
 
 Router::route('/SignUp(/{0,1})', function(){
-    require "Applications/Views/signup.php";;
+    if (!$_POST['E-mail'] and !$_POST['password'] and !$_POST['name'] and !$_POST['date_of_birth']){
+        require "Applications/Views/signup.php";
+    }else{
+        $result = Registration::Reg($_POST['E-mail'], $_POST['password'], $_POST['name'],$_POST['date_of_birth']);
+        if (is_null($result)){
+            require __DIR__ . '/../Views/login.php';
+        }else {
+            require __DIR__ . '/../Views/signup.php';
+        }
+    }
+
 });
 
 Router::route('/LogIn(/{0,1})', function(){
-    require "Applications/Views/login.php";;
+    if (!$_POST['email'] and !$_POST['password']){
+        require "Applications/Views/login.php";
+    }else{
+        $result = Authorization::authorization($_POST['email'], $_POST['password']);
+        if (is_null($result)){
+            require __DIR__ . '/../Views/Profile/Profile.php';
+        }else {
+            require __DIR__ . '/../Views/login.php';
+        }
+    }
+
 });
 
 Router::route('/', function(){
@@ -64,20 +84,6 @@ Router::route('/Group(/{0,1})', function(){
     require "Applications/Views/GrouPage/Group page.php";;
 });
 
-Router::route('/signupController(/{0,1})', function(){
-    $result = Registration::Reg($_POST['E-mail'], $_POST['password'], $_POST['name'],$_POST['date_of_birth']);
-    if (is_null($result)){
-        require __DIR__ . '/../Views/login.php';
-    }else {
-        require __DIR__ . '/../Views/signup.php';
-    }
-});
 
-Router::route('/loginController(/{0,1})', function(){
-    $result = Authorization::authorization($_POST['email'], $_POST['password']);
-    if (is_null($result)){
-        require __DIR__ . '/../Views/Profile/Profile.php';
-    }else {
-        require __DIR__ . '/../Views/login.php';
-    }
-});
+
+

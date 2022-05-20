@@ -68,9 +68,11 @@ class DB
     }
 
     //Отдаёт данные о юзере которые запрашиваются
-    public static function GetUserInfo(string $email, bool $password = false, bool $name = false, bool $phone = false, bool $role = false, bool $avatar = false, bool $date = false){
+    public static function GetUserInfo(string $email, bool $id = false, bool $password = false, bool $name = false, bool $phone = false, bool $role = false, bool $avatar = false, bool $date = false){
         self::collectUserData($email);
         $userInfo['email'] = $email;
+
+        if ($id) {$userInfo['id'] = self::$data['UserID'];}
 
         if ($password) {$userInfo['password'] = self::$data['Password'];}
 
