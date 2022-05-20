@@ -30,8 +30,7 @@ class DB
         try {
             $stmt = self::$conn->prepare($query);
             $stmt->execute($param);
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $result;
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
 //            echo "Error: " . $e->getMessage();
         }
@@ -42,7 +41,7 @@ class DB
         $query = 'SELECT * FROM User WHERE Email = :Email';
         $param = ['Email' => $email];
         $result = self::execute($query, $param);
-        if ($result == true) {
+        if ($result) {
             foreach ($result[0] as $item => $value) {
                 self::$data[$item] = $value;
             }
@@ -51,7 +50,7 @@ class DB
 
     //Проверяет существует ли Email в БД (стоит переработать комманду - тащить из базы все данные о юзере и помещать их в массив, а потом проверять их)
     //Если есть совпадение возвращает проверяемый Email, если нет возвращает пустой массив
-    public static function emailIsset($Email)
+    public static function emailIsset($Email): bool
     {
         self::collectUserData($Email);
         if (self::$data == false){
@@ -68,7 +67,8 @@ class DB
     }
 
     //Отдаёт данные о юзере которые запрашиваются (приходить они должны в массиве который содержит навания в соответсвии с названиями из БД)
-    public static function getUserObject(string $email, array $object=[]){
+    public static function getUserObject(string $email, array $object=[]): array
+    {
         self::collectUserData($email);
         $userData['email'] = $email;
         foreach ($object as $value){
