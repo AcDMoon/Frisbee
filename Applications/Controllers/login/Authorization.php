@@ -19,7 +19,8 @@ class Authorization
 
 
     //Проверяет введённые данные на корректность и возвращает либо массив ошибок или NULL
-    public static function authorization(string $email, string $password){
+    public static function authorization(string $email, string $password)
+    {
         //проверка на наличие Email и pass
         self::emptyCheck($email, $password);
 

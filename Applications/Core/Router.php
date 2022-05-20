@@ -63,8 +63,20 @@ Router::route('/SignUp(/{0,1})', function(){
 });
 
 Router::route('/LogIn(/{0,1})', function(){
-//    Cookie::purgeCookie($_COOKIE['email'], $_COOKIE['password']);
-    loginController::loginRouter($_POST['email'], $_POST['password']);
+
+    if ($_GET['destination']){
+        $destination = $_GET['destination'];
+    } else {$destination = '';}
+
+    if ($_POST['email']){
+        $email = $_POST['email'];
+    } else {$email = '';};
+
+    if ($_POST['password']){
+        $password = $_POST['password'];
+    } else {$password = '';};
+
+    loginController::loginRouter($email, $password, $destination);
 });
 
 Router::route('/', function(){
