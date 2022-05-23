@@ -1,4 +1,5 @@
 
+
 <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark py-0" aria-label="Fourth navbar example">
     <div class="container-fluid">
 
@@ -12,6 +13,10 @@
 
             <ul class="navbar-nav ms-auto">
 
+
+
+
+
                 <li class="nav-item px-3">
                     <a class="nav-link active " aria-current="page" href="AboutUs">About Us</a>
                 </li>
@@ -24,13 +29,22 @@
                     <a class="nav-link active" aria-current="page" href="Donation">Donation</a>
                 </li>
 
-                <li class="nav-item px-0">
-                    <div class="container-fluid d-flex justify-content-center"  >
-                        <a class="nav-link active px-0" aria-current="page" href="LogIn">Log In</a>
-                        <p class="navbar-text mb-0" aria-current="page" >&nbsp / &nbsp</p>
-                        <a class="nav-link active px-0" aria-current="page" href="SignUp">Sign Up</a>
-                    </div>
-                </li>
+                <?php if (!$name){include __DIR__.'/NonReg.php';}else {include __DIR__.'/Reg.php';}?>
+
+<!--                <li class="nav-item dropdown px-3 ">-->
+<!--                    <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                        Profile-->
+<!--                    </a>-->
+<!---->
+<!--                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">-->
+<!--                        <li><img class="p-1 border border-dark group-image col-7 my-auto" src="/Public/Images/avatar.jpg"></li>-->
+<!--                        <li><p>Джозев джостар Абдулович</p></li>-->
+<!--                        <li><hr class="dropdown-divider"></li>-->
+<!--                        <li><a class="dropdown-item" href="#">Go to profile</a></li>-->
+<!--                        <li><hr class="dropdown-divider"></li>-->
+<!--                        <li><a class="dropdown-item" href="#">Log Out</a></li>-->
+<!--                    </ul>-->
+<!--                </li>-->
 
             </ul>
         </div>
