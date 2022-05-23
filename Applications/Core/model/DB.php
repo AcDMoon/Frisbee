@@ -14,7 +14,7 @@ class DB
     private static $data;
 
 
-    //соединение с БД
+
     private static function connect()
     {
         $config = require __DIR__.'/../../Config/db/db_config.php';
@@ -23,7 +23,7 @@ class DB
         self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
-    //Выполнение запроса
+
     private static function execute($query, $param)
     {
         self::connect();
@@ -36,7 +36,7 @@ class DB
         }
     }
 
-    //Собирает всю информацию о юзере если такая имеется
+
     private static function collectUserData($email){
         $query = 'SELECT * FROM User WHERE Email = :Email';
         $param = ['Email' => $email];
@@ -48,8 +48,7 @@ class DB
         }
     }
 
-    //Проверяет существует ли Email в БД (стоит переработать комманду - тащить из базы все данные о юзере и помещать их в массив, а потом проверять их)
-    //Если есть совпадение возвращает проверяемый Email, если нет возвращает пустой массив
+
     public static function emailIsset($Email): bool
     {
         self::collectUserData($Email);
@@ -59,14 +58,14 @@ class DB
         return true;
     }
 
-    //Создаёт запись о юзере в БД
+
     public static function addUser($Email, $Password, $Name, $Date){
         $query  = "INSERT INTO User (Email, Password, FullName, DateOfBirth) VALUES (:Email, :Password, :Name, :Date)";
         $param = ['Email' => $Email, 'Password'=> $Password, 'Name'=> $Name, 'Date'=> $Date];
         self::execute($query, $param);
     }
 
-    //Отдаёт данные о юзере которые запрашиваются (приходить они должны в массиве который содержит навания в соответсвии с названиями из БД)
+
     public static function getUserObject(string $email, array $object=[]): array
     {
         self::collectUserData($email);
@@ -78,9 +77,7 @@ class DB
     }
 
 
-    //тянет email и пароль и возвращает их
-    //public static function EmailPass
-    //проверка на совпадение email и пароля
+
 }
 
 
