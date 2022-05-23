@@ -12,7 +12,7 @@
 
 <!--md - параметр указыввающий границу коллапса-->
 <?php
-include __DIR__ . "/../Navbar/NavbarIfYouAut.php";
+include __DIR__ . "/Navbar/NavbarIfYouAut.php";
 ?>
 <main>
 
@@ -48,7 +48,10 @@ include __DIR__ . "/../Navbar/NavbarIfYouAut.php";
         </div>
 
         <div class="text-center">
-            <button class="btn-lg btn-dark border border-white my-5 py-4 w-50" href="profile">Sign up today</button>
+            <a href="login">
+                <button class="btn-lg btn-dark border border-white my-5 py-4 w-50" href="profile">Sign up today</button>
+            </a>
+
         </div>
     </div>
 
