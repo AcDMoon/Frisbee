@@ -7,7 +7,7 @@ use Applications\Controllers\cookie\Cookie;
 class loginController
 {
 
-    private static function authorize(string $email, string $password, string $destination=''){
+    private static function authorize(string $email, string $password, string $destination){
         $warnings= Authorization::authorization($email, $password);
         if (is_null($warnings)){
             Cookie::setCookie($email, $password);
@@ -21,45 +21,39 @@ class loginController
             exit();
 
         }else{
-            if ($destination){
-                $destination = '?destination='.$destination;
-            }
             require __DIR__ . '/../../Views/login.php';
         }
     }
 
-
-    private static function userWithoutDestination(string $email, string $password){
-        if ($_COOKIE['email'] and $_COOKIE['password']) {
-            self::userWithCookie();
-        }
-
-        self::authorize($email, $password);
-    }
-
-
-    private static function userWithCookie(){
-        if (Match::cookiesMatchData($_COOKIE['email'], $_COOKIE['password'])){
-            header("Location: http://frisbee/profile");
-            exit();
-        }
-        Cookie::purgeCookie($_COOKIE['email'], $_COOKIE['password']);
-    }
-
-
-
-
-
-
-
-    //Если редирект со страницы профиля - значит кук небыло или они не совпали и их удалило - на куки проверять не надо
-    public static function loginRouter(string $email, string $password, string $destination){
-        if ($destination){
+    private static function buttonIsPush(string $email, string $password, string $destination, bool $push){
+        if ($push){
             self::authorize($email, $password, $destination);
+        } else {
+            require __DIR__."/../../Views/login.php";
+        }
 
-        }else {
-            self::userWithoutDestination($email, $password);
+    }
+
+    private static function cookieIsset(string $destination){
+        if (Cookie::cookieIsset()){
+            if (!$destination){
+                header("Location: http://frisbee/profile");
+                exit();
+            }else {
+                header("Location: http://frisbee/".$destination);
+                exit();
+            }
         }
     }
 
+    public static function login(string $email, string $password, string $destination, bool $push){
+        self::cookieIsset($destination);
+        self::buttonIsPush($email, $password, $destination,$push);
+    }
+
+    public static function logout(){
+        Cookie::purgeCookie();
+        header("Location: http://frisbee/login");
+        exit();
+    }
 }
