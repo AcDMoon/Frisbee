@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="../../../Public/Styles/style.css"/>
+  <link rel="stylesheet" href="../../Public/Styles/style.css"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +11,7 @@
 <body class="background">
 
 <?php
-include __DIR__ . "/../Navbar/Navbar.php";
+include __DIR__ . "/Navbar/Navbar.php";
 ?>
 
 <!--Модальное окно загрузки аватарки-->
@@ -76,25 +76,32 @@ include __DIR__ . "/../Navbar/Navbar.php";
         <div class="row justify-content-center">
           <!--                    Аватарка-->
           <div class="col-5 text-center p-0 mx-2">
-            <img class="img-fluid border border-dark avatar d-block mx-auto" src="../../../Public/Images/avatar.jpg" alt="">
+            <img class="img-fluid border border-dark avatar d-block mx-auto" src="../../Public/Images/avatar.jpg" alt="">
             <button class="btn btn-outline-primary my-1 w-100 profile_info" data-bs-toggle="modal" data-bs-target="#downloadAvatar">set image</button>
           </div>
-          <!--                        Сами данные-->
+
+            <?php if (!isset($email)){$email = '';} ?>
           <div class="col-md-6 col-sm-12 profile_info mx-2">
-            <div class="mb-1 ps-1">
-              <p class="bg-light p-1 mb-0 border border-dark">Email: densisssss@mail.ru</p>
-              <a href="">reset email</a>
+            <div class="mb-3 ps-1">
+                <p class="bg-light p-1 mb-0 border border-dark">Email: <?=$email?></p>
+<!--              <a href="">reset email</a>-->
             </div>
 
-            <div class="mb-1 ps-1">
-              <p class="bg-light p-1 mb-0 border border-dark">Full name: Коцюба Денис Александрович</p>
-              <a href="">reset name</a>
+              <?php if (!isset($FullName)){$FullName = '';} ?>
+            <div class="mb-3 ps-1">
+              <p class="bg-light p-1 mb-0 border border-dark">Full name: <?=$FullName?></p>
+<!--              <a href="">reset name</a>-->
             </div>
 
-            <div class="mb-1 ps-1">
-              <p class="col- bg-light p-1 mb-0 border border-dark">Phone number: +79039056851</p>
-              <a href="">reset phone number</a>
+              <?php if (!isset($DateOfBirth)){$DateOfBirth = '';} ?>
+            <div class="mb-3 ps-1">
+              <p class=" bg-light p-1 mb-0 border border-dark">Date of birth: <?=$DateOfBirth?></p>
+<!--              <a href="">reset phone number</a>-->
             </div>
+
+              <div class="mb-3 ps-1 text-center">
+                  <a href="">Change profile details</a>
+              </div>
           </div>
         </div>
 
@@ -108,22 +115,22 @@ include __DIR__ . "/../Navbar/Navbar.php";
         <div class="row justify-content-center text-center mx-2 d-flex justify-content-evenly">
 
           <button class="row justify-content-center col-12 col-sm-9 col-md-7 col-lg-5 bg-custom radius mx-4 mb-4">
-            <img class="p-1 border border-dark group-image img-fluid col-3 my-auto" src="../../../Public/Images/avatar.jpg">
+            <img class="p-1 border border-dark group-image img-fluid col-3 my-auto" src="../../Public/Images/avatar.jpg">
             <p class="col fw-bold fs-6 no_wrap my-auto pe-0">my best group ever ever ever ever ever ever ever ever ever ever ever ever ever ever</p>
           </button>
 
           <button class="row justify-content-center col-12 col-sm-9 col-md-7 col-lg-5 bg-custom radius mx-4 mb-4">
-            <img class="p-1 border border-dark group-image img-fluid col-3 my-auto" src="../../../Public/Images/avatar.jpg">
+            <img class="p-1 border border-dark group-image img-fluid col-3 my-auto" src="../../Public/Images/avatar.jpg">
             <p class="col fw-bold fs-6 no_wrap my-auto pe-0">my group 2</p>
           </button>
 
           <button class="row justify-content-center col-12 col-sm-9 col-md-7 col-lg-5 bg-custom radius mx-4 mb-4">
-            <img class="p-1 border border-dark group-image img-fluid col-3 my-auto" src="../../../Public/Images/avatar.jpg">
+            <img class="p-1 border border-dark group-image img-fluid col-3 my-auto" src="../../Public/Images/avatar.jpg">
             <p class="col fw-bold fs-6 no_wrap my-auto pe-0">my group 3</p>
           </button>
 
           <button class="row justify-content-center col-12 col-sm-9 col-md-7 col-lg-5 bg-light radius mx-4 mb-4" data-bs-toggle="modal" data-bs-target="#createGroup">
-            <img class="p-1 img-fluid col-3 my-auto" src="../../../Public/Images/plus.webp">
+            <img class="p-1 img-fluid col-3 my-auto" src="../../Public/Images/plus.webp">
             <p class="col fw-bold fs-6 no_wrap my-auto pe-0">Create new group</p>
           </button>
 

@@ -12,7 +12,7 @@
 
 <!--md - параметр указыввающий границу коллапса-->
 <?php
-include __DIR__ . "/Navbar/NavbarIfYouAut.php";
+include __DIR__ . "/Navbar/Navbar.php";
 ?>
 <main>
 

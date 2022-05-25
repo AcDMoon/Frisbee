@@ -87,7 +87,7 @@ include __DIR__ . "/../Navbar/Navbar.php";
 
 <main class="container ">
 
-    <!--  If пользователь администратор:  -->
+    <!--  If пользователь модератор:  -->
     <div class="dropdown dropend ms-4">
         <button class="dropdown-toggle sm-button mt-2 btn btn-dark" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Moderation</button>
         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">

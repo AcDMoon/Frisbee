@@ -29,22 +29,9 @@
                     <a class="nav-link active" aria-current="page" href="Donation">Donation</a>
                 </li>
 
-                <?php if (!$name){include __DIR__.'/NonReg.php';}else {include __DIR__.'/Reg.php';}?>
+                <?php if (!isset($name)){include __DIR__.'/NonReg.php';}else {include __DIR__.'/Reg.php';}?>
 
-<!--                <li class="nav-item dropdown px-3 ">-->
-<!--                    <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--                        Profile-->
-<!--                    </a>-->
-<!---->
-<!--                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">-->
-<!--                        <li><img class="p-1 border border-dark group-image col-7 my-auto" src="/Public/Images/avatar.jpg"></li>-->
-<!--                        <li><p>Джозев джостар Абдулович</p></li>-->
-<!--                        <li><hr class="dropdown-divider"></li>-->
-<!--                        <li><a class="dropdown-item" href="#">Go to profile</a></li>-->
-<!--                        <li><hr class="dropdown-divider"></li>-->
-<!--                        <li><a class="dropdown-item" href="#">Log Out</a></li>-->
-<!--                    </ul>-->
-<!--                </li>-->
+
 
             </ul>
         </div>
