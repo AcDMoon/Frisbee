@@ -1,0 +1,25 @@
+html,
+body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    justify-content:center;
+}
+
+
+
+.background {
+    background: url('../images/background.jpg') 0 0/ cover no-repeat;
+    min-height: 100vh;
+}
+
+.radius{
+    border-radius: 5%;
+}
+
+
