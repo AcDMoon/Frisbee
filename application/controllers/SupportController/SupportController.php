@@ -3,17 +3,18 @@ namespace application\controllers\SupportController;
 
 use application\controllers\Cookie\Cookie;
 use application\core\model\DB;
+use application\views\SupportView\SupportView;
 
 class SupportController
 {
     public static function support()
     {
-
+        $avatar='';
+        $name='';
         if (Cookie::cookieIsset()) {
-            $avatar = '../../../public/images/avatar.jpg';
+            $avatar = '/public/images/avatar.jpg';
             $name = DB::getUserObject($_COOKIE['email'], ['FullName'])['FullName'];
         }
-
-        require __DIR__ . '/../../views/support.php';
+        SupportView::renderSupportPage($avatar, $name);
     }
 }

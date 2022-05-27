@@ -2,6 +2,7 @@
 namespace application\controllers\LoginController;
 
 use application\controllers\Cookie\Cookie;
+use application\views\LoginView\LoginView;
 
 class LoginController
 {
@@ -21,7 +22,7 @@ class LoginController
             header("Location: http://frisbee/Profile");
             exit();
         } else {
-            require __DIR__ . '/../../views/log-in.php';
+            LoginView::renderLoginPage($warnings, $destination);
         }
     }
 
@@ -30,7 +31,7 @@ class LoginController
         if ($push) {
             self::authorize($email, $password, $destination);
         } else {
-            require __DIR__ . "/../../views/log-in.php";
+            LoginView::renderLoginPage([], $destination);
         }
     }
 

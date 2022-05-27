@@ -1,5 +1,3 @@
-
-
 <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark py-0" aria-label="Fourth navbar example">
     <div class="container-fluid">
 
@@ -25,17 +23,9 @@
                     <a class="nav-link active" aria-current="page" href="Donation">Donation</a>
                 </li>
 
-                <?php if (!isset($name)) {
-                    include __DIR__ . '/unreg-navbar.php';
-                } else {
-                    include __DIR__ . '/reg-navbar.php';
-                }?>
-
-
+                <?=$navbarUserPart?>
 
             </ul>
         </div>
     </div>
 </nav>
-
-

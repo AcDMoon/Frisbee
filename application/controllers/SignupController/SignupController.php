@@ -3,6 +3,7 @@
 namespace application\controllers\SignupController;
 
 use application\controllers\Cookie\Cookie;
+use application\views\SignupView\SignupView;
 
 class SignupController
 {
@@ -21,7 +22,7 @@ class SignupController
         self::cookieCheck();
 
         if (!$push) {
-            require __DIR__ . "/../../views/sign-up.php";
+            SignupView::renderSignupPage([]);
             exit();
         }
 
@@ -32,7 +33,7 @@ class SignupController
             header("Location: http://frisbee/login");
             exit();
         } else {
-            require __DIR__ . "/../../views/sign-up.php";
+            SignupView::renderSignupPage($warnings);
             exit();
         }
     }
