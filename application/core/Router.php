@@ -10,6 +10,8 @@ use application\controllers\ProfileController\ProfileController;
 use application\controllers\SignupController\SignupController;
 use application\controllers\SupportController\SupportController;
 use application\controllers\test\test;
+use application\controllers\VerificationController\VerificationController;
+use application\core\model\DB;
 
 class Router
 {
@@ -81,7 +83,7 @@ Router::route('/SignUp(/{0,1})', function () {
     if (isset($_POST['push'])) {
         $push = $_POST['push'];
     } else {
-        $push =false;
+        $push = false;
     }
 
     SignupController::signup($email, $password, $name, $date, $push);
@@ -112,7 +114,7 @@ Router::route('/LogIn(/{0,1})', function () {
     if (isset($_POST['push'])) {
         $push = $_POST['push'];
     } else {
-        $push =false;
+        $push = false;
     }
 
     LoginController::login($email, $password, $destination, $push);
@@ -130,6 +132,23 @@ Router::route('/Group(/{0,1})', function () {
     require "application/views/group-page/group-page.php";
 });
 
+Router::route('/EmailConfirm(/{0,1})', function () {
+    require "application/views/templates/emailConfirm.php";
+});
+
+Router::route('/confirm(/{0,1})', function () {
+    if (isset($_GET['hash'])) {
+        VerificationController::verification($_GET['hash']);
+    } else {
+        echo('Увы что-то пошло не так, попробуйте зарегистрироваться заново!');
+    }
+});
+
+
+
+
+
+
 Router::route('/logout(/{0,1})', function () {
     LoginController::logout();
 });
@@ -137,6 +156,9 @@ Router::route('/logout(/{0,1})', function () {
 
 
 
-Router::route('/test(/{0,1})', function () {
-    test::destroyCookie();
+Router::route('/deleteMe(/{0,1})', function () {
+    DB::deleteUser('densisssss@mail.ru');
 });
+
+
+

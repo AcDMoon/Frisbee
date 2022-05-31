@@ -1,7 +1,9 @@
 <?php
+
 namespace application\controllers\SignupController;
 
 use application\controllers\Cookie\Cookie;
+use application\controllers\Mailer\Mailer;
 use application\core\model\DB;
 
 class Registration
@@ -13,7 +15,7 @@ class Registration
     private static function emailCheck(string $email)
     {
 
-        if ($email !=='') {
+        if ($email !== '') {
             $emailIsset = DB::emailIsset($email);
 
             if ($emailIsset) {
@@ -22,9 +24,10 @@ class Registration
                 $email_Error = 'Email не должен содержать пробелов!';
             } elseif (preg_match('/[а-яё]/iu', $email) == 1) {
                 $email_Error = 'Email не должен содержать русского алфавита!';
-            } elseif (iconv_strlen($email)>40) {
+            } elseif (iconv_strlen($email) > 40) {
                 $email_Error = 'Email должен быть меньше или равен 40 символова!';
             } else {
+                DB::deleteUser($email);
                 return;
             }
         } else {
@@ -43,9 +46,9 @@ class Registration
             $password_Error = 'Пароль не должен содержать пробелов!';
         } elseif (preg_match('/[а-яё]/iu', $password) == 1) {
             $password_Error = 'Пароль не должен содержать русского алфавита!';
-        } elseif (iconv_strlen($password)<8) {
+        } elseif (iconv_strlen($password) < 8) {
             $password_Error = 'Пароль должен быть длиннее 8 символов!';
-        } elseif (iconv_strlen($password)>40) {
+        } elseif (iconv_strlen($password) > 40) {
             $password_Error = 'Пароль должен быть меньше или равен 40 символова!';
         } else {
             return;
@@ -58,7 +61,7 @@ class Registration
     {
         if ($name == '') {
             $name_Error = 'Это поле является обязательным для заполнения!';
-        } elseif (iconv_strlen($name) >40) {
+        } elseif (iconv_strlen($name) > 40) {
             $name_Error = 'Имя пользователя не должно превышать 40 символов';
         } elseif (!preg_match('/[a-zа-яё]/iu', $name) == 1) {
             $name_Error = 'Имя пользователя должно содержать только буквунные значения';
@@ -71,7 +74,7 @@ class Registration
 
     private static function dateCheck(string $date)
     {
-        if (preg_match('/\d{4}(\-\d{2})(\-\d{2})/', $date) ==1) {
+        if (preg_match('/\d{4}(\-\d{2})(\-\d{2})/', $date) == 1) {
             return;
         } else {
             $data_Error = 'Это поле является обязательным для заполнения!';
@@ -96,12 +99,25 @@ class Registration
     }
 
 
+    private static function hashData($email, $password)
+    {
+        $emailHash = md5($email . time() . rand(100000, 999999));
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        $hash = ['emailHash' => $passwordHash, 'passwordHash' => $passwordHash];
+        return $hash;
+    }
+
+
     public static function registrationProcedures(string $email, string $password, string $name, string $date)
     {
         $result = self::fieldsCheck($email, $password, $name, $date);
         if (is_null($result)) {
-            DB::addUser($email, $password, $name, $date);
-            Cookie::setCookie($email, $password);
+            $hash = self::hashData($email, $password);
+            DB::addUser($email, $password, $name, $date, $hash['emailHash']);
+            Cookie::setCookie($email, $hash['passwordHash']);
+            $title = 'Email verification';
+            $content = '<a href="http://frisbee/confirm?hash=' . $hash['emailHash'] . '">To confirm, click this</a>';
+            Mailer::sendMessage($email, $title, $content);
             return null;
         } else {
             return $result;

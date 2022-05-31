@@ -1,4 +1,5 @@
 <?php
+
 namespace application\controllers\Match;
 
 use application\core\model\DB;
@@ -9,7 +10,7 @@ class Match
     {
         $object = ['Password'];
         $data = DB::getUserObject($email, $object);
-        if ($pass === $data['Password']) {
+        if (password_verify($data['Password'], $pass) or $pass === $data['Password']) {
             return true;
         }
         return false;

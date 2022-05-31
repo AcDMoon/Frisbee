@@ -2,7 +2,6 @@
 
 namespace application\core\model;
 
-
 use PDO;
 use PDOException;
 
@@ -54,14 +53,45 @@ class DB
         if (!self::$data) {
             return false;
         }
+        if (!self::$data['Verification']) {
+            return false;
+        }
         return true;
     }
 
 
-    public static function addUser($Email, $Password, $Name, $Date)
+    public static function deleteUser($email)
     {
-        $query  = "INSERT INTO User (Email, Password, FullName, DateOfBirth) VALUES (:Email, :Password, :Name, :Date)";
-        $param = ['Email' => $Email, 'Password'=> $Password, 'Name'=> $Name, 'Date'=> $Date];
+        $query  = "DELETE FROM User WHERE Email = :Email";
+        $param = ['Email' => $email];
+        self::execute($query, $param);
+    }
+
+
+    public static function hashIsset($hash)
+    {
+        $query = 'SELECT Hash FROM User WHERE Hash = :Hash';
+        $param = ['Hash' => $hash];
+        $result = self::execute($query, $param);
+        if ($result) {
+            return true;
+        }
+        return false;
+    }
+
+
+    public static function setVerification($hash)
+    {
+        $query  = "UPDATE User SET Verification = 1 WHERE Hash = :Hash";
+        $param = ['Hash' => $hash];
+        self::execute($query, $param);
+    }
+
+
+    public static function addUser($email, $password, $name, $date, $hash)
+    {
+        $query  = "INSERT INTO User (Email, Password, FullName, DateOfBirth, Hash) VALUES (:Email, :Password, :Name, :Date, :Hash)";
+        $param = ['Email' => $email, 'Password' => $password, 'Name' => $name, 'Date' => $date, 'Hash' => $hash];
         self::execute($query, $param);
     }
 

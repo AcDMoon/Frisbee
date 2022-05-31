@@ -30,7 +30,8 @@ class SignupController
 
         if (is_null($warnings)) {
 //            header("Location: http://62.113.98.197/log-in");
-            header("Location: http://frisbee/login");
+//            header("Location: http://frisbee/login");
+            header("Location: http://frisbee/EmailConfirm");
             exit();
         } else {
             SignupView::renderSignupPage($warnings);
