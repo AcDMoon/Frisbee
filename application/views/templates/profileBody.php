@@ -44,6 +44,43 @@
     </div>
 </div>
 
+
+<div class="modal fade " id="changeData" tabindex="-1" aria-hidden="true" aria-labelledby="changeDataLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="#" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="changeDataLabel">Change profile details</h4>
+                </div>
+
+                <h5 class="modal-title m-0 p-0 ms-2 pt-3 " id="changeDataLabel">Change email</h5>
+
+                <div class="modal-body row justify-content-center form-floating ">
+                    <input type="email" class="form-control ms-1 p-0 ps-2" id="email" placeholder="email" value="<?=$email?>">
+                </div>
+
+                <h5 class="modal-title m-0 p-0 ms-2 pt-2" id="changeDataLabel">Change Full Name</h5>
+
+                <div class="modal-body row justify-content-center form-floating ">
+                    <input type="text" class="form-control ms-1 p-0 ps-2" id="name" placeholder="name" value="<?=$FullName?>">
+                </div>
+
+                <h5 class="modal-title m-0 p-0 ms-2 pt-2" id="changeDataLabel">Change Date of Birth</h5>
+
+                <div class="modal-body row justify-content-center form-floating ">
+                    <input type="date" class="form-control ms-1 p-0 ps-2" id="date" placeholder="date" value="<?=$DateOfBirth?>">
+                </div>
+
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary profile_info mx-auto" type="submit">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 <main class="container">
 
 
@@ -92,7 +129,7 @@
                         </div>
 
                         <div class="mb-3 ps-1 text-center">
-                            <a href="">Change profile details</a>
+                            <a href="" data-bs-toggle="modal" data-bs-target="#changeData">Change profile details</a>
                         </div>
                     </div>
                 </div>
