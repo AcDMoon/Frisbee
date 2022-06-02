@@ -17,10 +17,18 @@ class ProfileView
         return $head;
     }
 
-    private static function renderBody(string $avatar, array $data)
+    private static function renderBody(string $avatar, array $data, array $groupsName)
     {
         extract($data);
         $navbar = NavbarView::renderNavbar($avatar, $FullName);
+
+        ob_start();
+        foreach ($groupsName as $item) {
+            require 'application/views/templates/profileGroups.php';
+        }
+        $groups = ob_get_contents();
+        ob_end_clean();
+
 
         ob_start();
         require 'application/views/templates/profileBody.php';
@@ -30,10 +38,10 @@ class ProfileView
         return $body;
     }
 
-    public static function renderProfilePage(string $avatar, array $data)
+    public static function renderProfilePage(string $avatar, array $data, array $groupsName)
     {
         $head = self::renderHead();
-        $body = self::renderBody($avatar, $data);
+        $body = self::renderBody($avatar, $data, $groupsName);
         require 'application/views/templates/html.php';
     }
 }

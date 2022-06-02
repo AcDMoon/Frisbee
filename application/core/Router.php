@@ -7,6 +7,8 @@ use application\controllers\DonationController\DonationController;
 use application\controllers\LoginController\LoginController;
 use application\controllers\MainPageController\MainPageController;
 use application\controllers\ProfileController\ProfileController;
+use application\controllers\ProfileController\ProfileRedactor;
+use application\controllers\ProfileController\UserSettingsController;
 use application\controllers\SignupController\SignupController;
 use application\controllers\SupportController\SupportController;
 use application\controllers\test\test;
@@ -145,7 +147,24 @@ Router::route('/confirm(/{0,1})', function () {
 });
 
 
+Router::route('/profileRedactor(/{0,1})', function () {
+    $primalEmail = $_POST['primalEmail'];
+    $newData = [];
 
+    if (isset($_POST['name'])) {
+        $newData['name'] = $_POST['name'];
+    }
+    if (isset($_POST['date'])) {
+        $newData['date'] = $_POST['date'];
+    }
+    if (isset($_FILES['avatar'])) {
+        $newData['avatar'] = $_FILES['avatar'];
+    }
+    if (isset($_POST['newGroup'])) {
+        $newData['newGroup'] = $_POST['newGroup'];
+    }
+    ProfileRedactor::redactProfile($primalEmail, $newData);
+});
 
 
 

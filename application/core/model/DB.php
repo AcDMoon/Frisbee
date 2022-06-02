@@ -8,7 +8,8 @@ use PDOException;
 class DB
 {
     private static $connection;
-    private static $data;
+    private static $userData;
+    private static $groupData;
 
 
 
@@ -41,7 +42,7 @@ class DB
         $result = self::execute($query, $param);
         if ($result) {
             foreach ($result[0] as $item => $value) {
-                self::$data[$item] = $value;
+                self::$userData[$item] = $value;
             }
         }
     }
@@ -50,10 +51,10 @@ class DB
     public static function emailIsset($Email): bool
     {
         self::collectUserData($Email);
-        if (!self::$data) {
+        if (!self::$userData) {
             return false;
         }
-        if (!self::$data['Verification']) {
+        if (!self::$userData['Verification']) {
             return false;
         }
         return true;
@@ -88,6 +89,80 @@ class DB
     }
 
 
+    public static function resetUserName($email, $name)
+    {
+        $query  = "UPDATE User SET FullName = :Name WHERE Email = :Email";
+        $param = ['Email' => $email, 'Name' => $name];
+        self::execute($query, $param);
+    }
+
+
+    public static function resetUserDate($email, $date)
+    {
+        $query  = "UPDATE User SET DateOfBirth = :Date WHERE Email = :Email";
+        $param = ['Email' => $email, 'Date' => $date];
+        self::execute($query, $param);
+    }
+
+
+    public static function createGroup($owner, $groupName)
+    {
+        date_default_timezone_set('America/Los_Angeles');
+        $date = date('Y-m-d', time());
+        $query  = "INSERT INTO Groupss (groupname, owners, data_of_create, uservalue) VALUES (:groupname, :owners, :data_of_create, :uservalue)";
+        $param = ['groupname' => $groupName, 'owners' => $owner, 'data_of_create' => $date, 'uservalue' => 1];
+        self::execute($query, $param);
+        $groupId = self::$connection->lastInsertId();
+        $userId = self::getUserObject($owner, ['UserID'])['UserID'];
+        self::addGroupUser($userId, $groupId);
+    }
+
+
+    public static function addGroupUser($userId, $groupId)
+    {
+        $query  = "INSERT INTO email_group_taglist (UserID, groupid) VALUES (:UserID, :groupid)";
+        $param = ['UserID' => $userId, 'groupid' => $groupId];
+        self::execute($query, $param);
+    }
+
+
+    private static function collectGroupData($groupId)
+    {
+        $query = 'SELECT * FROM Groupss WHERE groupid = :groupid';
+        $param = ['groupid' => $groupId];
+        $result = self::execute($query, $param);
+        if ($result) {
+            foreach ($result[0] as $item => $value) {
+                self::$groupData[$item] = $value;
+            }
+        }
+    }
+
+
+    public static function getGroupObject(string $groupId, array $object = [])
+    {
+        self::collectGroupData($groupId);
+        $groupData['groupId'] = $groupId;
+        foreach ($object as $value) {
+            $groupData[$value] = self::$groupData[$value];
+        }
+        return $groupData;
+    }
+
+
+    public static function getUserGroups($userId)
+    {
+        $query = 'SELECT groupid FROM email_group_taglist WHERE UserID = :UserID';
+        $param = ['UserID' => $userId];
+        $userGroupsIdArray = self::execute($query, $param);
+        $userGroupsId = [];
+        foreach ($userGroupsIdArray as $item) {
+            $userGroupsId[] = $item['groupid'];
+        }
+        return $userGroupsId;
+    }
+
+
     public static function addUser($email, $password, $name, $date, $hash)
     {
         $query  = "INSERT INTO User (Email, Password, FullName, DateOfBirth, Hash) VALUES (:Email, :Password, :Name, :Date, :Hash)";
@@ -101,7 +176,7 @@ class DB
         self::collectUserData($email);
         $userData['email'] = $email;
         foreach ($object as $value) {
-            $userData[$value] = self::$data[$value];
+            $userData[$value] = self::$userData[$value];
         }
         return $userData;
     }

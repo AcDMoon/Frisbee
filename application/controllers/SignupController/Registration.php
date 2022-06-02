@@ -103,7 +103,7 @@ class Registration
     {
         $emailHash = md5($email . time() . rand(100000, 999999));
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-        $hash = ['emailHash' => $passwordHash, 'passwordHash' => $passwordHash];
+        $hash = ['emailHash' => $emailHash, 'passwordHash' => $passwordHash];
         return $hash;
     }
 
