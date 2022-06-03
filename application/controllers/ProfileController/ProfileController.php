@@ -2,7 +2,7 @@
 
 namespace application\controllers\ProfileController;
 
-use application\controllers\Cookie\Cookie;
+use application\controllers\AvatarsController\AvatarsController;
 use application\controllers\VerificationController\VerificationController;
 use application\core\model\DB;
 use application\views\ProfileView\ProfileView;
@@ -12,16 +12,8 @@ class ProfileController
     public static function profile()
     {
         if (VerificationController::cookieVerification()) {
-            $avatar = '/public/images/avatar.jpg';
             $userId = DB::getUserObject($_COOKIE['email'], ['UserID'])['UserID'];
-            $pattern = '/^' . $userId . '\./';
-            $avatarsDirectory = 'application/lib/profileAvatars/';
-            foreach (scandir($avatarsDirectory) as $item => $value) {
-                if (preg_match($pattern, $value)) {
-                    $avatar = $avatarsDirectory . $value;
-                }
-            }
-
+            $avatar = AvatarsController::getAvatar('user', $userId);
             $userData = DB::getUserObject($_COOKIE['email'], ['FullName', 'DateOfBirth']);
             $userGroups = DB::getUserGroups($userId);
             $groupsName = [];
@@ -31,8 +23,8 @@ class ProfileController
 
             ProfileView::renderProfilePage($avatar, $userData, $groupsName);
         } else {
-//            header("Location: http://62.113.98.197/log-in");
-            header("Location: http://frisbee/login");
+            $domain = require 'application/config/validDomain.php';
+            header("Location: http://" . $domain['domain'] . "/login");
             exit();
         }
     }

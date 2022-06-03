@@ -1,19 +1,18 @@
 <?php
+
 namespace application\controllers\Cookie;
-
-
 
 class Cookie
 {
     public static function setCookie(string $email, string $password)
     {
+        $domain = require 'application/config/validDomain.php';
         setcookie(
             'email',
             $email,
             strtotime("+30 days"),
             "/",
-            'frisbee'
-            //            '62.113.98.197'
+            $domain['domain']
         );
 
         setcookie(
@@ -21,8 +20,7 @@ class Cookie
             $password,
             strtotime("+30 days"),
             "/",
-            'frisbee'
-            //            '62.113.98.197'
+            $domain['domain']
         );
     }
 
@@ -41,6 +39,4 @@ class Cookie
             time() - 3600
         );
     }
-
-
 }

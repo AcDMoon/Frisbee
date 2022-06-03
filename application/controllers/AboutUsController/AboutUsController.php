@@ -1,6 +1,8 @@
 <?php
+
 namespace application\controllers\AboutUsController;
 
+use application\controllers\AvatarsController\AvatarsController;
 use application\controllers\Cookie\Cookie;
 use application\controllers\VerificationController\VerificationController;
 use application\core\model\DB;
@@ -10,10 +12,11 @@ class AboutUsController
 {
     public static function aboutUs()
     {
-        $avatar='';
-        $name='';
+        $avatar = '';
+        $name = '';
         if (VerificationController::cookieVerification()) {
-            $avatar = '/public/images/avatar.jpg';
+            $userId = DB::getUserObject($_COOKIE['email'], ['UserID'])['UserID'];
+            $avatar = AvatarsController::getAvatar('user', $userId);
             $name = DB::getUserObject($_COOKIE['email'], ['FullName'])['FullName'];
         }
 

@@ -12,11 +12,12 @@ class VerificationController
         $hashIsset = DB::hashIsset($hash);
         if ($hashIsset) {
             DB::setVerificationTrue($hash);
-            header("Location: http://frisbee/login");
+            DB::deleteHash($hash);
+            $domain = require 'application/config/validDomain.php';
+            header("Location: http://" . $domain['domain'] . "/login");
         }
-        echo ('Произошла ошибка! Попробуйте снова перейти по ссылке подтверждения или повторите регистрацию!');
+        echo ('There was an error! Try the confirmation link again or register again!');
     }
-
 
     public static function passwordVerification(string $email, string $pass): bool
     {

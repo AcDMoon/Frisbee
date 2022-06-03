@@ -83,7 +83,7 @@
                 <input type="hidden" name="primalEmail" value="<?=$email?>">
 
                 <div class="modal-footer">
-                    <button class="btn btn-primary profile_info mx-auto" type="submit">Create</button>
+                    <button class="btn btn-primary profile_info mx-auto" type="submit">Change</button>
                 </div>
             </form>
         </div>

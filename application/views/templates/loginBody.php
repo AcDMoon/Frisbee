@@ -36,7 +36,7 @@
         <button class="mt-2 w-100 btn btn-lg btn-dark" type="submit">Log In</button>
 
         <div class="mt-2 mb-1">
-            <a class="" href="frisbee.com" >Forgot your password?</a>
+            <a class="" href="restore" >Forgot your password?</a>
         </div>
 
         <div class="mb-2">

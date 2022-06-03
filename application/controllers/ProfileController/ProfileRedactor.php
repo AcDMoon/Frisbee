@@ -2,12 +2,11 @@
 
 namespace application\controllers\ProfileController;
 
-use application\controllers\Mailer\Mailer;
 use application\core\model\DB;
 
 class ProfileRedactor
 {
-    private static array $data = [];
+    private static $data = [];
 
     private static function changeAvatar()
     {
@@ -54,6 +53,7 @@ class ProfileRedactor
         self::changeName();
         self::changeDate();
         self::createGroup();
-        header("Location: http://frisbee/profile");
+        $domain = require 'application/config/validDomain.php';
+        header("Location: http://" . $domain['domain'] . "/profile");
     }
 }

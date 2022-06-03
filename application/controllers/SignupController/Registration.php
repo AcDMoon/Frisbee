@@ -115,8 +115,9 @@ class Registration
             $hash = self::hashData($email, $password);
             DB::addUser($email, $password, $name, $date, $hash['emailHash']);
             Cookie::setCookie($email, $hash['passwordHash']);
-            $title = 'Email verification';
-            $content = '<a href="http://frisbee/confirm?hash=' . $hash['emailHash'] . '">To confirm, click this</a>';
+            $title = 'Frisbee - Email verification';
+            $domain = require 'application/config/validDomain.php';
+            $content = '<a href="http://' . $domain['domain'] . '/confirm?hash=' . $hash['emailHash'] . '">To confirm, click this</a>';
             Mailer::sendMessage($email, $title, $content);
             return null;
         } else {
@@ -124,3 +125,4 @@ class Registration
         }
     }
 }
+
