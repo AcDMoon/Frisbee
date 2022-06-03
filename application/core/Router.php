@@ -142,7 +142,7 @@ Router::route('/confirm(/{0,1})', function () {
     if (isset($_GET['hash'])) {
         VerificationController::emailVerification($_GET['hash']);
     } else {
-        echo('Увы что-то пошло не так, попробуйте зарегистрироваться заново!');
+        echo('Alas something went wrong, try registering again!');
     }
 });
 
@@ -176,7 +176,7 @@ Router::route('/logout(/{0,1})', function () {
 
 
 Router::route('/deleteMe(/{0,1})', function () {
-    DB::deleteUser('densisssss@mail.ru');
+    DB::deleteUser(29);
 });
 
 
