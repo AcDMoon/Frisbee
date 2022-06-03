@@ -4,7 +4,8 @@ namespace application\controllers\Mailer;
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-require "vendor/autoload.php";
+require "application/lib/PHPMailer-master/src/PHPMailer.php";
+require 'application/lib/PHPMailer-master/src/SMTP.php';
 
 class Mailer
 {
@@ -13,6 +14,8 @@ class Mailer
         $mailerConfig = require 'application/config/mailer.php';
         $mail = new PHPMailer();
         $mail->CharSet = 'UTF-8';
+        $mail->Encoding   = '8bit';
+        $mail->SMTPSecure = 'ssl';
         $mail->IsHTML(true);
         $mail->isSMTP();
         $mail->SMTPAuth = true;
