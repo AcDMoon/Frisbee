@@ -61,10 +61,10 @@ class DB
     }
 
 
-    public static function deleteUser($email)
+    public static function deleteUser($userId)
     {
-        $query  = "DELETE FROM User WHERE Email = :Email";
-        $param = ['Email' => $email];
+        $query  = "DELETE FROM User WHERE UserID = :UserID";
+        $param = ['UserID' => $userId];
         self::execute($query, $param);
     }
 
@@ -78,6 +78,22 @@ class DB
             return true;
         }
         return false;
+    }
+
+
+    public static function setHash($email, $hash)
+    {
+        $query  = "UPDATE User SET Hash = :Hash WHERE Email = :Email";
+        $param = ['Hash' => $hash, 'Email'=> $email];
+        self::execute($query, $param);
+    }
+
+
+    public static function deleteHash($hash)
+    {
+        $query  = "UPDATE User SET Hash = '' WHERE Hash = :Hash";
+        $param = ['Hash' => $hash];
+        self::execute($query, $param);
     }
 
 
