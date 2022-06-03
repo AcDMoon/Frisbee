@@ -140,7 +140,7 @@ Router::route('/EmailConfirm(/{0,1})', function () {
 
 Router::route('/confirm(/{0,1})', function () {
     if (isset($_GET['hash'])) {
-        VerificationController::verification($_GET['hash']);
+        VerificationController::emailVerification($_GET['hash']);
     } else {
         echo('Увы что-то пошло не так, попробуйте зарегистрироваться заново!');
     }

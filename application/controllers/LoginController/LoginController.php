@@ -2,6 +2,7 @@
 namespace application\controllers\LoginController;
 
 use application\controllers\Cookie\Cookie;
+use application\controllers\VerificationController\VerificationController;
 use application\views\LoginView\LoginView;
 
 class LoginController
@@ -37,7 +38,7 @@ class LoginController
 
     private static function cookieIsset(string $destination)
     {
-        if (Cookie::cookieIsset()) {
+        if (VerificationController::cookieVerification()) {
             if (!$destination) {
 //                header("Location: http://62.113.98.197/profile");
                 header("Location: http://frisbee/Profile");

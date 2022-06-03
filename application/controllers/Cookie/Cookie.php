@@ -1,7 +1,7 @@
 <?php
 namespace application\controllers\Cookie;
 
-use application\controllers\Match\Match;
+
 
 class Cookie
 {
@@ -43,17 +43,4 @@ class Cookie
     }
 
 
-    public static function cookieIsset(): bool
-    {
-        if (isset($_COOKIE['email']) && isset($_COOKIE['password'])) {
-            if (Match::cookiesMatchData($_COOKIE['email'], $_COOKIE['password'])) {
-                return true;
-            } else {
-                Cookie::purgeCookie();
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
 }

@@ -2,6 +2,7 @@
 namespace application\controllers\MainPageController;
 
 use application\controllers\Cookie\Cookie;
+use application\controllers\VerificationController\VerificationController;
 use application\core\model\DB;
 use application\views\MainPageView\MainPageView;
 
@@ -11,7 +12,7 @@ class MainPageController
     {
         $avatar='';
         $name='';
-        if (Cookie::cookieIsset()) {
+        if (VerificationController::cookieVerification()) {
             $avatar = '/public/images/avatar.jpg';
             $name = DB::getUserObject($_COOKIE['email'], ['FullName'])['FullName'];
         }

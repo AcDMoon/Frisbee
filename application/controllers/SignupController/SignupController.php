@@ -3,13 +3,14 @@
 namespace application\controllers\SignupController;
 
 use application\controllers\Cookie\Cookie;
+use application\controllers\VerificationController\VerificationController;
 use application\views\SignupView\SignupView;
 
 class SignupController
 {
     private static function cookieCheck()
     {
-        if (Cookie::cookieIsset()) {
+        if (VerificationController::cookieVerification()) {
 //            header("Location: http://62.113.98.197/profile");
             header("Location: http://frisbee/Profile");
             exit();

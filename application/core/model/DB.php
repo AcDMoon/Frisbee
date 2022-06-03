@@ -81,7 +81,7 @@ class DB
     }
 
 
-    public static function setVerification($hash)
+    public static function setVerificationTrue($hash)
     {
         $query  = "UPDATE User SET Verification = 1 WHERE Hash = :Hash";
         $param = ['Hash' => $hash];

@@ -1,8 +1,9 @@
 <?php
 namespace application\controllers\LoginController;
 
+use application\controllers\VerificationController\VerificationController;
 use application\core\model\DB;
-use application\controllers\Match\Match;
+
 
 class Authorization
 {
@@ -37,7 +38,7 @@ class Authorization
             return self::$errors;
         }
 
-        $match = Match::emailPasswordMatch($email, $password);
+        $match = VerificationController::passwordVerification($email, $password);
         if (!$match) {
             self::$errors['password_error'] = 'Неверный пароль';
             return self::$errors;

@@ -3,16 +3,15 @@
 namespace application\controllers\ProfileController;
 
 use application\controllers\Cookie\Cookie;
+use application\controllers\VerificationController\VerificationController;
 use application\core\model\DB;
 use application\views\ProfileView\ProfileView;
 
 class ProfileController
 {
-    private static array $avatarWarnings = [];
-
     public static function profile()
     {
-        if (Cookie::cookieIsset()) {
+        if (VerificationController::cookieVerification()) {
             $avatar = '/public/images/avatar.jpg';
             $userId = DB::getUserObject($_COOKIE['email'], ['UserID'])['UserID'];
             $pattern = '/^' . $userId . '\./';
