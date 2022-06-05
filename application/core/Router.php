@@ -9,6 +9,7 @@ use application\controllers\MainPageController\MainPageController;
 use application\controllers\ProfileController\ProfileController;
 use application\controllers\ProfileController\ProfileRedactor;
 use application\controllers\ProfileController\UserSettingsController;
+use application\controllers\RestorePasswordController\RestorePasswordController;
 use application\controllers\SignupController\SignupController;
 use application\controllers\SupportController\SupportController;
 use application\controllers\test\test;
@@ -58,35 +59,15 @@ Router::route('/Donation(/{0,1})', function () {
 
 Router::route('/SignUp(/{0,1})', function () {
 
-    if (isset($_POST['email'])) {
-        $email = $_POST['email'];
-    } else {
-        $email = '';
-    }
+    $email = $_POST['email'] ?? '';
 
-    if (isset($_POST['password'])) {
-        $password = $_POST['password'];
-    } else {
-        $password = '';
-    }
+    $password = $_POST['password'] ?? '';
 
-    if (isset($_POST['name'])) {
-        $name = $_POST['name'];
-    } else {
-        $name = '';
-    }
+    $name = $_POST['name'] ?? '';
 
-    if (isset($_POST['date'])) {
-        $date = $_POST['date'];
-    } else {
-        $date = '';
-    }
+    $date = $_POST['date'] ?? '';
 
-    if (isset($_POST['push'])) {
-        $push = $_POST['push'];
-    } else {
-        $push = false;
-    }
+    $push = $_POST['push'] ?? false;
 
     SignupController::signup($email, $password, $name, $date, $push);
 });
@@ -94,30 +75,14 @@ Router::route('/SignUp(/{0,1})', function () {
 Router::route('/LogIn(/{0,1})', function () {
 
 
-    if (isset($_GET['destination'])) {
-        $destination = $_GET['destination'];
-    } else {
-        $destination = '';
-    }
+    $destination = $_GET['destination'] ?? '';
 
-    if (isset($_POST['email'])) {
-        $email = $_POST['email'];
-    } else {
-        $email = '';
-    }
+    $email = $_POST['email'] ?? '';
 
-    if (isset($_POST['password'])) {
-        $password = $_POST['password'];
-    } else {
-        $password = '';
-    }
+    $password = $_POST['password'] ?? '';
 
 
-    if (isset($_POST['push'])) {
-        $push = $_POST['push'];
-    } else {
-        $push = false;
-    }
+    $push = $_POST['push'] ?? false;
 
     LoginController::login($email, $password, $destination, $push);
 });
@@ -142,10 +107,18 @@ Router::route('/confirm(/{0,1})', function () {
     if (isset($_GET['hash'])) {
         VerificationController::emailVerification($_GET['hash']);
     } else {
-        echo('Alas something went wrong, try registering again!');
+        require 'application/views/templates/emailConfirmError.html';
     }
 });
 
+Router::route('/restore(/{0,1})', function () {
+    $hash = $_GET['hash'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $emailFromHash = $_POST['emailFromHas'] ?? '';
+    $password = $_POST['password'] ?? '';
+    $buttonIsPush = $_POST['button'] ?? false;
+    RestorePasswordController::passwordResetNavigator($email, $emailFromHash, $password, $hash, $buttonIsPush);
+});
 
 Router::route('/profileRedactor(/{0,1})', function () {
     $primalEmail = $_POST['primalEmail'];

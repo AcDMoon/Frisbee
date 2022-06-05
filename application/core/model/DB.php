@@ -97,6 +97,15 @@ class DB
     }
 
 
+    public static function getEmailFromHash($hash)
+    {
+        $query = 'SELECT Email FROM User WHERE Hash = :Hash';
+        $param = ['Hash' => $hash];
+        $email = self::execute($query, $param);
+        return $email;
+    }
+
+
     public static function setVerificationTrue($hash)
     {
         $query  = "UPDATE User SET Verification = 1 WHERE Hash = :Hash";
@@ -117,6 +126,13 @@ class DB
     {
         $query  = "UPDATE User SET DateOfBirth = :Date WHERE Email = :Email";
         $param = ['Email' => $email, 'Date' => $date];
+        self::execute($query, $param);
+    }
+
+    public static function resetUserPassword($email, $password)
+    {
+        $query  = "UPDATE User SET Password = :Password WHERE Email = :Email";
+        $param = ['Email' => $email, 'Password' => $password];
         self::execute($query, $param);
     }
 

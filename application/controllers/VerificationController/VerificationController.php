@@ -16,7 +16,7 @@ class VerificationController
             $domain = require 'application/config/validDomain.php';
             header("Location: http://" . $domain['domain'] . "/login");
         }
-        echo ('There was an error! Try the confirmation link again or register again!');
+        require 'application/views/templates/verificationError.html';
     }
 
     public static function passwordVerification(string $email, string $pass): bool

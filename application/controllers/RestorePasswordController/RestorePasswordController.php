@@ -7,7 +7,7 @@ use application\core\model\DB;
 
 class RestorePasswordController
 {
-    public static function restorePasswordProcedure($email)
+    private static function mailCheckProcedure($email)
     {
         if (DB::emailIsset($email)) {
             $hash = md5($email . time() . rand(100000, 999999));
@@ -16,22 +16,62 @@ class RestorePasswordController
             $domain = require 'application/config/validDomain.php';
             $content = '<a href="http://' . $domain['domain'] . '/restorePassword?hash=' . $hash . '">To restore, click this</a>';
             Mailer::sendMessage($email, $title, $content);
-            //говорим перейти на почту для подтверждения
+            header("Location: http://" . $domain['domain'] . "/EmailConfirm");
+            exit();
         } else {
-        //выдаём то же окно с ошибкой
+            $emailWarnings = 'No such email found';
+            RestorePasswordView::renderRestorePage(['email'=>$email,'emailWarnings'=>$emailWarnings]);
         }
     }
 
+
+    private static function hashIsCorrect($hash)
+    {
+        $emailFromHash = DB::getEmailFromHash($hash);
+        if ($emailFromHash) {
+            DB::deleteHash($hash);
+            RestorePasswordView::renderRestorePage(['emailFromHash'=>$emailFromHash]);
+        } else {
+            $domain = require 'application/config/validDomain.php';
+            header("Location: http://" . $domain['domain'] . "/restore");
+        }
+    }
+
+
+    private static function passwordReset($emailFromHash, $password)
+    {
+        DB::resetUserPassword($emailFromHash, $password);
+        $domain = require 'application/config/validDomain.php';
+        header("Location: http://" . $domain['domain'] . "/login");
+    }
+
+
+    public static function passwordResetNavigator($email, $emailFromHash, $password, $hash, $buttonIsPush)
+    {
+        if ($hash) {
+            self::hashIsCorrect($hash);
+            return;
+        }
+
+        if ($emailFromHash && $password) {
+            self::passwordReset($email, $password);
+            return;
+        }
+
+        if ($email) {
+            self::mailCheckProcedure($email);
+            return;
+        }
+
+        if ($buttonIsPush) {
+            $emailWarnings = 'blank field!';
+            RestorePasswordView::renderRestorePage(['email'=>$email,'emailWarnings'=>$emailWarnings]);
+        }
+
+        RestorePasswordView::renderRestorePage();
+
+    }
+
+
 }
 
-//переход на страницу восстановления пароля
-//если хэш отсутствует или ненаходится генерируем ошибку
-//если есть выдаём форму
-//форма проверяет корректность (можно скриптом)
-//если форма отправляется записываем новый пароль в бд
-//создаём куки с новым паролем
-//пересылаем на страницу логина
-
-
-
-//сделать странички ошибок
