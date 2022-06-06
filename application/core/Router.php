@@ -114,9 +114,9 @@ Router::route('/confirm(/{0,1})', function () {
 Router::route('/restore(/{0,1})', function () {
     $hash = $_GET['hash'] ?? '';
     $email = $_POST['email'] ?? '';
-    $emailFromHash = $_POST['emailFromHas'] ?? '';
+    $emailFromHash = $_POST['emailFromHash'] ?? '';
     $password = $_POST['password'] ?? '';
-    $buttonIsPush = $_POST['button'] ?? false;
+    $buttonIsPush = $_POST['push'] ?? false;
     RestorePasswordController::passwordResetNavigator($email, $emailFromHash, $password, $hash, $buttonIsPush);
 });
 
@@ -149,7 +149,11 @@ Router::route('/logout(/{0,1})', function () {
 
 
 Router::route('/deleteMe(/{0,1})', function () {
-    DB::deleteUser(29);
+    if (isset($_GET['email'])) {
+        $userId = DB::getUserObject($_GET['email'], ['UserID'])['UserID'];
+        DB::deleteUser($userId);
+    }
+
 });
 
 

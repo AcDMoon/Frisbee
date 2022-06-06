@@ -27,7 +27,8 @@ class Registration
             } elseif (iconv_strlen($email) > 40) {
                 $email_Error = 'Email должен быть меньше или равен 40 символова!';
             } else {
-                DB::deleteUser($email);
+                $userId = DB::getUserObject($email, ['UserID'])['UserID'];
+                DB::deleteUser($userId);
                 return;
             }
         } else {

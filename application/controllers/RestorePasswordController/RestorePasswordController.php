@@ -4,6 +4,7 @@ namespace application\controllers\RestorePasswordController;
 
 use application\controllers\Mailer\Mailer;
 use application\core\model\DB;
+use application\views\RestorePasswordView\RestorePasswordView;
 
 class RestorePasswordController
 {
@@ -14,13 +15,13 @@ class RestorePasswordController
             DB::setHash($email, $hash);
             $title = 'Frisbee - Restore password';
             $domain = require 'application/config/validDomain.php';
-            $content = '<a href="http://' . $domain['domain'] . '/restorePassword?hash=' . $hash . '">To restore, click this</a>';
+            $content = '<a href="http://' . $domain['domain'] . '/restore?hash=' . $hash . '">To restore, click this</a>';
             Mailer::sendMessage($email, $title, $content);
             header("Location: http://" . $domain['domain'] . "/EmailConfirm");
             exit();
         } else {
             $emailWarnings = 'No such email found';
-            RestorePasswordView::renderRestorePage(['email'=>$email,'emailWarnings'=>$emailWarnings]);
+            RestorePasswordView::renderRestorePage(['email' => $email,'emailWarnings' => $emailWarnings]);
         }
     }
 
@@ -30,7 +31,7 @@ class RestorePasswordController
         $emailFromHash = DB::getEmailFromHash($hash);
         if ($emailFromHash) {
             DB::deleteHash($hash);
-            RestorePasswordView::renderRestorePage(['emailFromHash'=>$emailFromHash]);
+            RestorePasswordView::renderRestorePage(['emailFromHash' => $emailFromHash]);
         } else {
             $domain = require 'application/config/validDomain.php';
             header("Location: http://" . $domain['domain'] . "/restore");
@@ -54,7 +55,7 @@ class RestorePasswordController
         }
 
         if ($emailFromHash && $password) {
-            self::passwordReset($email, $password);
+            self::passwordReset($emailFromHash, $password);
             return;
         }
 
@@ -64,14 +65,11 @@ class RestorePasswordController
         }
 
         if ($buttonIsPush) {
-            $emailWarnings = 'blank field!';
-            RestorePasswordView::renderRestorePage(['email'=>$email,'emailWarnings'=>$emailWarnings]);
+            $emailWarnings = 'Blank field!';
+            RestorePasswordView::renderRestorePage(['email' => $email,'emailWarnings' => $emailWarnings]);
+            return;
         }
 
         RestorePasswordView::renderRestorePage();
-
     }
-
-
 }
-

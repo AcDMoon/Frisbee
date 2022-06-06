@@ -102,7 +102,10 @@ class DB
         $query = 'SELECT Email FROM User WHERE Hash = :Hash';
         $param = ['Hash' => $hash];
         $email = self::execute($query, $param);
-        return $email;
+        if (isset($email[0]['Email'])) {
+            return $email[0]['Email'];
+        }
+        return [];
     }
 
 
