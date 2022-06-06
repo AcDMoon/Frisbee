@@ -38,7 +38,6 @@ class Registration
         self::$errors['email_Error'] = $email_Error;
     }
 
-
     private static function passwordCheck(string $password)
     {
         if ($password == '') {
