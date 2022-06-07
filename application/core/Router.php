@@ -19,7 +19,7 @@ use application\core\model\DB;
 class Router
 {
     private static $routes = array();
-    // запрещаем создание и копирование статического объекта
+
     private function __construct()
     {
     }
@@ -157,4 +157,6 @@ Router::route('/deleteMe(/{0,1})', function () {
 });
 
 
-
+Router::route('/test(/{0,1})', function () {
+    require 'application/core/model/test.php';
+});

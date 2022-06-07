@@ -2,7 +2,6 @@
 
 namespace application\controllers\AvatarsController;
 
-use application\core\model\DB;
 
 class AvatarsController
 {

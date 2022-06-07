@@ -32,31 +32,62 @@ class newDB
     }
 
 
-    private static function add()
+    private static function add($table, $attributes, $values)
     {
-        $query  = "INSERT INTO $CLASS ($ATTRIBUTES) VALUES ($ATTRIBUTESVALUE)";
-        $param = ['UserID' => $userId, 'groupid' => $groupId];
-        self::execute($query, $param);
-
-        $query  = "INSERT INTO email_group_taglist (UserID, groupid) VALUES (:UserID, :groupid)";
-        $param = ['UserID' => $userId, 'groupid' => $groupId];
+        $param = [];
+        for($i = 0; $i <= count($attributes) - 1; $i++ ) {
+            $param[$attributes[$i]] = $values[$i];
+        }
+        for($i = 0; $i <= count($values) - 1; $i++ ) {
+            $values[$i] = ':' . $attributes[$i];
+        }
+        $attributes = implode(', ', $attributes);
+        $values = implode(', ', $values );
+        $query  = "INSERT INTO $table ( $attributes ) VALUES ( $values )";
         self::execute($query, $param);
     }
 
 
-    private static function get(){}
+    private static function get()
+    {
+    }
 
 
-    private static function update(){}
+    private static function update()
+    {
+    }
 
 
-    private static function delete(){}
+    private static function delete()
+    {
+    }
 
 
     public static function request(string $method, object $object)
     {
+        if ('add' === $method) {
+            $array = explode('\\', get_class($object));
+            $tableName = $array[count($array) - 1];
+            $attributes = [];
+            $attributesValue = [];
 
+            foreach ($object as $attribute => $value) {
+                $attributes[] = $attribute;
+                $attributesValue[] = $value;
+            }
+            self::add($tableName, $attributes, $attributesValue);
+        }
+
+        if ('get' === $method) {
+            self::get();
+        }
+
+        if ('update' === $method) {
+            self::update();
+        }
+
+        if ('delete' === $method) {
+            self::delete();
+        }
     }
-
-
 }
