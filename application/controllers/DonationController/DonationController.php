@@ -1,12 +1,12 @@
 <?php
 
-namespace application\controllers\DonationController;
+namespace Frisbee\controllers\DonationController;
 
-use application\controllers\AvatarsController\AvatarsController;
-use application\controllers\Cookie\Cookie;
-use application\controllers\VerificationController\VerificationController;
-use application\core\model\DB;
-use application\views\DonationView\DonationView;
+use Frisbee\controllers\AvatarsController\AvatarsController;
+use Frisbee\controllers\Cookie\Cookie;
+use Frisbee\controllers\VerificationController\VerificationController;
+use Frisbee\core\model\DB;
+use Frisbee\views\DonationView\DonationView;
 
 class DonationController
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace application\controllers\LoginController;
+namespace Frisbee\controllers\LoginController;
 
-use application\controllers\Cookie\Cookie;
-use application\controllers\VerificationController\VerificationController;
-use application\views\LoginView\LoginView;
+use Frisbee\controllers\Cookie\Cookie;
+use Frisbee\controllers\VerificationController\VerificationController;
+use Frisbee\views\LoginView\LoginView;
 
 class LoginController
 {
@@ -15,11 +15,11 @@ class LoginController
             Cookie::setCookie($email, $password);
 
             if ($destination) {
-                $domain = require 'application/config/validDomain.php';
+                $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
                 header("Location: http://" . $domain['domain'] . "/" . $destination);
                 exit();
             }
-            $domain = require 'application/config/validDomain.php';
+            $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
             header("Location: http://" . $domain['domain'] . "/Profile");
             exit();
         } else {
@@ -40,11 +40,11 @@ class LoginController
     {
         if (VerificationController::cookieVerification()) {
             if (!$destination) {
-                $domain = require 'application/config/validDomain.php';
+                $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
                 header("Location: http://" . $domain['domain'] . "/Profile");
                 exit();
             } else {
-                $domain = require 'application/config/validDomain.php';
+                $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
                 header("Location: http://" . $domain['domain'] . "/" . $destination);
                 exit();
             }
@@ -60,7 +60,7 @@ class LoginController
     public static function logout()
     {
         Cookie::purgeCookie();
-        $domain = require 'application/config/validDomain.php';
+        $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
         header("Location: http://" . $domain['domain'] . "/login");
         exit();
     }

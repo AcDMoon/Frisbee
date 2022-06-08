@@ -1,17 +1,17 @@
 <?php
 
-namespace application\views\SupportView;
+namespace Frisbee\views\SupportView;
 
-use application\views\NavbarView\NavbarView;
+use Frisbee\views\NavbarView\NavbarView;
 
 class SupportView
 {
     private static function renderHead()
     {
-        $style = 'public/styles/style.css';
+        $style = 'styles/style.css';
         $title = 'Support';
         ob_start();
-        require 'application/views/templates/head.php';
+        require $GLOBALS['base_dir'] . 'views/templates/head.php';
         $head = ob_get_contents();
         ob_end_clean();
         return $head;
@@ -22,7 +22,7 @@ class SupportView
         $navbar = NavbarView::renderNavbar($avatar, $name);
 
         ob_start();
-        require 'application/views/templates/supportBody.php';
+        require $GLOBALS['base_dir'] . 'views/templates/supportBody.php';
         $body = ob_get_contents();
         ob_end_clean();
 
@@ -33,6 +33,6 @@ class SupportView
     {
         $head = self::renderHead();
         $body = self::renderBody($avatar, $name);
-        require 'application/views/templates/html.php';
+        require $GLOBALS['base_dir'] . 'views/templates/html.php';
     }
 }

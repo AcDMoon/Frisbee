@@ -1,16 +1,16 @@
 <?php
 
-namespace application\controllers\SignupController;
+namespace Frisbee\controllers\SignupController;
 
-use application\controllers\VerificationController\VerificationController;
-use application\views\SignupView\SignupView;
+use Frisbee\controllers\VerificationController\VerificationController;
+use Frisbee\views\SignupView\SignupView;
 
 class SignupController
 {
     private static function cookieCheck()
     {
         if (VerificationController::cookieVerification()) {
-            $domain = require 'application/config/validDomain.php';
+            $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
             header("Location: http://" . $domain['domain'] . "/Profile");
             exit();
         }
@@ -29,7 +29,7 @@ class SignupController
         $warnings = Registration::registrationProcedures($email, $password, $name, $date);
 
         if (is_null($warnings)) {
-            $domain = require 'application/config/validDomain.php';
+            $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
             header("Location: http://" . $domain['domain'] . "/EmailConfirm");
             exit();
         } else {

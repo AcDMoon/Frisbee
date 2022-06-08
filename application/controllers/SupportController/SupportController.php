@@ -1,11 +1,11 @@
 <?php
 
-namespace application\controllers\SupportController;
+namespace Frisbee\controllers\SupportController;
 
-use application\controllers\AvatarsController\AvatarsController;
-use application\controllers\VerificationController\VerificationController;
-use application\core\model\DB;
-use application\views\SupportView\SupportView;
+use Frisbee\controllers\AvatarsController\AvatarsController;
+use Frisbee\controllers\VerificationController\VerificationController;
+use Frisbee\core\model\DB;
+use Frisbee\views\SupportView\SupportView;
 
 class SupportController
 {

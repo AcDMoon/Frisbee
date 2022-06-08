@@ -1,12 +1,12 @@
 <?php
 
-namespace application\controllers\AboutUsController;
+namespace Frisbee\controllers\AboutUsController;
 
-use application\controllers\AvatarsController\AvatarsController;
-use application\controllers\Cookie\Cookie;
-use application\controllers\VerificationController\VerificationController;
-use application\core\model\DB;
-use application\views\AboutUsView\AboutUsView;
+use Frisbee\controllers\AvatarsController\AvatarsController;
+use Frisbee\controllers\Cookie\Cookie;
+use Frisbee\controllers\VerificationController\VerificationController;
+use Frisbee\core\model\DB;
+use Frisbee\views\AboutUsView\AboutUsView;
 
 class AboutUsController
 {

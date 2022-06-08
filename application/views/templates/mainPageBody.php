@@ -36,8 +36,8 @@
         </div>
 
         <div class="text-center">
-            <a href="login">
-                <button class="btn-lg btn-dark border border-white my-5 py-4 w-50" href="profile">Sign up today</button>
+            <a href="signup">
+                <button class="btn-lg btn-dark border border-white my-5 py-4 w-50" >Sign up today</button>
             </a>
 
         </div>

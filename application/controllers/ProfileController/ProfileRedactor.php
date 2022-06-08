@@ -1,8 +1,8 @@
 <?php
 
-namespace application\controllers\ProfileController;
+namespace Frisbee\controllers\ProfileController;
 
-use application\core\model\DB;
+use Frisbee\core\model\DB;
 
 class ProfileRedactor
 {
@@ -53,7 +53,7 @@ class ProfileRedactor
         self::changeName();
         self::changeDate();
         self::createGroup();
-        $domain = require 'application/config/validDomain.php';
+        $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
         header("Location: http://" . $domain['domain'] . "/profile");
     }
 }

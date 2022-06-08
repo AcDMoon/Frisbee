@@ -1,6 +1,6 @@
 <?php
 
-namespace application\core\model;
+namespace Frisbee\core\model;
 
 use PDO;
 use PDOException;
@@ -15,7 +15,7 @@ class DB
 
     private static function connect()
     {
-        $config = require 'application/config/db/db-config.php';
+        $config = require $GLOBALS['base_dir'] . 'config/db/db-config.php';
         $dsn = 'mysql:host=' . $config['host'] . ';dbname=' . $config['db_name'] . ';charset=' . $config['charset'];
         self::$connection = new PDO($dsn, $config['username'], $config['password']);
         self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

@@ -1,10 +1,10 @@
 <?php
 
-namespace application\controllers\RestorePasswordController;
+namespace Frisbee\controllers\RestorePasswordController;
 
-use application\controllers\Mailer\Mailer;
-use application\core\model\DB;
-use application\views\RestorePasswordView\RestorePasswordView;
+use Frisbee\controllers\Mailer\Mailer;
+use Frisbee\core\model\DB;
+use Frisbee\views\RestorePasswordView\RestorePasswordView;
 
 class RestorePasswordController
 {
@@ -14,7 +14,7 @@ class RestorePasswordController
             $hash = md5($email . time() . rand(100000, 999999));
             DB::setHash($email, $hash);
             $title = 'Frisbee - Restore password';
-            $domain = require 'application/config/validDomain.php';
+            $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
             $content = '<a href="http://' . $domain['domain'] . '/restore?hash=' . $hash . '">To restore, click this</a>';
             Mailer::sendMessage($email, $title, $content);
             header("Location: http://" . $domain['domain'] . "/EmailConfirm");

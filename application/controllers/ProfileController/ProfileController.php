@@ -1,11 +1,11 @@
 <?php
 
-namespace application\controllers\ProfileController;
+namespace Frisbee\controllers\ProfileController;
 
-use application\controllers\AvatarsController\AvatarsController;
-use application\controllers\VerificationController\VerificationController;
-use application\core\model\DB;
-use application\views\ProfileView\ProfileView;
+use Frisbee\controllers\AvatarsController\AvatarsController;
+use Frisbee\controllers\VerificationController\VerificationController;
+use Frisbee\core\model\DB;
+use Frisbee\views\ProfileView\ProfileView;
 
 class ProfileController
 {
@@ -23,7 +23,7 @@ class ProfileController
 
             ProfileView::renderProfilePage($avatar, $userData, $groupsName);
         } else {
-            $domain = require 'application/config/validDomain.php';
+            $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
             header("Location: http://" . $domain['domain'] . "/login");
             exit();
         }

@@ -1,13 +1,13 @@
 <?php
 
-namespace application\controllers\AvatarsController;
+namespace Frisbee\controllers\AvatarsController;
 
 
 class AvatarsController
 {
     public static function getAvatar(string $avatarType, $objectId)
     {
-        $defaultAvatars = require 'application/config/defaultAvatar.php';
+        $defaultAvatars = require $GLOBALS['base_dir'] . 'config/defaultAvatar.php';
         if ($avatarType = 'user') {
             $avatar = $defaultAvatars['defaultUserAvatar'];
             $pattern = '/^' . $objectId . '\./';

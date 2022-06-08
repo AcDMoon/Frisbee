@@ -1,9 +1,9 @@
 <?php
 
-namespace application\controllers\VerificationController;
+namespace Frisbee\controllers\VerificationController;
 
-use application\controllers\Cookie\Cookie;
-use application\core\model\DB;
+use Frisbee\controllers\Cookie\Cookie;
+use Frisbee\core\model\DB;
 
 class VerificationController
 {
@@ -13,10 +13,10 @@ class VerificationController
         if ($hashIsset) {
             DB::setVerificationTrue($hash);
             DB::deleteHash($hash);
-            $domain = require 'application/config/validDomain.php';
+            $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
             header("Location: http://" . $domain['domain'] . "/login");
         }
-        require 'application/views/templates/verificationError.html';
+        require $GLOBALS['base_dir'] . 'views/templates/verificationError.html';
     }
 
     public static function passwordVerification(string $email, string $pass): bool

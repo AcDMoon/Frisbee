@@ -1,20 +1,20 @@
 <?php
 
-namespace application\core;
+namespace Frisbee\core;
 
-use application\controllers\AboutUsController\AboutUsController;
-use application\controllers\DonationController\DonationController;
-use application\controllers\LoginController\LoginController;
-use application\controllers\MainPageController\MainPageController;
-use application\controllers\ProfileController\ProfileController;
-use application\controllers\ProfileController\ProfileRedactor;
-use application\controllers\ProfileController\UserSettingsController;
-use application\controllers\RestorePasswordController\RestorePasswordController;
-use application\controllers\SignupController\SignupController;
-use application\controllers\SupportController\SupportController;
-use application\controllers\test\test;
-use application\controllers\VerificationController\VerificationController;
-use application\core\model\DB;
+use Frisbee\controllers\AboutUsController\AboutUsController;
+use Frisbee\controllers\DonationController\DonationController;
+use Frisbee\controllers\LoginController\LoginController;
+use Frisbee\controllers\MainPageController\MainPageController;
+use Frisbee\controllers\ProfileController\ProfileController;
+use Frisbee\controllers\ProfileController\ProfileRedactor;
+use Frisbee\controllers\ProfileController\UserSettingsController;
+use Frisbee\controllers\RestorePasswordController\RestorePasswordController;
+use Frisbee\controllers\SignupController\SignupController;
+use Frisbee\controllers\SupportController\SupportController;
+use Frisbee\controllers\test\test;
+use Frisbee\controllers\VerificationController\VerificationController;
+use Frisbee\core\model\DB;
 
 class Router
 {
@@ -96,18 +96,18 @@ Router::route('/Profile(/{0,1})', function () {
 });
 
 Router::route('/Group(/{0,1})', function () {
-    require "application/views/group-page/group-page.php";
+    require $GLOBALS['base_dir'] . 'views/group-page/group-page.php';
 });
 
 Router::route('/EmailConfirm(/{0,1})', function () {
-    require "application/views/templates/emailConfirm.php";
+    require $GLOBALS['base_dir'] . 'views/templates/emailConfirm.php';
 });
 
 Router::route('/confirm(/{0,1})', function () {
     if (isset($_GET['hash'])) {
         VerificationController::emailVerification($_GET['hash']);
     } else {
-        require 'application/views/templates/emailConfirmError.html';
+        require $GLOBALS['base_dir'] . 'views/templates/emailConfirmError.html';
     }
 });
 
@@ -158,5 +158,5 @@ Router::route('/deleteMe(/{0,1})', function () {
 
 
 Router::route('/test(/{0,1})', function () {
-    require 'application/core/model/test.php';
+    require $GLOBALS['base_dir'] . 'core/model/test.php';
 });

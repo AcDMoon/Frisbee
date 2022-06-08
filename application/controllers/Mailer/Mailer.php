@@ -1,17 +1,17 @@
 <?php
 
-namespace application\controllers\Mailer;
+namespace Frisbee\controllers\Mailer;
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-require "application/lib/PHPMailer-master/src/PHPMailer.php";
-require 'application/lib/PHPMailer-master/src/SMTP.php';
+require $GLOBALS['base_dir'] . 'lib/PHPMailer-master/src/PHPMailer.php';
+require $GLOBALS['base_dir'] . 'lib/PHPMailer-master/src/SMTP.php';
 
 class Mailer
 {
     public static function sendMessage($email, $title, $content)
     {
-        $mailerConfig = require 'application/config/mailer.php';
+        $mailerConfig = require $GLOBALS['base_dir'] . 'config/mailer.php';
         $mail = new PHPMailer();
         $mail->CharSet = 'UTF-8';
         $mail->Encoding   = '8bit';

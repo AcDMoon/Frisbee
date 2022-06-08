@@ -1,6 +1,6 @@
 <?php
 
-namespace application\views\LoginView;
+namespace Frisbee\views\LoginView;
 
 
 
@@ -8,10 +8,10 @@ class LoginView
 {
     private static function renderHead()
     {
-        $style = 'public/styles/sign-up.css';
+        $style = 'styles/sign-up.css';
         $title = 'Log In';
         ob_start();
-        require 'application/views/templates/head.php';
+        require $GLOBALS['base_dir'] . 'views/templates/head.php';
         $head = ob_get_contents();
         ob_end_clean();
         return $head;
@@ -21,7 +21,7 @@ class LoginView
     {
 
         ob_start();
-        require 'application/views/templates/loginBody.php';
+        require $GLOBALS['base_dir'] . 'views/templates/loginBody.php';
         $body = ob_get_contents();
         ob_end_clean();
         return $body;
@@ -31,6 +31,6 @@ class LoginView
     {
         $head = self::renderHead();
         $body = self::renderBody($warnings, $destination);
-        require 'application/views/templates/html.php';
+        require $GLOBALS['base_dir'] . 'views/templates/html.php';
     }
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace application\controllers\Cookie;
+namespace Frisbee\controllers\Cookie;
 
 class Cookie
 {
     public static function setCookie(string $email, string $password)
     {
-        $domain = require 'application/config/validDomain.php';
+        $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
         setcookie(
             'email',
             $email,

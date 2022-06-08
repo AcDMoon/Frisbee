@@ -1,17 +1,17 @@
 <?php
 
-namespace application\views\ProfileView;
+namespace Frisbee\views\ProfileView;
 
-use application\views\NavbarView\NavbarView;
+use Frisbee\views\NavbarView\NavbarView;
 
 class ProfileView
 {
     private static function renderHead()
     {
-        $style = 'public/styles/style.css';
+        $style = 'styles/style.css';
         $title = 'Profile';
         ob_start();
-        require 'application/views/templates/head.php';
+        require $GLOBALS['base_dir'] . 'views/templates/head.php';
         $head = ob_get_contents();
         ob_end_clean();
         return $head;
@@ -24,14 +24,14 @@ class ProfileView
 
         ob_start();
         foreach ($groupsName as $item) {
-            require 'application/views/templates/profileGroups.php';
+            require $GLOBALS['base_dir'] . 'views/templates/profileGroups.php';
         }
         $groups = ob_get_contents();
         ob_end_clean();
 
 
         ob_start();
-        require 'application/views/templates/profileBody.php';
+        require $GLOBALS['base_dir'] . 'views/templates/profileBody.php';
         $body = ob_get_contents();
         ob_end_clean();
 
@@ -42,6 +42,6 @@ class ProfileView
     {
         $head = self::renderHead();
         $body = self::renderBody($avatar, $data, $groupsName);
-        require 'application/views/templates/html.php';
+        require $GLOBALS['base_dir'] . 'views/templates/html.php';
     }
 }

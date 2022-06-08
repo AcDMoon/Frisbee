@@ -1,17 +1,17 @@
 <?php
 
-namespace application\views\DonationView;
+namespace Frisbee\views\DonationView;
 
-use application\views\NavbarView\NavbarView;
+use Frisbee\views\NavbarView\NavbarView;
 
 class DonationView
 {
     private static function renderHead()
     {
-        $style = 'public/styles/style.css';
+        $style = 'styles/style.css';
         $title = 'Donation';
         ob_start();
-        require 'application/views/templates/head.php';
+        require $GLOBALS['base_dir'] . 'views/templates/head.php';
         $head = ob_get_contents();
         ob_end_clean();
         return $head;
@@ -22,7 +22,7 @@ class DonationView
         $navbar = NavbarView::renderNavbar($avatar, $name);
 
         ob_start();
-        require 'application/views/templates/donationBody.php';
+        require $GLOBALS['base_dir'] . 'views/templates/donationBody.php';
         $body = ob_get_contents();
         ob_end_clean();
 
@@ -33,6 +33,6 @@ class DonationView
     {
         $head = self::renderHead();
         $body = self::renderBody($avatar, $name);
-        require 'application/views/templates/html.php';
+        require $GLOBALS['base_dir'] . 'views/templates/html.php';
     }
 }

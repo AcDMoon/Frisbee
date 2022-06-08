@@ -1,8 +1,8 @@
 <?php
-namespace application\controllers\LoginController;
+namespace Frisbee\controllers\LoginController;
 
-use application\controllers\VerificationController\VerificationController;
-use application\core\model\DB;
+use Frisbee\controllers\VerificationController\VerificationController;
+use Frisbee\core\model\DB;
 
 
 class Authorization
