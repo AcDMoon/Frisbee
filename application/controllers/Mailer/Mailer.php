@@ -2,8 +2,10 @@
 
 namespace Frisbee\controllers\Mailer;
 
+use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use PHPMailer\PHPMailer\PHPMailer;
 
+require $GLOBALS['base_dir'] . 'lib/PHPMailer-master/src/Exception.php';
 require $GLOBALS['base_dir'] . 'lib/PHPMailer-master/src/PHPMailer.php';
 require $GLOBALS['base_dir'] . 'lib/PHPMailer-master/src/SMTP.php';
 
@@ -11,7 +13,7 @@ class Mailer
 {
     public static function sendMessage($email, $title, $content)
     {
-        $mailerConfig = require $GLOBALS['base_dir'] . 'config/mailer.php';
+        $mailerConfig = IncludeOrRequireMethods::requireConfig('mailer.php');
         $mail = new PHPMailer();
         $mail->CharSet = 'UTF-8';
         $mail->Encoding   = '8bit';
@@ -32,3 +34,4 @@ class Mailer
         $mail->send();
     }
 }
+

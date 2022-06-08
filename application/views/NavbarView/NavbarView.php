@@ -2,26 +2,21 @@
 
 namespace Frisbee\views\NavbarView;
 
+use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+
 class NavbarView
 {
     public static function renderNavbar(string $avatar, string $name)
     {
         if ($name) {
-            ob_start();
-            require $GLOBALS['base_dir'] . 'views/templates/reg-navbar.php';
-            $navbarUserPart = ob_get_contents();
-            ob_end_clean();
+            $data = compact('avatar', 'name');
+            $navbarUserPart = IncludeOrRequireMethods::requireTemplate('reg-navbar.php', $data);
         } else {
-            ob_start();
-            require $GLOBALS['base_dir'] . 'views/templates/unreg-navbar.php';
-            $navbarUserPart = ob_get_contents();
-            ob_end_clean();
+            $data = compact('avatar', 'name');
+            $navbarUserPart = IncludeOrRequireMethods::requireTemplate('unreg-navbar.php', $data);
         }
-        ob_start();
-        require $GLOBALS['base_dir'] . 'views/templates/navbar.php';
-        $navbar = ob_get_contents();
-        ob_end_clean();
-
+        $data = compact('navbarUserPart');
+        $navbar = IncludeOrRequireMethods::requireTemplate('navbar.php', $data);
         return $navbar;
     }
 }

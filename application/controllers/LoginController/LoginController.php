@@ -3,6 +3,7 @@
 namespace Frisbee\controllers\LoginController;
 
 use Frisbee\controllers\Cookie\Cookie;
+use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\controllers\VerificationController\VerificationController;
 use Frisbee\views\LoginView\LoginView;
 
@@ -15,11 +16,11 @@ class LoginController
             Cookie::setCookie($email, $password);
 
             if ($destination) {
-                $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
+                $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
                 header("Location: http://" . $domain['domain'] . "/" . $destination);
                 exit();
             }
-            $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
+            $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
             header("Location: http://" . $domain['domain'] . "/Profile");
             exit();
         } else {
@@ -39,12 +40,11 @@ class LoginController
     private static function cookieIsset(string $destination)
     {
         if (VerificationController::cookieVerification()) {
+            $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
             if (!$destination) {
-                $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
                 header("Location: http://" . $domain['domain'] . "/Profile");
                 exit();
             } else {
-                $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
                 header("Location: http://" . $domain['domain'] . "/" . $destination);
                 exit();
             }
@@ -60,7 +60,7 @@ class LoginController
     public static function logout()
     {
         Cookie::purgeCookie();
-        $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
+        $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
         header("Location: http://" . $domain['domain'] . "/login");
         exit();
     }

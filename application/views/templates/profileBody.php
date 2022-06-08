@@ -65,7 +65,7 @@
                 <h5 class="modal-title m-0 p-0 ms-2 pt-2" id="changeDataLabel">Change Full Name</h5>
 
                 <div class="modal-body row justify-content-center form-floating ">
-                    <input type="text" class="form-control ms-1 p-0 ps-2" name="name" id="name" placeholder="name" value="<?=$FullName?>">
+                    <input type="text" class="form-control ms-1 p-0 ps-2" name="name" id="name" placeholder="name" value="<?=$name?>">
                 </div>
 
                 <ul id="nameErrors">
@@ -74,7 +74,7 @@
                 <h5 class="modal-title m-0 p-0 ms-2 pt-2" id="changeDataLabel">Change Date of Birth</h5>
 
                 <div class="modal-body row justify-content-center form-floating ">
-                    <input type="date" class="form-control ms-1 p-0 ps-2" name="date" id="date" placeholder="date" value="<?=$DateOfBirth?>">
+                    <input type="date" class="form-control ms-1 p-0 ps-2" name="date" id="date" placeholder="date" value="<?=$date?>">
                 </div>
 
                 <ul id="dateErrors">
@@ -104,7 +104,7 @@
 
 
                     <div class="col-5 text-center p-0 mx-2">
-                        <img class="img-fluid border border-dark avatar d-block mx-auto" src="<?=$avatar?>" alt="">
+                        <img class="img-fluid border border-dark avatar d-block mx-auto" src="<?=$avatar?>" alt="X_X">
                         <button class="btn btn-outline-primary my-1 w-100 profile_info" data-bs-toggle="modal" data-bs-target="#downloadAvatar">set image</button>
                     </div>
 
@@ -117,19 +117,19 @@
 
                         </div>
 
-                        <?php if (!isset($FullName)) {
-                            $FullName = '';
+                        <?php if (!isset($name)) {
+                            $name = '';
                         } ?>
                         <div class="mb-3 ps-1">
-                            <p class="bg-light p-1 mb-0 border border-dark" id="primalName">Full name: <?=$FullName?></p>
+                            <p class="bg-light p-1 mb-0 border border-dark" id="primalName">Full name: <?=$name?></p>
 
                         </div>
 
-                        <?php if (!isset($DateOfBirth)) {
-                            $DateOfBirth = '';
+                        <?php if (!isset($date)) {
+                            $date = '';
                         } ?>
                         <div class="mb-3 ps-1">
-                            <p class=" bg-light p-1 mb-0 border border-dark" id="primalDate">Date of birth: <?=$DateOfBirth?></p>
+                            <p class=" bg-light p-1 mb-0 border border-dark" id="primalDate">Date of birth: <?=$date?></p>
 
                         </div>
 
@@ -155,7 +155,7 @@
                     <?=$groups?>
 
                     <button class="row justify-content-center col-12 col-sm-9 col-md-7 col-lg-5 bg-light radius mx-4 mb-4" data-bs-toggle="modal" data-bs-target="#createGroup">
-                        <img class="p-1 img-fluid col-3 my-auto" src="/public/images/plus.webp">
+                        <img class="p-1 img-fluid col-3 my-auto" src="/images/plus.webp">
                         <p class="col fw-bold fs-6 no_wrap my-auto pe-0">Create new group</p>
                     </button>
 
@@ -231,5 +231,5 @@
 
 
 </main>
-<script src="/public/scripts/profileScript.js"></script>
+<script src="/scripts/profileScript.js"></script>
 </body>

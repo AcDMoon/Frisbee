@@ -8,13 +8,11 @@ use Frisbee\controllers\LoginController\LoginController;
 use Frisbee\controllers\MainPageController\MainPageController;
 use Frisbee\controllers\ProfileController\ProfileController;
 use Frisbee\controllers\ProfileController\ProfileRedactor;
-use Frisbee\controllers\ProfileController\UserSettingsController;
 use Frisbee\controllers\RestorePasswordController\RestorePasswordController;
 use Frisbee\controllers\SignupController\SignupController;
 use Frisbee\controllers\SupportController\SupportController;
-use Frisbee\controllers\test\test;
 use Frisbee\controllers\VerificationController\VerificationController;
-use Frisbee\core\model\DB;
+use Frisbee\models\User\User;
 
 class Router
 {
@@ -150,10 +148,12 @@ Router::route('/logout(/{0,1})', function () {
 
 Router::route('/deleteMe(/{0,1})', function () {
     if (isset($_GET['email'])) {
-        $userId = DB::getUserObject($_GET['email'], ['UserID'])['UserID'];
-        DB::deleteUser($userId);
-    }
+        $user = new User(['email' => $_GET['email']]);
+        $userId = $user->getInfo(['userId'])[0];
 
+        $user = new User(['userId' => $userId]);
+        $user->deleteObject();
+    }
 });
 
 

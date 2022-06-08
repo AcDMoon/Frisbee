@@ -4,26 +4,23 @@ namespace Frisbee\views\LoginView;
 
 
 
+use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+
 class LoginView
 {
     private static function renderHead()
     {
         $style = 'styles/sign-up.css';
         $title = 'Log In';
-        ob_start();
-        require $GLOBALS['base_dir'] . 'views/templates/head.php';
-        $head = ob_get_contents();
-        ob_end_clean();
+        $data = compact('style', 'title');
+        $head = IncludeOrRequireMethods::requireTemplate('head.php', $data);
         return $head;
     }
 
     private static function renderBody(array $warnings, string $destination)
     {
-
-        ob_start();
-        require $GLOBALS['base_dir'] . 'views/templates/loginBody.php';
-        $body = ob_get_contents();
-        ob_end_clean();
+        $data = compact('warnings', 'destination');
+        $body = IncludeOrRequireMethods::requireTemplate('loginBody.php', $data);
         return $body;
     }
 
@@ -31,6 +28,7 @@ class LoginView
     {
         $head = self::renderHead();
         $body = self::renderBody($warnings, $destination);
-        require $GLOBALS['base_dir'] . 'views/templates/html.php';
+        $data = compact('body', 'head', 'warnings', 'destination');
+        IncludeOrRequireMethods::requireTemplate('html.php', $data, false);
     }
 }

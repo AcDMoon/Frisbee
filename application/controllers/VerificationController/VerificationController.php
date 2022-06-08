@@ -3,17 +3,21 @@
 namespace Frisbee\controllers\VerificationController;
 
 use Frisbee\controllers\Cookie\Cookie;
-use Frisbee\core\model\DB;
+use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\models\User\User;
 
 class VerificationController
 {
     public static function emailVerification($hash)
     {
-        $hashIsset = DB::hashIsset($hash);
+        $user = new User(['hash' => $hash]);
+        $userInfo = $user->getInfo(['hash','userId']);
+        $hashIsset = $userInfo[0];
+        $userId = $userInfo[1];
         if ($hashIsset) {
-            DB::setVerificationTrue($hash);
-            DB::deleteHash($hash);
-            $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
+            $user = new User(['userId' => $userId, 'verification' => '1', 'hash' => '']);
+            $user->updateObject();
+            $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
             header("Location: http://" . $domain['domain'] . "/login");
         }
         require $GLOBALS['base_dir'] . 'views/templates/verificationError.html';
@@ -21,9 +25,13 @@ class VerificationController
 
     public static function passwordVerification(string $email, string $pass): bool
     {
-        $object = ['Password'];
-        $data = DB::getUserObject($email, $object);
-        if (password_verify($data['Password'], $pass) or $pass === $data['Password']) {
+        $user = new User(['email' => $email]);
+        $userInfo = $user->getInfo(['password']);
+        $userPassword = '';
+        if ($userInfo) {
+            $userPassword = $userInfo[0];
+        }
+        if (password_verify($userPassword, $pass) or $pass === $userPassword) {
             return true;
         }
         return false;
@@ -45,13 +53,15 @@ class VerificationController
 
     private static function cookieIsCorrect(string $cookieEmail, string $cookiePassword): bool
     {
-        if (!DB::emailIsset($cookieEmail)) {
+        $user = new User(['email' => $cookieEmail]);
+        $userInfo = $user->getInfo(['verification']);
+        if (!$userInfo or  0 == $userInfo[0]) {
             return false;
         }
+
         if (!self::passwordVerification($cookieEmail, $cookiePassword)) {
             return false;
         }
         return true;
     }
-
 }

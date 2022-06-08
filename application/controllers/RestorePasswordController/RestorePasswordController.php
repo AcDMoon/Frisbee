@@ -2,19 +2,23 @@
 
 namespace Frisbee\controllers\RestorePasswordController;
 
+use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\controllers\Mailer\Mailer;
-use Frisbee\core\model\DB;
+use Frisbee\models\User\User;
 use Frisbee\views\RestorePasswordView\RestorePasswordView;
 
 class RestorePasswordController
 {
     private static function mailCheckProcedure($email)
     {
-        if (DB::emailIsset($email)) {
+        $user = new User(['email' => $email]);
+        $verification = $user-> getInfo(['verification'])[0];
+        if ($verification) {
             $hash = md5($email . time() . rand(100000, 999999));
-            DB::setHash($email, $hash);
+            $user = new User(['email' => $email, 'hash' => $hash]);
+            $user->updateObject();
             $title = 'Frisbee - Restore password';
-            $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
+            $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
             $content = '<a href="http://' . $domain['domain'] . '/restore?hash=' . $hash . '">To restore, click this</a>';
             Mailer::sendMessage($email, $title, $content);
             header("Location: http://" . $domain['domain'] . "/EmailConfirm");
@@ -28,12 +32,14 @@ class RestorePasswordController
 
     private static function hashIsCorrect($hash)
     {
-        $emailFromHash = DB::getEmailFromHash($hash);
-        if ($emailFromHash) {
-            DB::deleteHash($hash);
-            RestorePasswordView::renderRestorePage(['emailFromHash' => $emailFromHash]);
+        $user = new User(['hash' => $hash]);
+        $userEmail = $user->getInfo(['email'])[0];
+        if ($userEmail) {
+            $user = new User(['hash' => '']);
+            $user->updateObject();
+            RestorePasswordView::renderRestorePage(['emailFromHash' => $userEmail]);
         } else {
-            $domain = require 'application/config/validDomain.php';
+            $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
             header("Location: http://" . $domain['domain'] . "/restore");
         }
     }
@@ -41,8 +47,9 @@ class RestorePasswordController
 
     private static function passwordReset($emailFromHash, $password)
     {
-        DB::resetUserPassword($emailFromHash, $password);
-        $domain = require 'application/config/validDomain.php';
+        $user = new User(['email' => $emailFromHash, 'password' => $password]);
+        $user->updateObject();
+        $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
         header("Location: http://" . $domain['domain'] . "/login");
     }
 

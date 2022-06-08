@@ -19,11 +19,17 @@ class newDB
     }
 
 
-    private static function execute($query, $param)
+    private static function execute($query, $param ='')
     {
         self::connect();
         try {
             $stmt = self::$connection->prepare($query);
+
+            if ('' === $param) {
+                $stmt->execute();
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+
             $stmt->execute($param);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
@@ -50,6 +56,11 @@ class newDB
 
     private static function get($table, $attribute, $value)
     {
+        if ('' === $attribute) {
+            $query = "SELECT * FROM $table";
+            $receivedData = self::execute($query);
+            return $receivedData;
+        }
         $whereValue = ':' . $attribute;
         $query = "SELECT * FROM $table WHERE $attribute = $whereValue";
         $param = [$attribute => $value];
@@ -101,6 +112,10 @@ class newDB
         }
 
         if ('get' === $method) {
+            if (!isset($attribute)) {
+                $attribute = '';
+                $value = '';
+            }
             $receivedData = self::get($tableName, $attribute, $value);
             return $receivedData;
         }

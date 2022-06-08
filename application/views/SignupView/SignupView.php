@@ -2,26 +2,23 @@
 
 namespace Frisbee\views\SignupView;
 
+use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+
 class SignupView
 {
     private static function renderHead()
     {
         $style = 'styles/sign-up.css';
         $title = 'Sign Up';
-        ob_start();
-        require $GLOBALS['base_dir'] . 'views/templates/head.php';
-        $head = ob_get_contents();
-        ob_end_clean();
+        $data = compact('style', 'title');
+        $head = IncludeOrRequireMethods::requireTemplate('head.php', $data);
         return $head;
     }
 
     private static function renderBody(array $warnings)
     {
-
-        ob_start();
-        require $GLOBALS['base_dir'] . 'views/templates/signupBody.php';
-        $body = ob_get_contents();
-        ob_end_clean();
+        $data = compact('warnings');
+        $body = IncludeOrRequireMethods::requireTemplate('signupBody.php', $data);
         return $body;
     }
 
@@ -29,6 +26,7 @@ class SignupView
     {
         $head = self::renderHead();
         $body = self::renderBody($warnings);
-        require $GLOBALS['base_dir'] . 'views/templates/html.php';
+        $data = compact('body', 'head');
+        IncludeOrRequireMethods::requireTemplate('html.php', $data, false);
     }
 }

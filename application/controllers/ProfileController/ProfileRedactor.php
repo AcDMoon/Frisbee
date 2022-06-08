@@ -2,21 +2,40 @@
 
 namespace Frisbee\controllers\ProfileController;
 
+use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\core\model\DB;
+use Frisbee\models\EmailGroupTaglist\EmailGroupTaglist;
+use Frisbee\models\Groupss\Groupss;
+use Frisbee\models\User\User;
 
 class ProfileRedactor
 {
     private static $data = [];
+
+
+    private static function deleteAvatar($id)
+    {
+        $pattern = '/^' . $id . '\./';
+        $avatarsDirectory = 'profileAvatars/';
+        foreach (scandir($avatarsDirectory) as $item => $value) {
+            if (preg_match($pattern, $value)) {
+                unlink($avatarsDirectory . $value);
+            }
+        }
+    }
 
     private static function changeAvatar()
     {
         if (!isset(self::$data['avatar'])) {
             return;
         }
-        $id = DB::getUserObject(self::$data['primalEmail'], ['UserID'])['UserID'];
+        $user = new User(['email' => self::$data['primalEmail']]);
+        $userInfo = $user->getInfo(['userId']);
+        $id = $userInfo[0];
         $imageType = explode('/', self::$data['avatar']['type'])[1];
         $newName = $id . '.' . $imageType;
-        copy($_FILES['avatar']['tmp_name'], 'application/lib/profileAvatars/' . $newName);
+        self::deleteAvatar($id);
+        copy($_FILES['avatar']['tmp_name'], 'profileAvatars/' . $newName);
     }
 
     private static function changeName()
@@ -24,7 +43,8 @@ class ProfileRedactor
         if (!isset(self::$data['name'])) {
             return;
         }
-        DB::resetUserName(self::$data['primalEmail'], self::$data['name']);
+        $user = new User(['email' => self::$data['primalEmail'], 'name' => self::$data['name']]);
+        $user->updateObject();
     }
 
     private static function changeDate()
@@ -32,7 +52,8 @@ class ProfileRedactor
         if (!isset(self::$data['date'])) {
             return;
         }
-        DB::resetUserDate(self::$data['primalEmail'], self::$data['date']);
+        $user = new User(['email' => self::$data['primalEmail'], 'date' => self::$data['date']]);
+        $user->updateObject();
     }
 
     private static function createGroup()
@@ -40,7 +61,18 @@ class ProfileRedactor
         if (!isset(self::$data['newGroup'])) {
             return;
         }
-        DB::createGroup(self::$data['primalEmail'], self::$data['newGroup']);
+        date_default_timezone_set('America/Los_Angeles');
+        $date = date('Y-m-d', time());
+        $group = new Groupss(['owners' => self::$data['primalEmail'], 'groupName' => self::$data['newGroup'], 'dateOfCreate' => $date]);
+        $group->addInfo();
+
+        $groupId = DB::getLastId();
+
+        $user = new User(['email' => self::$data['primalEmail']]);
+        $userId = $user->getInfo(['userId'])[0];
+
+        $emailGroupTaglist = new EmailGroupTaglist(['userId' => $userId, 'groupId' => $groupId]);
+        $emailGroupTaglist->addInfo();
     }
 
     public static function redactProfile(string $primalEmail, array $newData)
@@ -53,7 +85,7 @@ class ProfileRedactor
         self::changeName();
         self::changeDate();
         self::createGroup();
-        $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
+        $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
         header("Location: http://" . $domain['domain'] . "/profile");
     }
 }

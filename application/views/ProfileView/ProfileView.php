@@ -2,6 +2,7 @@
 
 namespace Frisbee\views\ProfileView;
 
+use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\views\NavbarView\NavbarView;
 
 class ProfileView
@@ -10,31 +11,28 @@ class ProfileView
     {
         $style = 'styles/style.css';
         $title = 'Profile';
-        ob_start();
-        require $GLOBALS['base_dir'] . 'views/templates/head.php';
-        $head = ob_get_contents();
-        ob_end_clean();
+        $data = compact('style', 'title');
+        $head = IncludeOrRequireMethods::requireTemplate('head.php', $data);
         return $head;
     }
 
     private static function renderBody(string $avatar, array $data, array $groupsName)
     {
         extract($data);
-        $navbar = NavbarView::renderNavbar($avatar, $FullName);
+        $navbar = NavbarView::renderNavbar($avatar, $name);
+
+
 
         ob_start();
         foreach ($groupsName as $item) {
-            require $GLOBALS['base_dir'] . 'views/templates/profileGroups.php';
+            $data = compact('item');
+            IncludeOrRequireMethods::requireTemplate('profileGroups.php', $data, false);
         }
         $groups = ob_get_contents();
         ob_end_clean();
 
-
-        ob_start();
-        require $GLOBALS['base_dir'] . 'views/templates/profileBody.php';
-        $body = ob_get_contents();
-        ob_end_clean();
-
+        $data = compact('avatar', 'name', 'navbar', 'date', 'groups', 'email');
+        $body = IncludeOrRequireMethods::requireTemplate('profileBody.php', $data);
         return $body;
     }
 
@@ -42,6 +40,7 @@ class ProfileView
     {
         $head = self::renderHead();
         $body = self::renderBody($avatar, $data, $groupsName);
-        require $GLOBALS['base_dir'] . 'views/templates/html.php';
+        $data = compact('body', 'head');
+        IncludeOrRequireMethods::requireTemplate('html.php', $data, false);
     }
 }

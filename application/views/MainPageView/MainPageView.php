@@ -2,6 +2,8 @@
 
 namespace Frisbee\views\MainPageView;
 
+
+use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\views\NavbarView\NavbarView;
 
 class MainPageView
@@ -10,22 +12,16 @@ class MainPageView
     {
         $style = 'styles/style.css';
         $title = 'Main Page';
-        ob_start();
-        require $GLOBALS['base_dir'] . 'views/templates/head.php';
-        $head = ob_get_contents();
-        ob_end_clean();
+        $data = compact('style', 'title');
+        $head = IncludeOrRequireMethods::requireTemplate('head.php', $data);
         return $head;
     }
 
     private static function renderBody(string $avatar, string $name)
     {
         $navbar = NavbarView::renderNavbar($avatar, $name);
-
-        ob_start();
-        require $GLOBALS['base_dir'] . 'views/templates/mainPageBody.php';
-        $body = ob_get_contents();
-        ob_end_clean();
-
+        $data = compact('avatar', 'name', 'navbar');
+        $body = IncludeOrRequireMethods::requireTemplate('mainPageBody.php', $data);
         return $body;
     }
 
@@ -33,6 +29,7 @@ class MainPageView
     {
         $head = self::renderHead();
         $body = self::renderBody($avatar, $name);
-        require $GLOBALS['base_dir'] . 'views/templates/html.php';
+        $data = compact('avatar', 'name', 'body', 'head');
+        IncludeOrRequireMethods::requireTemplate('html.php', $data, false);
     }
 }

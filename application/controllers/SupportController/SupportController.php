@@ -4,7 +4,7 @@ namespace Frisbee\controllers\SupportController;
 
 use Frisbee\controllers\AvatarsController\AvatarsController;
 use Frisbee\controllers\VerificationController\VerificationController;
-use Frisbee\core\model\DB;
+use Frisbee\models\User\User;
 use Frisbee\views\SupportView\SupportView;
 
 class SupportController
@@ -14,9 +14,11 @@ class SupportController
         $avatar = '';
         $name = '';
         if (VerificationController::cookieVerification()) {
-            $userId = DB::getUserObject($_COOKIE['email'], ['UserID'])['UserID'];
+            $user = new User(['email' => $_COOKIE['email']]);
+            $userInfo = $user->getInfo(['userId','name']);
+            $userId = $userInfo[0];
             $avatar = AvatarsController::getAvatar('user', $userId);
-            $name = DB::getUserObject($_COOKIE['email'], ['FullName'])['FullName'];
+            $name = $userInfo[1];
         }
         SupportView::renderSupportPage($avatar, $name);
     }

@@ -2,11 +2,13 @@
 
 namespace Frisbee\controllers\Cookie;
 
+use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+
 class Cookie
 {
     public static function setCookie(string $email, string $password)
     {
-        $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
+        $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
         setcookie(
             'email',
             $email,

@@ -2,23 +2,24 @@
 
 namespace Frisbee\views\RestorePasswordView;
 
+use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+
 class RestorePasswordView
 {
     public static function renderRestorePage($data = [])
     {
         $head = self::renderHead();
         $body = self::renderBody($data);
-        require $GLOBALS['base_dir'] . 'views/templates/html.php';
+        $data = compact('body', 'head');
+        IncludeOrRequireMethods::requireTemplate('html.php', $data, false);
     }
 
     private static function renderHead()
     {
         $style = 'styles/sign-up.css';
         $title = 'Restore Password';
-        ob_start();
-        require $GLOBALS['base_dir'] . 'views/templates/head.php';
-        $head = ob_get_contents();
-        ob_end_clean();
+        $data = compact('style', 'title');
+        $head = IncludeOrRequireMethods::requireTemplate('head.php', $data);
         return $head;
     }
 
@@ -26,16 +27,12 @@ class RestorePasswordView
     private static function renderBody($data)
     {
         if (isset($data['emailFromHash'])) {
-            ob_start();
-            require $GLOBALS['base_dir'] . 'views/templates/restorePasswordBody(passwordForm).php';
-            $body = ob_get_contents();
-            ob_end_clean();
+            $data = compact('data');
+            $body = IncludeOrRequireMethods::requireTemplate('restorePasswordBody(passwordForm).php', $data);
             return $body;
         }
-        ob_start();
-        require $GLOBALS['base_dir'] . 'views/templates/restorePasswordBody(emailForm).php';
-        $body = ob_get_contents();
-        ob_end_clean();
+        $data = compact('data');
+        $body = IncludeOrRequireMethods::requireTemplate('restorePasswordBody(emailForm).php', $data);
         return $body;
     }
 }

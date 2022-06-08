@@ -3,9 +3,8 @@
 namespace Frisbee\controllers\AboutUsController;
 
 use Frisbee\controllers\AvatarsController\AvatarsController;
-use Frisbee\controllers\Cookie\Cookie;
 use Frisbee\controllers\VerificationController\VerificationController;
-use Frisbee\core\model\DB;
+use Frisbee\models\User\User;
 use Frisbee\views\AboutUsView\AboutUsView;
 
 class AboutUsController
@@ -15,11 +14,12 @@ class AboutUsController
         $avatar = '';
         $name = '';
         if (VerificationController::cookieVerification()) {
-            $userId = DB::getUserObject($_COOKIE['email'], ['UserID'])['UserID'];
+            $users = new User(['email' => $_COOKIE['email']]);
+            $userInfo = $users->getInfo(['userId', 'name']);
+            $userId = $userInfo[0];
             $avatar = AvatarsController::getAvatar('user', $userId);
-            $name = DB::getUserObject($_COOKIE['email'], ['FullName'])['FullName'];
+            $name = $userInfo[1];
         }
-
         AboutUsView::renderAboutUsPage($avatar, $name);
     }
 }

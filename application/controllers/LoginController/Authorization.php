@@ -1,9 +1,9 @@
 <?php
+
 namespace Frisbee\controllers\LoginController;
 
 use Frisbee\controllers\VerificationController\VerificationController;
-use Frisbee\core\model\DB;
-
+use Frisbee\models\User\User;
 
 class Authorization
 {
@@ -13,10 +13,10 @@ class Authorization
     private static function emptyCheck(string $email, string $password)
     {
         if ('' === $email) {
-            self::$errors['email_error'] = 'Это поле обязательно для заполнения';
+            self::$errors['email_error'] = 'This field is required';
         }
         if ('' === $password) {
-            self::$errors['password_error'] = 'Это поле обязательно для заполнения';
+            self::$errors['password_error'] = 'This field is required';
         }
     }
 
@@ -31,16 +31,17 @@ class Authorization
             return self::$errors;
         }
 
-        $result = DB::emailIsset($email);
+        $user = new User(['email' => $email]);
+        $userVerification = $user->getInfo(['verification']);
 
-        if (!$result) {
-            self::$errors['email_error'] = 'Такого пользователя не существует!';
+        if (!$userVerification) {
+            self::$errors['email_error'] = 'This user does not exist!';
             return self::$errors;
         }
 
         $match = VerificationController::passwordVerification($email, $password);
         if (!$match) {
-            self::$errors['password_error'] = 'Неверный пароль';
+            self::$errors['password_error'] = 'Invalid password';
             return self::$errors;
         } else {
             return null;
