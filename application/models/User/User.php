@@ -1,8 +1,8 @@
 <?php
 
-namespace application\models\User;
+namespace Frisbee\models\User;
 
-use application\core\model\newDB;
+use Frisbee\core\model\newDB;
 
 class User
 {
@@ -14,36 +14,50 @@ class User
     public string $date;
     public string $hash;
     public bool $verification;
+    private array $uniqueFields = ['userId', 'email', 'hash'];
 
-    function __construct($data){
+    public function __construct($data)
+    {
         foreach ($data as $field => $value) {
             $this->$field = $value;
         }
     }
 
 
-    public function getInfo(array $attributes)
+    public function getInfo(array $attributes = []): array
     {
-        $user = newDB::request('get', $this);
-        $info = [];
-        foreach ($attributes as $attribute) {
-            $info[$attribute] = $user->$attribute;
+        $receivedData = newDB::request('get', $this); //массивы с данными объекта
+        if ([] === $attributes) {
+            return $receivedData;
         }
-        return $info;
+        $objectsInfo = [];
+        foreach ($receivedData as $object) {
+            $objectInfo = [];
+            foreach ($attributes as $attribute) {
+                $objectInfo[] = $object[$attribute];
+            }
+            $objectsInfo[] = $objectInfo;
+        }
+        return $objectsInfo;
     }
 
 
     public function deleteObject()
     {
-        $success = newDB::request('delete', $this);
-        return $success;
+        newDB::request('delete', $this);
     }
 
 
     public function updateObject()
     {
-        $success = newDB::request('update', $this);
-        return $success;
+        $keyFiled = '';
+        foreach ($this->uniqueFields as $uniqueField) {
+            if (isset($this->$uniqueField)) {
+                $keyFiled = $uniqueField;
+                break;
+            }
+        }
+        newDB::request('update', $this, $keyFiled);
     }
 
 
@@ -52,4 +66,3 @@ class User
         newDB::request('add', $this);
     }
 }
-
