@@ -56,33 +56,11 @@ Router::route('/Donation(/{0,1})', function () {
 });
 
 Router::route('/SignUp(/{0,1})', function () {
-
-    $email = $_POST['email'] ?? '';
-
-    $password = $_POST['password'] ?? '';
-
-    $name = $_POST['name'] ?? '';
-
-    $date = $_POST['date'] ?? '';
-
-    $push = $_POST['push'] ?? false;
-
-    SignupController::signup($email, $password, $name, $date, $push);
+    SignupController::signup();
 });
 
 Router::route('/LogIn(/{0,1})', function () {
-
-
-    $destination = $_GET['destination'] ?? '';
-
-    $email = $_POST['email'] ?? '';
-
-    $password = $_POST['password'] ?? '';
-
-
-    $push = $_POST['push'] ?? false;
-
-    LoginController::login($email, $password, $destination, $push);
+    LoginController::login();
 });
 
 Router::route('/', function () {
@@ -93,51 +71,27 @@ Router::route('/Profile(/{0,1})', function () {
     ProfileController::profile();
 });
 
+//will be refacted
 Router::route('/Group(/{0,1})', function () {
     require $GLOBALS['base_dir'] . 'views/group-page/group-page.php';
 });
 
+//will be refacted
 Router::route('/EmailConfirm(/{0,1})', function () {
     require $GLOBALS['base_dir'] . 'views/templates/emailConfirm.php';
 });
 
 Router::route('/confirm(/{0,1})', function () {
-    if (isset($_GET['hash'])) {
-        VerificationController::emailVerification($_GET['hash']);
-    } else {
-        require $GLOBALS['base_dir'] . 'views/templates/emailConfirmError.html';
-    }
+    VerificationController::emailVerification();
 });
 
 Router::route('/restore(/{0,1})', function () {
-    $hash = $_GET['hash'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $emailFromHash = $_POST['emailFromHash'] ?? '';
-    $password = $_POST['password'] ?? '';
-    $buttonIsPush = $_POST['push'] ?? false;
-    RestorePasswordController::passwordResetNavigator($email, $emailFromHash, $password, $hash, $buttonIsPush);
+    RestorePasswordController::passwordResetNavigator();
 });
 
 Router::route('/profileRedactor(/{0,1})', function () {
-    $primalEmail = $_POST['primalEmail'];
-    $newData = [];
-
-    if (isset($_POST['name'])) {
-        $newData['name'] = $_POST['name'];
-    }
-    if (isset($_POST['date'])) {
-        $newData['date'] = $_POST['date'];
-    }
-    if (isset($_FILES['avatar'])) {
-        $newData['avatar'] = $_FILES['avatar'];
-    }
-    if (isset($_POST['newGroup'])) {
-        $newData['newGroup'] = $_POST['newGroup'];
-    }
-    ProfileRedactor::redactProfile($primalEmail, $newData);
+    ProfileRedactor::redactProfile();
 });
-
-
 
 Router::route('/logout(/{0,1})', function () {
     LoginController::logout();
@@ -145,7 +99,7 @@ Router::route('/logout(/{0,1})', function () {
 
 
 
-
+//Only for tests
 Router::route('/deleteMe(/{0,1})', function () {
     if (isset($_GET['email'])) {
         $user = new User(['email' => $_GET['email']]);
@@ -156,7 +110,7 @@ Router::route('/deleteMe(/{0,1})', function () {
     }
 });
 
-
+//Only for tests
 Router::route('/test(/{0,1})', function () {
     require $GLOBALS['base_dir'] . 'core/model/test.php';
 });

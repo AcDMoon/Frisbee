@@ -13,6 +13,28 @@ class ProfileRedactor
     private static $data = [];
 
 
+    private static function postOrGetDataAvailability()
+    {
+        $primalEmail = $_POST['primalEmail'];
+        $newData = [];
+
+        if (isset($_POST['name'])) {
+            $newData['name'] = $_POST['name'];
+        }
+        if (isset($_POST['date'])) {
+            $newData['date'] = $_POST['date'];
+        }
+        if (isset($_FILES['avatar'])) {
+            $newData['avatar'] = $_FILES['avatar'];
+        }
+        if (isset($_POST['newGroup'])) {
+            $newData['newGroup'] = $_POST['newGroup'];
+        }
+        $postOrGetData = compact('primalEmail', 'newData');
+        return $postOrGetData;
+    }
+
+
     private static function deleteAvatar($id)
     {
         $pattern = '/^' . $id . '\./';
@@ -75,8 +97,11 @@ class ProfileRedactor
         $emailGroupTaglist->addInfo();
     }
 
-    public static function redactProfile(string $primalEmail, array $newData)
+    public static function redactProfile()
     {
+        $postOrGetData = self::postOrGetDataAvailability();
+        extract($postOrGetData);
+
         self::$data['primalEmail'] = $primalEmail;
         foreach ($newData as $item => $value) {
             self::$data[$item] = $value;

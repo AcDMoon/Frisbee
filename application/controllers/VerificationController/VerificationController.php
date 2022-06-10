@@ -8,8 +8,21 @@ use Frisbee\models\User\User;
 
 class VerificationController
 {
-    public static function emailVerification($hash)
+    private static function hashAvailability()
     {
+        if (isset($_GET['hash'])) {
+            $hash = $_GET['hash'];
+            return $hash;
+        }
+        require $GLOBALS['base_dir'] . 'views/templates/emailConfirmError.html';
+        exit();
+    }
+
+
+    public static function emailVerification()
+    {
+        $hash = self::hashAvailability();
+
         $user = new User(['hash' => $hash]);
         $userInfo = $user->getInfo(['hash','userId']);
         $hashIsset = $userInfo[0];

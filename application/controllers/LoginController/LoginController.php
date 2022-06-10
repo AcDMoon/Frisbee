@@ -9,6 +9,16 @@ use Frisbee\views\LoginView\LoginView;
 
 class LoginController
 {
+    private static function postOrGetDataAvailability()
+    {
+        $destination = $_GET['destination'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
+        $push = $_POST['push'] ?? false;
+        $postOrGetData = compact('destination', 'email', 'password', 'push');
+        return $postOrGetData;
+    }
+
     private static function authorize(string $email, string $password, string $destination)
     {
         $warnings = Authorization::authorization($email, $password);
@@ -51,8 +61,11 @@ class LoginController
         }
     }
 
-    public static function login(string $email, string $password, string $destination, bool $push)
+    public static function login()
     {
+        $postOrGetData = self::postOrGetDataAvailability();
+        extract( $postOrGetData);
+
         self::cookieIsset($destination);
         self::buttonIsPush($email, $password, $destination, $push);
     }

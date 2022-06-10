@@ -8,6 +8,18 @@ use Frisbee\views\SignupView\SignupView;
 
 class SignupController
 {
+    private static function postDataAvailability()
+    {
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
+        $name = $_POST['name'] ?? '';
+        $date = $_POST['date'] ?? '';
+        $push = $_POST['push'] ?? false;
+        $postData = compact('email', 'password', 'name', 'date', 'push');
+        return $postData;
+    }
+
+
     private static function cookieCheck()
     {
         if (VerificationController::cookieVerification()) {
@@ -18,8 +30,11 @@ class SignupController
     }
 
 
-    public static function signup(string $email, string $password, string $name, string $date, bool $push)
+    public static function signup()
     {
+        $postData = self::postDataAvailability();
+        extract($postData);
+
         self::cookieCheck();
 
         if (!$push) {

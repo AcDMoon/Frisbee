@@ -9,6 +9,18 @@ use Frisbee\views\RestorePasswordView\RestorePasswordView;
 
 class RestorePasswordController
 {
+    private static function postOrGetDataAvailability()
+    {
+        $hash = $_GET['hash'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $emailFromHash = $_POST['emailFromHash'] ?? '';
+        $password = $_POST['password'] ?? '';
+        $buttonIsPush = $_POST['push'] ?? false;
+        $postOrGetData = compact('hash', 'email', 'emailFromHash', 'password', 'buttonIsPush');
+        return $postOrGetData;
+    }
+
+
     private static function mailCheckProcedure($email)
     {
         $user = new User(['email' => $email]);
@@ -54,8 +66,12 @@ class RestorePasswordController
     }
 
 
-    public static function passwordResetNavigator($email, $emailFromHash, $password, $hash, $buttonIsPush)
+    public static function passwordResetNavigator()
     {
+        $postOrGetData = self::postOrGetDataAvailability();
+        extract($postOrGetData);
+
+
         if ($hash) {
             self::hashIsCorrect($hash);
             return;
