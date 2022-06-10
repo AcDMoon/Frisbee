@@ -14,7 +14,8 @@ abstract class Entities
 
     public function getInfo(array $attributes = []): array
     {
-        $receivedData = DB::request('get', $this); //массивы с данными объекта
+        $RequestProcessor = new RequestProcessor($this);
+        $receivedData = $RequestProcessor->getProcessor();
         if ([] === $attributes) {
             return $receivedData;
         }
@@ -36,7 +37,8 @@ abstract class Entities
 
     public function deleteObject()
     {
-        DB::request('delete', $this);
+        $RequestProcessor = new RequestProcessor($this);
+        $RequestProcessor->deleteProcessor();
     }
 
 
@@ -49,12 +51,14 @@ abstract class Entities
                 break;
             }
         }
-        DB::request('update', $this, $keyFiled);
+        $RequestProcessor = new RequestProcessor($this, $keyFiled);
+        $RequestProcessor->updateProcessor();
     }
 
 
     public function addInfo()
     {
-        DB::request('add', $this);
+        $RequestProcessor = new RequestProcessor($this);
+        $RequestProcessor->addProcessor();
     }
 }

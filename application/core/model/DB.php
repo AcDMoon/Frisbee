@@ -42,7 +42,7 @@ class DB
     }
 
 
-    private static function add($table, $attributes, $values): void
+    public static function add($table, $attributes, $values): void
     {
         $param = [];
         for ($i = 0; $i <= count($attributes) - 1; $i++) {
@@ -58,7 +58,7 @@ class DB
     }
 
 
-    private static function get($table, $attribute, $value)
+    public static function get($table, $attribute, $value)
     {
         if ('' === $attribute) {
             $query = "SELECT * FROM $table";
@@ -73,7 +73,7 @@ class DB
     }
 
 
-    private static function update($tableName, $attributes, $values, array $keyField): void
+    public static function update($tableName, $attributes, $values, array $keyField): void
     {
         $setValue = "";
         for ($i = 0; $i <= count($attributes) - 1; $i++) {
@@ -90,7 +90,7 @@ class DB
     }
 
 
-    private static function delete($table, $attribute, $value): void
+    public static function delete($table, $attribute, $value): void
     {
         $whereValue = ':' . $attribute;
         $query = "DELETE FROM $table WHERE $attribute = $whereValue";
