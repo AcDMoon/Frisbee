@@ -25,9 +25,8 @@ class VerificationController
 
         $user = new User(['hash' => $hash]);
         $userInfo = $user->getInfo(['hash','userId']);
-        $hashIsset = $userInfo[0];
-        $userId = $userInfo[1];
-        if ($hashIsset) {
+        if ($userInfo) {
+            $userId = $userInfo[1];
             $user = new User(['userId' => $userId, 'verification' => '1', 'hash' => '']);
             $user->updateObject();
             $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');

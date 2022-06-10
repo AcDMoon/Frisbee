@@ -22,12 +22,17 @@ class ProfileController
             $avatar = AvatarsController::getAvatar('user', $userId);
             $userData = ['name' => $userInfo[1], 'date' => $userInfo[2], 'email'=>$userInfo[3]];
 
-            $emailGroupTaglist = new EmailGroupTaglist(['userId' => $userId]);
+            $emailGroupTaglist = new EmailGroupTaglist(['userId' => (int) $userId]);
             $userGroupsId = $emailGroupTaglist->getInfo(['groupId']);
 
             $groupsName = [];
+
+            if (count($userGroupsId) == 1) {
+                $userGroupsId = [$userGroupsId];
+            }
+
             foreach ($userGroupsId as $item) {
-                $groupss = new Groupss(['groupId' => $item]);
+                $groupss = new Groupss(['groupId' => (int) $item[0]]);
                 $groupsName[] = $groupss->getInfo(['groupName'])[0];
             }
 
