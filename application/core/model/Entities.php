@@ -14,7 +14,7 @@ abstract class Entities
 
     public function getInfo(array $attributes = []): array
     {
-        $receivedData = newDB::request('get', $this); //массивы с данными объекта
+        $receivedData = DB::request('get', $this); //массивы с данными объекта
         if ([] === $attributes) {
             return $receivedData;
         }
@@ -26,13 +26,17 @@ abstract class Entities
             }
             $objectsInfo[] = $objectInfo;
         }
+        if (count($objectsInfo) === 1) {
+            return $objectsInfo[0];
+        }
         return $objectsInfo;
+
     }
 
 
     public function deleteObject()
     {
-        newDB::request('delete', $this);
+        DB::request('delete', $this);
     }
 
 
@@ -45,12 +49,12 @@ abstract class Entities
                 break;
             }
         }
-        newDB::request('update', $this, $keyFiled);
+        DB::request('update', $this, $keyFiled);
     }
 
 
     public function addInfo()
     {
-        newDB::request('add', $this);
+        DB::request('add', $this);
     }
 }

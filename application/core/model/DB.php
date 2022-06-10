@@ -2,32 +2,39 @@
 
 namespace Frisbee\core\model;
 
+use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use PDO;
 use PDOException;
 
 class DB
 {
     private static $connection;
-    private static $userData;
-    private static $groupData;
-
+    private static $lastId;
 
 
     private static function connect()
     {
-        $config = require $GLOBALS['base_dir'] . 'config/db/db-config.php';
+        $config = IncludeOrRequireMethods::requireConfig('db-config.php');
         $dsn = 'mysql:host=' . $config['host'] . ';dbname=' . $config['db_name'] . ';charset=' . $config['charset'];
         self::$connection = new PDO($dsn, $config['username'], $config['password']);
         self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
 
-    private static function execute($query, $param)
+    private static function execute($query, $param = '')
     {
         self::connect();
         try {
             $stmt = self::$connection->prepare($query);
+
+            if ('' === $param) {
+                $stmt->execute();
+                self::$lastId = self::$connection->lastInsertId();
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+
             $stmt->execute($param);
+            self::$lastId = self::$connection->lastInsertId();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
 //            echo "Error: " . $e->getMessage();
@@ -35,184 +42,103 @@ class DB
     }
 
 
-    private static function collectUserData($email)
+    private static function add($table, $attributes, $values): void
     {
-        $query = 'SELECT * FROM User WHERE Email = :Email';
-        $param = ['Email' => $email];
-        $result = self::execute($query, $param);
-        if ($result) {
-            foreach ($result[0] as $item => $value) {
-                self::$userData[$item] = $value;
+        $param = [];
+        for ($i = 0; $i <= count($attributes) - 1; $i++) {
+            $param[$attributes[$i]] = $values[$i];
+        }
+        for ($i = 0; $i <= count($values) - 1; $i++) {
+            $values[$i] = ':' . $attributes[$i];
+        }
+        $attributes = implode(', ', $attributes);
+        $values = implode(', ', $values);
+        $query  = "INSERT INTO $table ( $attributes ) VALUES ( $values )";
+        self::execute($query, $param);
+    }
+
+
+    private static function get($table, $attribute, $value)
+    {
+        if ('' === $attribute) {
+            $query = "SELECT * FROM $table";
+            $receivedData = self::execute($query);
+            return $receivedData;
+        }
+        $whereValue = ':' . $attribute;
+        $query = "SELECT * FROM $table WHERE $attribute = $whereValue";
+        $param = [$attribute => $value];
+        $receivedData = self::execute($query, $param);
+        return $receivedData;
+    }
+
+
+    private static function update($tableName, $attributes, $values, array $keyField): void
+    {
+        $setValue = "";
+        for ($i = 0; $i <= count($attributes) - 1; $i++) {
+            $setValue = $setValue . $attributes[$i] . " = :" . $attributes[$i] . ", ";
+        }
+        $setValue = substr_replace($setValue, " ", iconv_strlen($setValue) - 2);
+        $whereValue = array_key_first($keyField) . " = :" . array_key_first($keyField);
+        $param = [];
+        for ($i = 0; $i <= count($attributes) - 1; $i++) {
+            $param[$attributes[$i]] = $values[$i];
+        }
+        $query  = "UPDATE $tableName SET $setValue  WHERE $whereValue";
+        self::execute($query, $param);
+    }
+
+
+    private static function delete($table, $attribute, $value): void
+    {
+        $whereValue = ':' . $attribute;
+        $query = "DELETE FROM $table WHERE $attribute = $whereValue";
+        $param = [$attribute => $value];
+        self::execute($query, $param);
+    }
+
+
+    public static function request(string $method, object $object, string $keyField = '')
+    {
+        $array = explode('\\', get_class($object));
+        $tableName = $array[count($array) - 1];
+        $attributes = [];
+        $attributesValue = [];
+        foreach ($object as $attribute => $value) {
+            $attributes[] = $attribute;
+            $attributesValue[] = $value;
+        }
+
+        if ('add' === $method) {
+            self::add($tableName, $attributes, $attributesValue);
+            return;
+        }
+
+        if ('get' === $method) {
+            if (!isset($attribute)) {
+                $attribute = '';
+                $value = '';
             }
+            $receivedData = self::get($tableName, $attribute, $value);
+            return $receivedData;
+        }
+
+        if ('update' === $method) {
+            $keyField = [$keyField => $object->$keyField];
+            self::update($tableName, $attributes, $attributesValue, $keyField);
+            return;
+        }
+
+        if ('delete' === $method) {
+            self::delete($tableName, $attribute, $value);
+            return;
         }
     }
 
 
-    public static function emailIsset($Email): bool
+    public static function getLastId()
     {
-        self::collectUserData($Email);
-        if (!self::$userData) {
-            return false;
-        }
-        if (!self::$userData['Verification']) {
-            return false;
-        }
-        return true;
-    }
-
-
-    public static function deleteUser($userId)
-    {
-        $query  = "DELETE FROM User WHERE UserID = :UserID";
-        $param = ['UserID' => $userId];
-        self::execute($query, $param);
-    }
-
-
-    public static function hashIsset($hash)
-    {
-        $query = 'SELECT Hash FROM User WHERE Hash = :Hash';
-        $param = ['Hash' => $hash];
-        $result = self::execute($query, $param);
-        if ($result) {
-            return true;
-        }
-        return false;
-    }
-
-
-    public static function setHash($email, $hash)
-    {
-        $query  = "UPDATE User SET Hash = :Hash WHERE Email = :Email";
-        $param = ['Hash' => $hash, 'Email'=> $email];
-        self::execute($query, $param);
-    }
-
-
-    public static function deleteHash($hash)
-    {
-        $query  = "UPDATE User SET Hash = '' WHERE Hash = :Hash";
-        $param = ['Hash' => $hash];
-        self::execute($query, $param);
-    }
-
-
-    public static function getEmailFromHash($hash)
-    {
-        $query = 'SELECT Email FROM User WHERE Hash = :Hash';
-        $param = ['Hash' => $hash];
-        $email = self::execute($query, $param);
-        if (isset($email[0]['Email'])) {
-            return $email[0]['Email'];
-        }
-        return [];
-    }
-
-
-    public static function setVerificationTrue($hash)
-    {
-        $query  = "UPDATE User SET Verification = 1 WHERE Hash = :Hash";
-        $param = ['Hash' => $hash];
-        self::execute($query, $param);
-    }
-
-
-    public static function resetUserName($email, $name)
-    {
-        $query  = "UPDATE User SET FullName = :Name WHERE Email = :Email";
-        $param = ['Email' => $email, 'Name' => $name];
-        self::execute($query, $param);
-    }
-
-
-    public static function resetUserDate($email, $date)
-    {
-        $query  = "UPDATE User SET DateOfBirth = :Date WHERE Email = :Email";
-        $param = ['Email' => $email, 'Date' => $date];
-        self::execute($query, $param);
-    }
-
-    public static function resetUserPassword($email, $password)
-    {
-        $query  = "UPDATE User SET Password = :Password WHERE Email = :Email";
-        $param = ['Email' => $email, 'Password' => $password];
-        self::execute($query, $param);
-    }
-
-
-    public static function createGroup($owner, $groupName)
-    {
-        date_default_timezone_set('America/Los_Angeles');
-        $date = date('Y-m-d', time());
-        $query  = "INSERT INTO Groupss (groupname, owners, data_of_create, uservalue) VALUES (:groupname, :owners, :data_of_create, :uservalue)";
-        $param = ['groupname' => $groupName, 'owners' => $owner, 'data_of_create' => $date, 'uservalue' => 1];
-        self::execute($query, $param);
-        $groupId = self::$connection->lastInsertId();
-        $userId = self::getUserObject($owner, ['UserID'])['UserID'];
-        self::addGroupUser($userId, $groupId);
-    }
-
-
-    public static function addGroupUser($userId, $groupId)
-    {
-        $query  = "INSERT INTO email_group_taglist (UserID, groupid) VALUES (:UserID, :groupid)";
-        $param = ['UserID' => $userId, 'groupid' => $groupId];
-        self::execute($query, $param);
-    }
-
-
-    private static function collectGroupData($groupId)
-    {
-        $query = 'SELECT * FROM Groupss WHERE groupid = :groupid';
-        $param = ['groupid' => $groupId];
-        $result = self::execute($query, $param);
-        if ($result) {
-            foreach ($result[0] as $item => $value) {
-                self::$groupData[$item] = $value;
-            }
-        }
-    }
-
-
-    public static function getGroupObject(string $groupId, array $object = [])
-    {
-        self::collectGroupData($groupId);
-        $groupData['groupId'] = $groupId;
-        foreach ($object as $value) {
-            $groupData[$value] = self::$groupData[$value];
-        }
-        return $groupData;
-    }
-
-
-    public static function getUserGroups($userId)
-    {
-        $query = 'SELECT groupid FROM email_group_taglist WHERE UserID = :UserID';
-        $param = ['UserID' => $userId];
-        $userGroupsIdArray = self::execute($query, $param);
-        $userGroupsId = [];
-        foreach ($userGroupsIdArray as $item) {
-            $userGroupsId[] = $item['groupid'];
-        }
-        return $userGroupsId;
-    }
-
-
-    public static function addUser($email, $password, $name, $date, $hash)
-    {
-        $query  = "INSERT INTO User (Email, Password, FullName, DateOfBirth, Hash) VALUES (:Email, :Password, :Name, :Date, :Hash)";
-        $param = ['Email' => $email, 'Password' => $password, 'Name' => $name, 'Date' => $date, 'Hash' => $hash];
-        self::execute($query, $param);
-    }
-
-
-    public static function getUserObject(string $email, array $object = []): array
-    {
-        self::collectUserData($email);
-        $userData['email'] = $email;
-        foreach ($object as $value) {
-            $userData[$value] = self::$userData[$value];
-        }
-        return $userData;
+        return self::$lastId;
     }
 }
