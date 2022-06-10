@@ -31,7 +31,11 @@ class ProfileView
         $groups = ob_get_contents();
         ob_end_clean();
 
-        $data = compact('avatar', 'name', 'navbar', 'date', 'groups', 'email');
+        $scriptPath = '/scripts/profileScript.js';
+        $data = compact('scriptPath');
+        $script = IncludeOrRequireMethods::requireTemplate('script.php', $data);
+
+        $data = compact('avatar', 'name', 'navbar', 'date', 'groups', 'email', 'script');
         $body = IncludeOrRequireMethods::requireTemplate('profileBody.php', $data);
         return $body;
     }

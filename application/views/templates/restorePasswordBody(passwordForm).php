@@ -27,5 +27,5 @@
 
     </form>
 </main>
-<script src="/public/scripts/restorePasswordScript.js"></script>
+<?=$script?>
 </body>

@@ -231,5 +231,5 @@
 
 
 </main>
-<script src="/scripts/profileScript.js"></script>
+<?=$script?>
 </body>

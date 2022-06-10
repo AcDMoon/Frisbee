@@ -27,7 +27,11 @@ class RestorePasswordView
     private static function renderBody($data)
     {
         if (isset($data['emailFromHash'])) {
-            $data = compact('data');
+            $scriptPath = '/scripts/restorePasswordScript.js';
+            $requireData = compact('scriptPath');
+            $script = IncludeOrRequireMethods::requireTemplate('script.php', $requireData);
+
+            $data = compact('data', 'script');
             $body = IncludeOrRequireMethods::requireTemplate('restorePasswordBody(passwordForm).php', $data);
             return $body;
         }
