@@ -10,10 +10,10 @@ class NavbarView
     {
         if ($name) {
             $data = compact('avatar', 'name');
-            $navbarUserPart = IncludeOrRequireMethods::requireTemplate('reg-navbar.php', $data);
+            $navbarUserPart = IncludeOrRequireMethods::requireTemplate('regNavbar.php', $data);
         } else {
             $data = compact('avatar', 'name');
-            $navbarUserPart = IncludeOrRequireMethods::requireTemplate('unreg-navbar.php', $data);
+            $navbarUserPart = IncludeOrRequireMethods::requireTemplate('unregNavbar.php', $data);
         }
         $data = compact('navbarUserPart');
         $navbar = IncludeOrRequireMethods::requireTemplate('navbar.php', $data);
