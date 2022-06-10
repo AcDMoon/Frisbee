@@ -44,7 +44,7 @@ class SignupController
 
         $warnings = Registration::registrationProcedures($email, $password, $name, $date);
 
-        if (is_null($warnings)) {
+        if (!$warnings) {
             $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
             header("Location: http://" . $domain['domain'] . "/EmailConfirm");
             exit();

@@ -17,7 +17,18 @@ class SignupView
 
     private static function renderBody(array $warnings)
     {
-        $data = compact('warnings');
+        $emailErrors = $passwordErrors = $nameErrors = $dateErrors = '';
+        foreach ($warnings as $warningType => $warningsList) {
+            ob_start();
+            foreach ($warningsList as $error) {
+                $data = compact('error');
+                IncludeOrRequireMethods::requireTemplate('signupErrors.php', $data, false);
+            }
+            ${$warningType} = ob_get_contents();
+            ob_end_clean();
+        }
+
+        $data = compact('emailErrors', 'passwordErrors', 'nameErrors', 'dateErrors');
         $body = IncludeOrRequireMethods::requireTemplate('signupBody.php', $data);
         return $body;
     }

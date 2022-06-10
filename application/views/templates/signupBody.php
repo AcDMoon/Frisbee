@@ -13,19 +13,18 @@
             <label for="floatingEmail">Enter your email</label>
         </div>
 
-        <?php if (!isset($warnings['email_Error'])) {
-            $warnings['email_Error'] = '';
-        } ?>
-        <p class="my-1 text-danger"><?=$warnings['email_Error']?></p>
+        <ul class="text-start my-2">
+            <?=$emailErrors?>
+        </ul>
 
         <div class="form-floating">
             <input type="password" class="form-control form-control-lg" name="password" id="floatingPassword" placeholder="pass" >
             <label for="floatingPassword">Enter password</label>
         </div>
-        <?php if (!isset($warnings['password_Error'])) {
-            $warnings['password_Error'] = '';
-        } ?>
-        <p class="my-1 text-danger"><?=$warnings['password_Error']?></p>
+
+        <ul class="text-start my-2">
+            <?=$passwordErrors?>
+        </ul>
 
         <?php if (!isset($_POST['name'])) {
             $_POST['name'] = '';
@@ -35,10 +34,9 @@
             <label for="floatingName">Enter your full name</label>
         </div>
 
-        <?php if (!isset($warnings['name_Error'])) {
-            $warnings['name_Error'] = '';
-        } ?>
-        <p class="my-1 text-danger"><?=$warnings['name_Error']?></p>
+        <ul class="text-start my-2">
+            <?=$nameErrors?>
+        </ul>
 
         <?php if (!isset($_POST['date'])) {
             $_POST['date'] = '';
@@ -48,10 +46,9 @@
             <label for="floatingDate">Enter your date of birth</label>
         </div>
 
-        <?php if (!isset($warnings['date_Error'])) {
-            $warnings['date_Error'] = '';
-        } ?>
-        <p class="my-1 text-danger"><?=$warnings['date_Error']?></p>
+        <ul class="text-start my-2">
+            <?=$dateErrors?>
+        </ul>
 
         <button class="mt-4 w-100 btn btn-lg btn-dark" type="submit">Sign up</button>
 

@@ -8,7 +8,12 @@ use Frisbee\models\User\User;
 
 class Registration
 {
-    private static $errors = [];
+    private static $errors = [
+        'emailErrors' => [],
+        'passwordErrors' => [],
+        'nameErrors' => [],
+        'dateErrors' => []
+    ];
 
 
 
@@ -24,55 +29,60 @@ class Registration
             }
 
             if ($emailIsset) {
-                $email_Error = 'This email is already taken!';
-            } elseif (preg_match('/\ /', $email) == 1) {
-                $email_Error = 'Email must not contain spaces!';
-            } elseif (preg_match('/[а-яё]/iu', $email) == 1) {
-                $email_Error = 'Email must not contain the Russian alphabet!';
-            } elseif (iconv_strlen($email) > 40) {
-                $email_Error = 'Email must be less than or equal to 40 characters!';
-            } else {
+                self::$errors['emailErrors'][] = 'This email is already taken!';
+            }
+            if (preg_match('/\ /', $email) == 1) {
+                self::$errors['emailErrors'][] = 'Email must not contain spaces!';
+            }
+            if (preg_match('/[а-яё]/iu', $email) == 1) {
+                self::$errors['emailErrors'][] = 'Email must not contain the Russian alphabet!';
+            }
+            if (iconv_strlen($email) > 40) {
+                self::$errors['emailErrors'][] = 'Email must be less than or equal to 40 characters!';
+            }
+            if (!self::$errors['emailErrors']) {
                 $user->deleteObject();
                 return;
             }
-        } else {
-            $email_Error = 'This field is required!';
-        }
 
-        self::$errors['email_Error'] = $email_Error;
+        } else {
+            self::$errors['emailErrors'][] = 'This field is required!';
+        }
     }
 
     private static function passwordCheck(string $password)
     {
         if ($password == '') {
-            $password_Error = 'This field is required!';
-        } elseif (preg_match('/\ /', $password) == 1) {
-            $password_Error = 'The password must not contain spaces!';
-        } elseif (preg_match('/[а-яё]/iu', $password) == 1) {
-            $password_Error = 'The password must not contain the Russian alphabet!';
-        } elseif (iconv_strlen($password) < 8) {
-            $password_Error = 'Password must be longer than 8 characters!';
-        } elseif (iconv_strlen($password) > 40) {
-            $password_Error = 'Password must be less than or equal to 40 characters!';
-        } else {
+            self::$errors['passwordErrors'][] = 'This field is required!';
             return;
         }
-        self::$errors['password_Error'] = $password_Error;
+        if (preg_match('/\ /', $password) == 1) {
+            self::$errors['passwordErrors'][] = 'The password must not contain spaces!';
+        }
+        if (preg_match('/[а-яё]/iu', $password) == 1) {
+            self::$errors['passwordErrors'][] = 'The password must not contain the Russian alphabet!';
+        }
+        if (iconv_strlen($password) < 8) {
+            self::$errors['passwordErrors'][] = 'Password must be longer than 8 characters!';
+        }
+        if (iconv_strlen($password) > 40) {
+            self::$errors['passwordErrors'][] = 'Password must be less than or equal to 40 characters!';
+        }
     }
 
 
     private static function nameCheck(string $name)
     {
         if ($name == '') {
-            $name_Error = 'This field is required!';
-        } elseif (iconv_strlen($name) > 40) {
-            $name_Error = 'Username must not exceed 40 characters';
-        } elseif (!preg_match('/[a-zа-яё]/iu', $name) == 1) {
-            $name_Error = 'Username must contain only alphabetic values';
-        } else {
+            self::$errors['nameErrors'][] = 'This field is required!';
             return;
         }
-        self::$errors['name_Error'] = $name_Error;
+        if (iconv_strlen($name) > 40) {
+            self::$errors['nameErrors'][] = 'Username must not exceed 40 characters';
+        }
+        if (!preg_match('/[a-zа-яё]/iu', $name) == 1) {
+            self::$errors['nameErrors'][] = 'Username must contain only alphabetic values';
+        }
     }
 
 
@@ -81,25 +91,24 @@ class Registration
         if (preg_match('/\d{4}(\-\d{2})(\-\d{2})/', $date) == 1) {
             return;
         } else {
-            $data_Error = 'This field is required!';
+            self::$errors['dateErrors'][] = 'This field is required!';
         }
-        self::$errors['date_Error'] = $data_Error;
     }
 
 
-    private static function fieldsCheck(string $email, string $password, string $name, string $date)
+    private static function fieldsIsValid(string $email, string $password, string $name, string $date): bool
     {
         self::emailCheck($email);
         self::passwordCheck($password);
         self::nameCheck($name);
         self::dateCheck($date);
 
-        foreach (self::$errors as $error => $errorName) {
-            if ($errorName !== '') {
-                return self::$errors;
+        foreach (self::$errors as $errorsType => $error) {
+            if ($error) {
+                return false;
             }
         }
-        return null;
+        return true;
     }
 
 
@@ -114,19 +123,19 @@ class Registration
 
     public static function registrationProcedures(string $email, string $password, string $name, string $date)
     {
-        $result = self::fieldsCheck($email, $password, $name, $date);
-        if (is_null($result)) {
+        $result = self::fieldsIsValid($email, $password, $name, $date);
+        if ($result) {
             $hash = self::hashData($email, $password);
-            $user = new User(['email'=>$email, 'password'=>$password, 'name'=>$name, 'date'=>$date, 'hash'=>$hash['emailHash']]);
+            $user = new User(['email' => $email, 'password' => $password, 'name' => $name, 'date' => $date, 'hash' => $hash['emailHash']]);
             $user->addInfo();
             Cookie::setCookie($email, $hash['passwordHash']);
             $title = 'Frisbee - Email verification';
             $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
             $content = '<a href="http://' . $domain['domain'] . '/confirm?hash=' . $hash['emailHash'] . '">To confirm, click this</a>';
             Mailer::sendMessage($email, $title, $content);
-            return null;
+            return false;
         } else {
-            return $result;
+            return self::$errors;
         }
     }
 }
