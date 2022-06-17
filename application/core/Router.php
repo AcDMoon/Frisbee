@@ -4,6 +4,9 @@ namespace Frisbee\core;
 
 use Frisbee\controllers\AboutUsController\AboutUsController;
 use Frisbee\controllers\DonationController\DonationController;
+use Frisbee\controllers\GroupPageController\GroupInviteController;
+use Frisbee\controllers\GroupPageController\GroupPageController;
+use Frisbee\controllers\GroupPageController\GroupPageModerationController;
 use Frisbee\controllers\LoginController\LoginController;
 use Frisbee\controllers\MainPageController\MainPageController;
 use Frisbee\controllers\ProfileController\ProfileController;
@@ -97,6 +100,17 @@ Router::route('/logout(/{0,1})', function () {
     LoginController::logout();
 });
 
+Router::route('/group/(\d+)(/{0,1})', function ($groupId) {
+    GroupPageController::group($groupId);
+});
+
+Router::route('/editGroup(/{0,1})', function () {
+    GroupPageModerationController::editGroup();
+});
+
+Router::route('/groupInviteCheck(/{0,1})', function () {
+    GroupInviteController::validate();
+});
 
 
 //Only for tests

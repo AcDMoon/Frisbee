@@ -9,14 +9,15 @@ class ProfileView
 {
     private static function renderHead()
     {
-        $style = 'styles/style.css';
+        $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
+        $style = 'http://' . $domain['domain'] . '/styles/style.css';
         $title = 'Profile';
         $data = compact('style', 'title');
         $head = IncludeOrRequireMethods::requireTemplate('head.php', $data);
         return $head;
     }
 
-    private static function renderBody(string $avatar, array $data, array $groupsName)
+    private static function renderBody(string $avatar, array $data, array $groupsInfo)
     {
         extract($data);
         $navbar = NavbarView::renderNavbar($avatar, $name);
@@ -24,8 +25,11 @@ class ProfileView
 
 
         ob_start();
-        foreach ($groupsName as $item) {
-            $data = compact('item');
+        foreach ($groupsInfo as $group) {
+            $groupName = $group['groupName'];
+            $groupUrl = $group['groupUrl'];
+            $groupAvatar = $group['groupAvatar'];
+            $data = compact('groupName', 'groupUrl', 'groupAvatar');
             IncludeOrRequireMethods::requireTemplate('profileGroups.php', $data, false);
         }
         $groups = ob_get_contents();
@@ -40,10 +44,10 @@ class ProfileView
         return $body;
     }
 
-    public static function renderProfilePage(string $avatar, array $data, array $groupsName)
+    public static function renderProfilePage(string $avatar, array $data, array $groupsInfo)
     {
         $head = self::renderHead();
-        $body = self::renderBody($avatar, $data, $groupsName);
+        $body = self::renderBody($avatar, $data, $groupsInfo);
         $data = compact('body', 'head');
         IncludeOrRequireMethods::requireTemplate('html.php', $data, false);
     }

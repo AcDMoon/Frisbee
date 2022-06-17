@@ -6,6 +6,7 @@ use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\core\model\DB;
 use Frisbee\models\EmailGroupTaglist\EmailGroupTaglist;
 use Frisbee\models\Groupss\Groupss;
+use Frisbee\models\Owners\Owners;
 use Frisbee\models\User\User;
 
 class ProfileRedactor
@@ -85,7 +86,7 @@ class ProfileRedactor
         }
         date_default_timezone_set('America/Los_Angeles');
         $date = date('Y-m-d', time());
-        $group = new Groupss(['owners' => self::$data['primalEmail'], 'groupName' => self::$data['newGroup'], 'dateOfCreate' => $date]);
+        $group = new Groupss(['groupName' => self::$data['newGroup'], 'dateOfCreate' => $date]);
         $group->addInfo();
 
         $groupId = DB::getLastId();
@@ -95,6 +96,9 @@ class ProfileRedactor
 
         $emailGroupTaglist = new EmailGroupTaglist(['userId' => $userId, 'groupId' => $groupId]);
         $emailGroupTaglist->addInfo();
+
+        $owners = new Owners(['userId' => $userId, 'groupId' => $groupId]);
+        $owners->addInfo();
     }
 
     public static function redactProfile()
