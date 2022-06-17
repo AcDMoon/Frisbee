@@ -3,6 +3,7 @@
 namespace Frisbee\controllers\SignupController;
 
 use Frisbee\controllers\Cookie\Cookie;
+use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\controllers\Mailer\Mailer;
 use Frisbee\models\User\User;
 
@@ -130,7 +131,7 @@ class Registration
             $user->addInfo();
             Cookie::setCookie($email, $hash['passwordHash']);
             $title = 'Frisbee - Email verification';
-            $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
+            $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
             $content = '<a href="http://' . $domain['domain'] . '/confirm?hash=' . $hash['emailHash'] . '">To confirm, click this</a>';
             Mailer::sendMessage($email, $title, $content);
             return false;
