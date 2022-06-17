@@ -28,7 +28,7 @@ class AvatarsController
             $avatarsDirectory = 'groupAvatars/';
             foreach (scandir($avatarsDirectory) as $item => $value) {
                 if (preg_match($pattern, $value)) {
-                    $avatar = 'http://' . $domain['domain'] . '/' . $avatarsDirectory . '?' . time();
+                    $avatar = 'http://' . $domain['domain'] . '/' . $avatarsDirectory . $value . '?' . time();
                 }
             }
             return $avatar;

@@ -44,15 +44,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (name.value === '') {
-            nameErrors.push('Поле не должно быть пустым!');
+            nameErrors.push('The field must not be empty!');
         }
 
         if (name.value.length > 40) {
-            nameErrors.push('Имя не должно превышать 40 символов!');
+            nameErrors.push('Name must not exceed 40 characters!');
         }
 
         if (/[^a-zа-яё ]/iu.test(name.value)) {
-            nameErrors.push('Имя не должно содержать ничего кроме букв!');
+            nameErrors.push('The name must not contain anything but letters!');
         }
         return nameErrors;
     }
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (!/\d{4}(\-\d{2})(\-\d{2})/.test(date.value)) {
-            dateErrors.push('Поле не должно быть пустым');
+            dateErrors.push('The field must not be empty');
         }
         return dateErrors;
     }
@@ -115,11 +115,11 @@ document.addEventListener('DOMContentLoaded', function () {
         let avatarErrors = [];
 
         if (!['image/jpeg', 'image/png', 'image/jpg'].includes(avatarFile.type)) {
-            avatarErrors.push('Разрешённые форматы jpg, jpeg, png!');
+            avatarErrors.push('Allowed formats are jpg, jpeg, png!');
         }
 
         if (avatarFile.size > 2 * 1024 * 1024) {
-            avatarErrors.push('Размер изображение должен быть меньше 2МБ');
+            avatarErrors.push('Image size must be less than 2MB');
         }
 
         return avatarErrors;
@@ -145,11 +145,11 @@ document.addEventListener('DOMContentLoaded', function () {
         let groupErrors = [];
 
         if (group.value === '') {
-            groupErrors.push('Поле не должно быть пустым!');
+            groupErrors.push('The field must not be empty!');
         }
 
         if (group.value.length > 50) {
-            groupErrors.push('Название группы не должно превышать 50 символов!');
+            groupErrors.push('Group name must not exceed 50 characters!');
         }
         return groupErrors;
     }
