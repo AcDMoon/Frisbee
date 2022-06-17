@@ -20,7 +20,22 @@ class GroupPageModerationController
         $moderatorsList = $_POST['moderatorsList'] ?? '';
         $deleteList = $_POST['deleteList'] ?? '';
         $addMember = $_POST['addMember'] ?? '';
-        return compact('groupId', 'deleteList', 'userId', 'addMember', 'newMemberEmail', 'moderatorsList');
+        $avatar = $_FILES['groupAvatar'] ?? '';
+        $newGroupName = $_POST['newGroupName'] ?? '';
+        $deleteGroup = $_POST['deleteGroup'] ?? '';
+        return compact('groupId', 'deleteList', 'userId', 'addMember', 'newMemberEmail', 'moderatorsList', 'avatar', 'newGroupName', 'deleteGroup');
+    }
+
+
+    private static function deleteAvatar($id)
+    {
+        $pattern = '/^' . $id . '\./';
+        $avatarsDirectory = 'groupAvatars/';
+        foreach (scandir($avatarsDirectory) as $item => $value) {
+            if (preg_match($pattern, $value)) {
+                unlink($avatarsDirectory . $value);
+            }
+        }
     }
 
 
@@ -46,6 +61,41 @@ class GroupPageModerationController
                 header("Location: http://" . $domain['domain'] . "/group/" . $groupId);
                 exit();
             }
+        }
+    }
+
+
+    private static function setAvatar($avatar, $groupId, $domain)
+    {
+        if ($avatar) {
+            $imageType = explode('/', $avatar['type'])[1];
+            $newName = $groupId . '.' . $imageType;
+            self::deleteAvatar($groupId);
+            copy($avatar['tmp_name'], 'groupAvatars/' . $newName);
+            header("Location: http://" . $domain['domain'] . "/group/" . $groupId);
+            exit();
+        }
+    }
+
+
+    private static function setNewGroupName($newGroupName, $groupId, $domain)
+    {
+        if ($newGroupName) {
+            $group = new Groupss(['groupId' => $groupId, 'groupName' => $newGroupName]);
+            $group->updateObject();
+            header("Location: http://" . $domain['domain'] . "/group/" . $groupId);
+            exit();
+        }
+    }
+
+
+    private static function deleteGroup($deleteGroup, $groupId, $domain)
+    {
+        if ($deleteGroup) {
+            $group = new Groupss(['groupId' => $groupId]);
+            $group->deleteObject();
+            header("Location: http://" . $domain['domain'] . "/Profile");
+            exit();
         }
     }
 
@@ -115,6 +165,9 @@ class GroupPageModerationController
         self::deleteMember($deleteList, $groupId, $domain);
         self::addMemberProcedure($newMemberEmail, $groupId, $addMember, $domain);
         self::addModerators($moderatorsList, $groupId, $domain);
+        self::setAvatar($avatar, $groupId, $domain);
+        self::setNewGroupName($newGroupName, $groupId, $domain);
+        self::deleteGroup($deleteGroup, $groupId, $domain);
 
         header("Location: http://" . $domain['domain'] . "/group/" . $groupId);
     }

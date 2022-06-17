@@ -2,7 +2,11 @@
     <img class="p-1 border border-dark group-image img-fluid col-2 my-auto" src=" <?=$avatar?> ">
     <p class="col-6 fw-bold fs-6 no_wrap my-auto pe-0"> <?=$name?> </p>
     <div class="col form-switch my-auto pe-0">
-        <input class="form-check-input" type="checkbox" role="switch">
+        <form action="" method="post" enctype="multipart/form-data" id="formGroupMember" name="formsGroupMembers">
+            <input class="form-check-input" type="checkbox" role="switch" id="memberSwitch" value="off">
+            <input type="hidden" name="groupId" id="userId" value="">
+            <input type="hidden" name="groupId" id="selectedUserId" value="">
+        </form>
     </div>
 </button>
 

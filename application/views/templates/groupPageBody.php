@@ -18,7 +18,7 @@
 
                 <div class="modal-body row justify-content-center form-floating ">
                     <input type="email" class="form-control ms-1" name="newMemberEmail" id="userEmail" placeholder="Email">
-                    <label class="mx-3 mt-3" for="GroupName">Enter email</label>
+                    <label class="mx-3 mt-3" for="userEmail">Enter email</label>
                 </div>
 
                 <ul id="emailErrors">
@@ -94,6 +94,84 @@
     </div>
 </div>
 
+<div class="modal fade" id="downloadGroupAvatar" tabindex="-1" aria-hidden="true" aria-labelledby="downloadGroupAvatarLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="<?=$url . 'editGroup'?>" method="post" id="formGroupAvatar" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="downloadGroupAvatarLabel">Download avatar</h5>
+                </div>
+
+                <input type="hidden" name="groupId" value="<?=$groupId?>">
+
+                <div class="modal-body row justify-content-center">
+                    <input type="file" name="groupAvatar" id="avatar" class="form-control ms-1">
+                </div>
+
+                <ul id="avatarErrors">
+                </ul>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary profile_info me-auto" type="submit">Set image</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="renameGroup" tabindex="-1" aria-hidden="true" aria-labelledby="renameGroupLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="<?=$url . 'editGroup'?>" method="post" enctype="multipart/form-data" id="formRenameGroup">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="renameGroupLabel">Add member</h5>
+                </div>
+
+                <input type="hidden" name="groupId" id="groupId" value="<?=$groupId?>">
+
+                <div class="modal-body row justify-content-center form-floating ">
+                    <input type="text" class="form-control ms-1" name="newGroupName" id="groupName" placeholder="New group name">
+                    <label class="mx-3 mt-3" for="groupName">Enter new group name</label>
+                </div>
+
+                <ul id="groupNameErrors">
+                </ul>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary profile_info mx-auto" type="submit">Change</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteGroup" tabindex="-1" aria-hidden="true" aria-labelledby="deleteGroupLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="<?=$url . 'editGroup'?>" method="post" enctype="multipart/form-data" id="formDeleteGroup">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteGroupLabel">Delete group</h5>
+                </div>
+
+                <input type="hidden" name="groupId" id="groupId" value="<?=$groupId?>">
+
+                <input type="hidden" name="deleteGroup" value="true">
+
+                <div class="modal-body row justify-content-center form-floating ">
+                    <h5 class="mx-3 mt-3 text-center bold" style="color: red">This action will completely remove this group. Are you sure you want to continue?</h5>
+
+                </div>
+
+                <p class="text-center" style="color: red" id="deleteGroupWarning"></p>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary profile_info mx-auto" type="submit">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <main class="container ">
 
     <?=$moderatorButton?>
@@ -111,7 +189,7 @@
                     <div class="row col-md-6 col-sm-12 profile_info mx-2">
 
                         <div class="mb-1 ps-1">
-                            <h2 class="p-1 mb-0 fw-bold text-center group_name_family"> <?=$groupName?> </h2>
+                            <h2 class="p-1 mb-0 fw-bold text-center group_name_family" id="primalName"> <?=$groupName?> </h2>
                         </div>
 
                         <div class="col align-self-end">

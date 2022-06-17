@@ -5,19 +5,32 @@ document.addEventListener('DOMContentLoaded', function () {
     deleteMembers = document.getElementById('deleteMembers'),
     formInviteUser = document.getElementById('formInviteUser'),
     formAddModerators = document.getElementById('formAddModerators'),
-    addModerators = document.getElementById('addModerators');
+    addModerators = document.getElementById('addModerators'),
+    formGroupAvatar = document.getElementById('formGroupAvatar'),
+    formRenameGroup = document.getElementById('formRenameGroup'),
+    formDeleteGroup = document.getElementById('formDeleteGroup'),
+    deleteGroup = document.getElementById('deleteGroup'),
+    formGroupMember = document.getElementById('formGroupMember');
+    // formGroupMember = document.getElementsByName('formsGroupMembers');
+    console.log(formGroupMember);
+
 
     deleteMembers.addEventListener('hidden.bs.modal', deleteMembersClose);
     formDeleteMembers.addEventListener('submit', formDeleteMembersSend);
     formInviteUser.addEventListener('submit', formInviteUserSend);
     formAddModerators.addEventListener('submit', formAddModeratorsSend);
     addModerators.addEventListener('hidden.bs.modal', addModeratorsClose);
+    formGroupAvatar.addEventListener('submit', formGroupAvatarSend);
+    formRenameGroup.addEventListener('submit', formRenameGroupSend);
+    formDeleteGroup.addEventListener('submit', formDeleteGroupSend);
+    deleteGroup.addEventListener('hidden.bs.modal', deleteGroupClose);
+    formGroupMember.addEventListener('click', formGroupMemberFocus);
 
     async function formDeleteMembersSend(event)
     {
         const deleteMemberWarning = formDeleteMembers.querySelector('#deleteMemberWarning');
         if (deleteMemberWarning.innerHTML === '') {
-            deleteMemberWarning.innerHTML = 'Do you really want to remove selected members? (Click "Delete" again to continue)'
+            deleteMemberWarning.innerHTML = 'Do you really want to remove selected members? (Click "Delete" again to continue)';
             event.preventDefault();
         }
     }
@@ -27,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
     {
         const deleteMemberWarning = formDeleteMembers.querySelector('#deleteMemberWarning');
         if (deleteMemberWarning.innerHTML !== '') {
-            deleteMemberWarning.innerHTML = ''
+            deleteMemberWarning.innerHTML = '';
         }
     }
 
@@ -61,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
     {
         const addModeratorsWarning = formAddModerators.querySelector('#addModeratorsWarning');
         if (addModeratorsWarning.innerHTML === '') {
-            addModeratorsWarning.innerHTML = 'Are you sure you want to give these members moderator rights? (Click "Add" again to continue)'
+            addModeratorsWarning.innerHTML = 'Are you sure you want to give these members moderator rights? (Click "Add" again to continue)';
             event.preventDefault();
         }
     }
@@ -71,8 +84,93 @@ document.addEventListener('DOMContentLoaded', function () {
     {
         const addModeratorsWarning = formAddModerators.querySelector('#addModeratorsWarning');
         if (addModeratorsWarning.innerHTML !== '') {
-            addModeratorsWarning.innerHTML = ''
+            addModeratorsWarning.innerHTML = '';
         }
+    }
+
+
+    async function formGroupAvatarSend(event)
+    {
+        const avatar = formGroupAvatar.querySelector('#avatar'),
+            avatarErrorsObject = formGroupAvatar.querySelector('#avatarErrors');
+
+        removeErrors(avatarErrorsObject);
+
+        if (avatar.files.length === 0) {
+            event.preventDefault();
+            return;
+        }
+
+        let avatarErrors = avatarValidation(avatar.files[0]);
+
+
+        if (avatarErrors.length !== 0) {
+            avatarErrors.forEach(element => addTag(avatarErrorsObject, element));
+            event.preventDefault();
+        }
+    }
+
+
+    async function formRenameGroupSend(event)
+    {
+        const group = formRenameGroup.querySelector('#groupName'),
+            groupNameErrorsObject = formRenameGroup.querySelector('#groupNameErrors');
+
+        removeErrors(groupNameErrorsObject);
+
+        let groupErrors = groupValidation(group);
+
+        if (groupErrors.length !== 0) {
+            groupErrors.forEach(element => addTag(groupNameErrorsObject, element));
+            event.preventDefault();
+        }
+    }
+
+
+    async function formDeleteGroupSend(event)
+    {
+        const deleteGroupWarning = formDeleteGroup.querySelector('#deleteGroupWarning');
+        if (deleteGroupWarning.innerHTML === '') {
+            deleteGroupWarning.innerHTML = 'This is your last chance to change your mind. (click "Delete" again to continue)';
+            event.preventDefault();
+        }
+    }
+
+
+    async function deleteGroupClose(event)
+    {
+        const deleteGroupWarning = formDeleteGroup.querySelector('#deleteGroupWarning');
+        if (deleteGroupWarning.innerHTML !== '') {
+            deleteGroupWarning.innerHTML = '';
+        }
+    }
+
+
+    async function formGroupMemberFocus(event)
+    {
+        const memberSwitch = formGroupMember.querySelector('#memberSwitch');
+        if (memberSwitch.value === 'off') {
+            memberSwitch.value = 'on';
+        } else {
+            memberSwitch.value = 'off';
+        }
+        console.log(memberSwitch.value);
+    }
+
+
+
+    function groupValidation(group)
+    {
+        let groupErrors = [];
+
+        if (group.value === '') {
+            groupErrors.push('The field must not be empty!');
+        }
+
+        if (group.value.length > 50) {
+            groupErrors.push('Group name must not exceed 50 characters!');
+        }
+        return groupErrors;
     }
 
 
@@ -128,6 +226,20 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
+    function avatarValidation(avatarFile)
+    {
+        let avatarErrors = [];
+
+        if (!['image/jpeg', 'image/png', 'image/jpg'].includes(avatarFile.type)) {
+            avatarErrors.push('Allowed formats are jpg, jpeg, png!');
+        }
+
+        if (avatarFile.size > 2 * 1024 * 1024) {
+            avatarErrors.push('Image size must be less than 2MB');
+        }
+
+        return avatarErrors;
+    }
 
 
     function addTag(object, value)
