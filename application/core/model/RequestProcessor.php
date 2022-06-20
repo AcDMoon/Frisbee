@@ -48,6 +48,6 @@ class RequestProcessor
 
     public function deleteProcessor(): void
     {
-        DB::delete($this->tableName, $this->attributes[0], $this->attributesValue[0]);
+        DB::delete($this->tableName, $this->attributes, $this->attributesValue);
     }
 }

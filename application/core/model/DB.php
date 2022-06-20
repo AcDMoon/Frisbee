@@ -90,11 +90,18 @@ class DB
     }
 
 
-    public static function delete($table, $attribute, $value): void
+    public static function delete($table, $attributes, $values): void
     {
-        $whereValue = ':' . $attribute;
-        $query = "DELETE FROM $table WHERE $attribute = $whereValue";
-        $param = [$attribute => $value];
+        $whereValue = "";
+        for ($i = 0; $i <= count($attributes) - 1; $i++) {
+            $whereValue = $whereValue . $attributes[$i] . " = :" . $attributes[$i] . " AND ";
+        }
+        $whereValue = substr_replace($whereValue, " ", iconv_strlen($whereValue) - 5);
+        $param = [];
+        for ($i = 0; $i <= count($attributes) - 1; $i++) {
+            $param[$attributes[$i]] = $values[$i];
+        }
+        $query = "DELETE FROM $table WHERE $whereValue";
         self::execute($query, $param);
     }
 
