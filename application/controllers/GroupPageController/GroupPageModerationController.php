@@ -4,6 +4,7 @@ namespace Frisbee\controllers\GroupPageController;
 
 use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\controllers\Mailer\Mailer;
+use Frisbee\models\BirthdayMonitoring\BirthdayMonitoring;
 use Frisbee\models\EmailGroupTaglist\EmailGroupTaglist;
 use Frisbee\models\GroupsInvites\GroupsInvites;
 use Frisbee\models\Groupss\Groupss;
@@ -23,7 +24,9 @@ class GroupPageModerationController
         $avatar = $_FILES['groupAvatar'] ?? '';
         $newGroupName = $_POST['newGroupName'] ?? '';
         $deleteGroup = $_POST['deleteGroup'] ?? '';
-        return compact('groupId', 'deleteList', 'userId', 'addMember', 'newMemberEmail', 'moderatorsList', 'avatar', 'newGroupName', 'deleteGroup');
+        $switch = $_POST['switch'] ?? '';
+        $currentUserId = $_POST['currentUserId'] ?? '';
+        return compact('groupId', 'deleteList', 'userId', 'addMember', 'newMemberEmail', 'moderatorsList', 'avatar', 'newGroupName', 'deleteGroup', 'switch', 'currentUserId');
     }
 
 
@@ -123,7 +126,7 @@ class GroupPageModerationController
             $content = '<a href="http://' . $domain['domain'] . '/editGroup?hash=' . $hash . '">To accept the invitation, click on this text</a>';
 
             Mailer::sendMessage($newMemberEmail, $title, $content);
-            var_dump('проверьте почту!');
+            var_dump('Приглашение отправлено на почту пользователю!');
             exit();
         }
     }
@@ -158,8 +161,9 @@ class GroupPageModerationController
 
         $postData = self::postDataAvailability();
         extract($postData);
-        if (!$groupId) {
+        if (!$groupId && !$switch) {
             header("Location: http://" . $domain['domain'] . "/Profile");
+            exit();
         }
 
         self::deleteMember($deleteList, $groupId, $domain);
@@ -168,7 +172,28 @@ class GroupPageModerationController
         self::setAvatar($avatar, $groupId, $domain);
         self::setNewGroupName($newGroupName, $groupId, $domain);
         self::deleteGroup($deleteGroup, $groupId, $domain);
+        self::changeTrackedStatus($currentUserId, $userId, $switch);
 
         header("Location: http://" . $domain['domain'] . "/group/" . $groupId);
+    }
+
+
+
+    private static function changeTrackedStatus($currentUserId, $userId, $switch)
+    {
+        if (!$switch) {
+            return;
+        }
+
+        $userId = explode(', ', $userId);
+
+        foreach ($userId as $id) {
+            $birthdayMonitoring = new BirthdayMonitoring(['userId' => $currentUserId, 'monitoringId' => $id]);
+            if ($switch === 'on') {
+                $birthdayMonitoring->deleteObject();
+            } else {
+                $birthdayMonitoring->addInfo();
+            }
+        }
     }
 }

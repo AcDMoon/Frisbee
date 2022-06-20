@@ -2,10 +2,10 @@
     <img class="p-1 border border-dark group-image img-fluid col-2 my-auto" src=" <?=$avatar?> ">
     <p class="col-6 fw-bold fs-6 no_wrap my-auto pe-0"> <?=$name?> </p>
     <div class="col form-switch my-auto pe-0">
+        <?php $aa = 'checked' ?>
         <form action="" method="post" enctype="multipart/form-data" id="formGroupMember" name="formsGroupMembers">
-            <input class="form-check-input" type="checkbox" role="switch" id="memberSwitch" value="off">
-            <input type="hidden" name="groupId" id="userId" value="">
-            <input type="hidden" name="groupId" id="selectedUserId" value="">
+            <input class="form-check-input" type="checkbox" role="switch" id="memberSwitch" name="memberSwitch" value="<?=$userIsTracked?>" <?=$isChecked?>>
+            <input type="hidden" name="userId" id="userId" value="<?=$userId?>">
         </form>
     </div>
 </button>

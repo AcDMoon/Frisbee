@@ -10,9 +10,32 @@ document.addEventListener('DOMContentLoaded', function () {
     formRenameGroup = document.getElementById('formRenameGroup'),
     formDeleteGroup = document.getElementById('formDeleteGroup'),
     deleteGroup = document.getElementById('deleteGroup'),
-    formGroupMember = document.getElementById('formGroupMember');
-    // formGroupMember = document.getElementsByName('formsGroupMembers');
-    console.log(formGroupMember);
+    allChecked = document.getElementById('allChecked'),
+    allUnChecked = document.getElementById('allUnChecked');
+
+    [...document.getElementsByName('formsGroupMembers')].forEach(function (item) {
+        item.addEventListener('click', function () {
+            const memberSwitch = item.querySelector('#memberSwitch');
+            const userId = item.querySelector('#userId');
+            const currentUserId = document.querySelector('#currentUserId');
+
+
+
+            const url = 'http://frisbee/editGroup';
+            const params = 'switch=' + memberSwitch.value + '&userId=' + userId.value + '&currentUserId=' + currentUserId.value;
+
+
+            sendRequest(url, params, true);
+
+            if (memberSwitch.value === 'off') {
+                memberSwitch.value = 'on';
+            } else {
+                memberSwitch.value = 'off';
+            }
+            console.log(memberSwitch.value);
+        });
+    });
+
 
 
     deleteMembers.addEventListener('hidden.bs.modal', deleteMembersClose);
@@ -24,7 +47,8 @@ document.addEventListener('DOMContentLoaded', function () {
     formRenameGroup.addEventListener('submit', formRenameGroupSend);
     formDeleteGroup.addEventListener('submit', formDeleteGroupSend);
     deleteGroup.addEventListener('hidden.bs.modal', deleteGroupClose);
-    formGroupMember.addEventListener('click', formGroupMemberFocus);
+    allChecked.addEventListener('click', allCheckedClick);
+    allUnChecked.addEventListener('click', allUnCheckedClick);
 
     async function formDeleteMembersSend(event)
     {
@@ -62,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const request = new XMLHttpRequest();
-        const url = 'http://frisbee/editProfile';
+        const url = 'http://frisbee/editGroup';
         const params = 'addMember=true&email=' + email.value + '&groupId=' + groupId.value;
         request.open("POST", url, true);
         request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -146,15 +170,28 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    async function formGroupMemberFocus(event)
+    async function allCheckedClick(event)
     {
-        const memberSwitch = formGroupMember.querySelector('#memberSwitch');
-        if (memberSwitch.value === 'off') {
-            memberSwitch.value = 'on';
-        } else {
-            memberSwitch.value = 'off';
-        }
-        console.log(memberSwitch.value);
+        [...document.getElementsByName('memberSwitch')].forEach(function (item) {
+            item.checked = true;
+        });
+        const currentUserId = document.querySelector('#currentUserId');
+        const userId = document.getElementById('usersId').value;
+        const url = 'http://frisbee/editGroup';
+        const params = 'switch=off&userId=' + userId + '&currentUserId=' + currentUserId.value;
+        sendRequest(url, params, true);
+    }
+
+    async function allUnCheckedClick(event)
+    {
+        [...document.getElementsByName('memberSwitch')].forEach(function (item) {
+            item.checked = false;
+        });
+        const currentUserId = document.querySelector('#currentUserId');
+        const userId = document.getElementById('usersId').value;
+        const url = 'http://frisbee/editGroup';
+        const params = 'switch=on&userId=' + userId + '&currentUserId=' + currentUserId.value;
+        sendRequest(url, params, true);
     }
 
 
@@ -257,5 +294,13 @@ document.addEventListener('DOMContentLoaded', function () {
         while (object.firstChild) {
             object.removeChild(object.firstChild);
         }
+    }
+
+    function sendRequest(url, params, asynchrone)
+    {
+        const request = new XMLHttpRequest();
+        request.open("POST", url, asynchrone);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(params);
     }
 });

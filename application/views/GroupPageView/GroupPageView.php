@@ -53,7 +53,13 @@ class GroupPageView
         foreach ($userInGroupInfo as $user) {
             $name = $user['name'];
             $avatar = $user['avatar'];
-            $data = compact('name', 'avatar');
+            $userId = $user['userId'];
+            $userIsTracked = $user['userIsTracked'];
+            $isChecked = '';
+            if ($userIsTracked == 'on') {
+                $isChecked = 'checked';
+            }
+            $data = compact('name', 'avatar', 'userId', 'userIsTracked', 'isChecked');
             IncludeOrRequireMethods::requireTemplate('groupPageMembers.php', $data, false);
         }
         $userList = ob_get_contents();
@@ -91,12 +97,14 @@ class GroupPageView
         $groupAvatar = $groupInfo['groupAvatar'];
         $groupId = $groupInfo['groupId'];
         $groupName = $groupInfo['groupName'];
+        $usersId = implode(', ', $groupInfo['usersId']);
+        $currentUserId = $groupInfo['currentUserId'];
 
         $scriptPath = '/scripts/groupScript.js';
         $data = compact('scriptPath');
         $script = IncludeOrRequireMethods::requireTemplate('script.php', $data);
 
-        $data = compact('groupAvatar', 'groupName', 'navbar', 'deleteList', 'addModeratorsList', 'moderatorButton', 'userList', 'groupId', 'url', 'script');
+        $data = compact('groupAvatar', 'groupName', 'navbar', 'deleteList', 'addModeratorsList', 'currentUserId', 'moderatorButton', 'userList', 'groupId', 'url', 'script', 'usersId');
         $body = IncludeOrRequireMethods::requireTemplate('groupPageBody.php', $data);
         return $body;
     }

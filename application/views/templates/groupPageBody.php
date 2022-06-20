@@ -194,8 +194,10 @@
 
                         <div class="col align-self-end">
                             <p class="profile_info text-center alert-link mb-1">Birthday Tracker</p>
-                            <button type="button"  class="col-12 btn btn-outline-success profile_info my-1">Enable all </button>
-                            <button type="button" class="col-12 btn btn-outline-danger profile_info my-1">Disable everything</button>
+                            <button type="button"  class="col-12 btn btn-outline-success profile_info my-1" id="allChecked">Enable all</button>
+                            <input type="hidden" name="usersId" id="usersId" value="<?=$usersId?>">
+                            <input type="hidden" name="currentUserId" id="currentUserId" value="<?=$currentUserId?>">
+                            <button type="button" class="col-12 btn btn-outline-danger profile_info my-1" id="allUnChecked">Disable everything</button>
                         </div>
 
                     </div>
