@@ -4,7 +4,7 @@
     </a>
 
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-        <li><img class="p-1 border border-dark group-image col-7 my-auto" src=<?=$avatar?> ></li>
+        <li><img class="p-1 group-image col-7 my-auto" src=<?=$avatar?> ></li>
         <li><p>  <?=$name?>  </p></li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="http://frisbee/profile">Go to profile</a></li>

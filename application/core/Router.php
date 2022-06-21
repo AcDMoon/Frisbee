@@ -16,6 +16,8 @@ use Frisbee\controllers\SignupController\SignupController;
 use Frisbee\controllers\SupportController\SupportController;
 use Frisbee\controllers\VerificationController\VerificationController;
 use Frisbee\models\User\User;
+use Frisbee\views\ErrorsView\ErrorsView;
+use Frisbee\views\pageWithOnlyOnePrepositionView\pageWithOnlyOnePrepositionView;
 
 class Router
 {
@@ -42,6 +44,7 @@ class Router
                 return call_user_func_array($callback, array_values($params));
             }
         }
+        ErrorsView::renderErrorPage('404');
     }
 }
 
@@ -74,14 +77,8 @@ Router::route('/Profile(/{0,1})', function () {
     ProfileController::profile();
 });
 
-//will be refacted
-Router::route('/Group(/{0,1})', function () {
-    require $GLOBALS['base_dir'] . 'views/group-page/group-page.php';
-});
-
-//will be refacted
 Router::route('/EmailConfirm(/{0,1})', function () {
-    require $GLOBALS['base_dir'] . 'views/templates/emailConfirm.php';
+    pageWithOnlyOnePrepositionView::renderSimplePage('checkEmail');
 });
 
 Router::route('/confirm(/{0,1})', function () {
@@ -110,6 +107,11 @@ Router::route('/editGroup(/{0,1})', function () {
 
 Router::route('/groupInviteCheck(/{0,1})', function () {
     GroupInviteController::validate();
+});
+
+
+Router::route('/errorss(/{0,1})', function () {
+    ErrorsView::renderErrorPage('404');
 });
 
 

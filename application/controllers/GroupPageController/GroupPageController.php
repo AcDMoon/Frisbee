@@ -10,6 +10,7 @@ use Frisbee\models\EmailGroupTaglist\EmailGroupTaglist;
 use Frisbee\models\Groupss\Groupss;
 use Frisbee\models\Owners\Owners;
 use Frisbee\models\User\User;
+use Frisbee\views\ErrorsView\ErrorsView;
 use Frisbee\views\GroupPageView\GroupPageView;
 
 class GroupPageController
@@ -26,7 +27,7 @@ class GroupPageController
         if ($groupInfo) {
             return;
         }
-        require $GLOBALS['base_dir'] . 'views/templates/groupNotExistError.html';
+        ErrorsView::renderErrorPage('404');
         exit();
     }
 
@@ -39,7 +40,7 @@ class GroupPageController
             if ($userInGroup[0] == $userId) {
                 return;
             }
-            require $GLOBALS['base_dir'] . 'views/templates/userNotMember.html';
+            ErrorsView::renderErrorPage('403');
             exit();
         }
         foreach ($userInGroup as $user) {
@@ -47,7 +48,7 @@ class GroupPageController
                 return;
             }
         }
-        require $GLOBALS['base_dir'] . 'views/templates/userNotMember.html';
+        ErrorsView::renderErrorPage('403');
         exit();
     }
 

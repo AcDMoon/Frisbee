@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function formDataSend(event)
     {
+
         const name = formData.querySelector('#name'),
             date = formData.querySelector('#date'),
             nameErrorsObject = formData.querySelector('#nameErrors'),
@@ -19,7 +20,15 @@ document.addEventListener('DOMContentLoaded', function () {
         removeErrors(nameErrorsObject);
         removeErrors(dateErrorsObject);
 
-        let nameErrors = nameValidation(name),
+
+
+
+        name.value = name.value.replace(/^(\s+)/g, ' ');
+        if (name.value[0] === ' ') {
+            name.value = setCharAt(name.value, 0, '')
+        }
+
+        let nameErrors = nameValidation(name.value),
             dateErrors = dateValidation(date);
 
         if (nameErrors.length !== 0) {
@@ -39,19 +48,20 @@ document.addEventListener('DOMContentLoaded', function () {
         const primalNameObject = document.getElementById('primalName');
         let primalName = primalNameObject.innerHTML.split(': ')[1];
 
-        if (name.value === primalName) {
+
+        if (name === primalName) {
             return [];
         }
 
-        if (name.value === '') {
+        if (name === '' || name === ' ') {
             nameErrors.push('The field must not be empty!');
         }
-
-        if (name.value.length > 40) {
+        console.log(name.length)
+        if (name.length > 40) {
             nameErrors.push('Name must not exceed 40 characters!');
         }
 
-        if (/[^a-zа-яё ]/iu.test(name.value)) {
+        if (/[^a-zа-яё ]/iu.test(name)) {
             nameErrors.push('The name must not contain anything but letters!');
         }
         return nameErrors;
@@ -152,6 +162,14 @@ document.addEventListener('DOMContentLoaded', function () {
             groupErrors.push('Group name must not exceed 50 characters!');
         }
         return groupErrors;
+    }
+
+    function setCharAt(str,index,chr)
+    {
+        if (index > str.length - 1) {
+            return str;
+        }
+        return str.substring(0,index) + chr + str.substring(index + 1);
     }
 });
 

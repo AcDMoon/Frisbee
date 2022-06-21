@@ -16,7 +16,7 @@
 
                 <input type="hidden" name="addMember" value="true">
 
-                <div class="modal-body row justify-content-center form-floating ">
+                <div class="modal-body row justify-content-center form-floating mx-auto pb-0">
                     <input type="email" class="form-control ms-1" name="newMemberEmail" id="userEmail" placeholder="Email">
                     <label class="mx-3 mt-3" for="userEmail">Enter email</label>
                 </div>
@@ -104,7 +104,7 @@
 
                 <input type="hidden" name="groupId" value="<?=$groupId?>">
 
-                <div class="modal-body row justify-content-center">
+                <div class="modal-body row justify-content-center mx-auto pb-0">
                     <input type="file" name="groupAvatar" id="avatar" class="form-control ms-1">
                 </div>
 
@@ -129,7 +129,7 @@
 
                 <input type="hidden" name="groupId" id="groupId" value="<?=$groupId?>">
 
-                <div class="modal-body row justify-content-center form-floating ">
+                <div class="modal-body row justify-content-center form-floating mx-auto pb-0">
                     <input type="text" class="form-control ms-1" name="newGroupName" id="groupName" placeholder="New group name">
                     <label class="mx-3 mt-3" for="groupName">Enter new group name</label>
                 </div>

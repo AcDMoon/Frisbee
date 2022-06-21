@@ -66,6 +66,7 @@ class ProfileRedactor
         if (!isset(self::$data['name'])) {
             return;
         }
+        
         $user = new User(['email' => self::$data['primalEmail'], 'name' => self::$data['name']]);
         $user->updateObject();
     }

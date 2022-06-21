@@ -83,14 +83,15 @@ document.addEventListener('DOMContentLoaded', function () {
         if (emailErrors.length !== 0) {
             emailErrors.forEach(element => addTag(emailErrorsObject, element));
             event.preventDefault();
+        } else {
+            const request = new XMLHttpRequest();
+            const url = 'http://frisbee/editGroup';
+            const params = 'addMember=true&email=' + email.value + '&groupId=' + groupId.value;
+            request.open("POST", url, true);
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            request.send(params);
+            addTag(emailErrorsObject, 'Invitation sent in the mail!', 'green')
         }
-
-        const request = new XMLHttpRequest();
-        const url = 'http://frisbee/editGroup';
-        const params = 'addMember=true&email=' + email.value + '&groupId=' + groupId.value;
-        request.open("POST", url, true);
-        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        request.send(params);
     }
 
 
@@ -279,11 +280,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    function addTag(object, value)
+    function addTag(object, value, color = 'red')
     {
         let div = document.createElement('li');
         div.className = "m-0 p-0 ms-2";
-        div.style = "color: red";
+        div.style = "color: " + color;
         div.innerHTML = value
         object.append(div)
     }

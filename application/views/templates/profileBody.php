@@ -9,8 +9,8 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="downloadAvatarLabel">Download avatar</h5>
                 </div>
-                <div class="modal-body row justify-content-center">
-                    <input type="file" name="avatar" id="avatar" class="form-control ms-1">
+                <div class="modal-body row justify-content-center mx-auto mt-3">
+                    <input type="file" name="avatar" id="avatar" class="form-control">
                 </div>
 
                 <ul id="avatarErrors">
@@ -34,8 +34,8 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="createGroupLabel">Create your group</h5>
                 </div>
-                <div class="modal-body row justify-content-center form-floating ">
-                    <input type="text" class="form-control ms-1" id="group" name="newGroup" placeholder="Name">
+                <div class="modal-body row justify-content-center form-floating mx-auto mt-3">
+                    <input type="text" class="form-control" id="group" name="newGroup" placeholder="Name">
                     <label class="mx-3 mt-3" for="GroupName">Enter name of your future group</label>
                 </div>
 
@@ -62,19 +62,19 @@
                     <h4 class="modal-title" id="changeDataLabel">Change profile details</h4>
                 </div>
 
-                <h5 class="modal-title m-0 p-0 ms-2 pt-2" id="changeDataLabel">Change Full Name</h5>
+                <h5 class="modal-title m-0 p-0 ms-3 pt-2" id="changeDataLabel">Change Full Name</h5>
 
-                <div class="modal-body row justify-content-center form-floating ">
-                    <input type="text" class="form-control ms-1 p-0 ps-2" name="name" id="name" placeholder="name" value="<?=$name?>">
+                <div class="modal-body row justify-content-center form-floating mx-auto mt-3 pb-0">
+                    <input type="text" class="form-control p-0 ps-2" name="name" id="name" placeholder="name" value="<?=$name?>">
                 </div>
 
                 <ul id="nameErrors">
                 </ul>
 
-                <h5 class="modal-title m-0 p-0 ms-2 pt-2" id="changeDataLabel">Change Date of Birth</h5>
+                <h5 class="modal-title m-0 p-0 ms-3 pt-2" id="changeDataLabel">Change Date of Birth</h5>
 
-                <div class="modal-body row justify-content-center form-floating ">
-                    <input type="date" class="form-control ms-1 p-0 ps-2" name="date" id="date" placeholder="date" value="<?=$date?>">
+                <div class="modal-body row justify-content-center form-floating mx-auto mt-3 pb-0">
+                    <input type="date" class="form-control p-0 ps-2" name="date" id="date" placeholder="date" value="<?=$date?>">
                 </div>
 
                 <ul id="dateErrors">
@@ -105,7 +105,9 @@
 
                     <div class="col-5 text-center p-0 mx-2">
                         <img class="img-fluid border border-dark avatar d-block mx-auto" src="<?=$avatar?>" alt="X_X">
-                        <button class="btn btn-outline-primary my-1 w-100 profile_info" data-bs-toggle="modal" data-bs-target="#downloadAvatar">set image</button>
+                        <div class="my-1" style="background-color: rgba(0,118,247,0.2)">
+                            <button class="btn btn-outline-primary w-100 profile_info" data-bs-toggle="modal" data-bs-target="#downloadAvatar">set image</button>
+                        </div>
                     </div>
 
                     <?php if (!isset($email)) {

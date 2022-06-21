@@ -74,6 +74,10 @@ class Registration
 
     private static function nameCheck(string $name)
     {
+        $name = preg_replace('/\s+/', ' ', $name);
+        if ($name[0] == ' ') {
+            $name = substr_replace($name, '', 0, 1);
+        }
         if ($name == '') {
             self::$errors['nameErrors'][] = 'This field is required!';
             return;
@@ -132,7 +136,7 @@ class Registration
             Cookie::setCookie($email, $hash['passwordHash']);
             $title = 'Frisbee - Email verification';
             $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
-            $content = '<a href="http://' . $domain['domain'] . '/confirm?hash=' . $hash['emailHash'] . '">To confirm, click this</a>';
+            $content = '<p> Someone tried to sign up for an Frisbee account with '. $email .'. If it was you <a href="http://' . $domain['domain'] . '/confirm?hash=' . $hash['emailHash'] . '">, click this, to confirm</a></p>';
             Mailer::sendMessage($email, $title, $content);
             return false;
         } else {
@@ -140,3 +144,5 @@ class Registration
         }
     }
 }
+
+//Someone tried to sign up for an Instagram account with kyrisim@mail.ru. If it was you, click this, to confirm.

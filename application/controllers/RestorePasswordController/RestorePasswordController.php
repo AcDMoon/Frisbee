@@ -31,7 +31,7 @@ class RestorePasswordController
             $user->updateObject();
             $title = 'Frisbee - Restore password';
             $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
-            $content = '<a href="http://' . $domain['domain'] . '/restore?hash=' . $hash . '">To restore, click this</a>';
+            $content = '<p> Someone tried to restore password for an Frisbee account with '. $email .'. If it was you <a href="http://' . $domain['domain'] . '/restore?hash=' . $hash . '"> ,click this, to restore</a></p>';
             Mailer::sendMessage($email, $title, $content);
             header("Location: http://" . $domain['domain'] . "/EmailConfirm");
             exit();

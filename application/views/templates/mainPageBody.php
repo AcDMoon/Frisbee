@@ -1,4 +1,4 @@
-<body class="background">
+<body class="">
 
 <?=$navbar?>
 
@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        <div class="text-center">
+        <div class="text-center fixed-bottom w-50 mx-auto">
             <a href="signup">
                 <button class="btn-lg btn-dark border border-white my-5 py-4 w-50" >Sign up today</button>
             </a>

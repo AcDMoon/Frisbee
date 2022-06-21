@@ -5,6 +5,7 @@ namespace Frisbee\controllers\VerificationController;
 use Frisbee\controllers\Cookie\Cookie;
 use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\models\User\User;
+use Frisbee\views\ErrorsView\ErrorsView;
 
 class VerificationController
 {
@@ -14,7 +15,7 @@ class VerificationController
             $hash = $_GET['hash'];
             return $hash;
         }
-        require $GLOBALS['base_dir'] . 'views/templates/emailConfirmError.html';
+        ErrorsView::renderErrorPage('403');
         exit();
     }
 
@@ -31,8 +32,9 @@ class VerificationController
             $user->updateObject();
             $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
             header("Location: http://" . $domain['domain'] . "/login");
+            exit();
         }
-        require $GLOBALS['base_dir'] . 'views/templates/verificationError.html';
+        ErrorsView::renderErrorPage('403');
     }
 
     public static function passwordVerification(string $email, string $pass): bool

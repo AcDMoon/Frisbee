@@ -10,6 +10,7 @@ use Frisbee\models\GroupsInvites\GroupsInvites;
 use Frisbee\models\Groupss\Groupss;
 use Frisbee\models\Owners\Owners;
 use Frisbee\models\User\User;
+use Frisbee\views\ErrorsView\ErrorsView;
 
 class GroupPageModerationController
 {
@@ -126,7 +127,7 @@ class GroupPageModerationController
             $content = '<a href="http://' . $domain['domain'] . '/editGroup?hash=' . $hash . '">To accept the invitation, click on this text</a>';
 
             Mailer::sendMessage($newMemberEmail, $title, $content);
-            var_dump('Приглашение отправлено на почту пользователю!');
+            header("Location: http://" . $domain['domain'] . "/group/" . $groupId);
             exit();
         }
     }
@@ -137,7 +138,7 @@ class GroupPageModerationController
         $groupInvite = new GroupsInvites(['hash' => $hash]);
         $groupInviteInfo = $groupInvite->getInfo(['userId', 'groupId']);
         if (!$groupInviteInfo) {
-            var_dump('error');
+            ErrorsView::renderErrorPage('403');
             exit();
         }
 
