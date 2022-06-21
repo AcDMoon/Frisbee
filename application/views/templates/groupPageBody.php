@@ -212,7 +212,7 @@
                     <?=$userList?>
 
                     <button class="row justify-content-center col-12 col-sm-9 col-md-7 col-lg-5 bg-light radius mx-4 mb-4" data-bs-toggle="modal" data-bs-target="#addMember">
-                        <img class="p-1 img-fluid col-2 group-image my-auto" src="http://frisbee//images/plus.webp">
+                        <img class="p-1 img-fluid col-2 group-image my-auto" src="<?=$url . 'images/plus.webp'?>">
                         <p class="col fw-bold fs-6 no_wrap my-auto pe-0">Add new member</p>
                     </button>
 
