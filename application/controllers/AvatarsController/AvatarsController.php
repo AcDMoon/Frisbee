@@ -3,7 +3,7 @@
 namespace Frisbee\controllers\AvatarsController;
 
 
-use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 
 class AvatarsController
 {
@@ -11,27 +11,19 @@ class AvatarsController
     {
         $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
         $defaultAvatars = IncludeOrRequireMethods::requireConfig('defaultAvatar.php');
+        $pattern = '/^' . $objectId . '\./';
+        $avatar = $defaultAvatars['defaultAvatar'];
         if ($avatarType == 'user') {
-            $avatar = $defaultAvatars['defaultUserAvatar'];
-            $pattern = '/^' . $objectId . '\./';
             $avatarsDirectory = 'profileAvatars/';
-            foreach (scandir($avatarsDirectory) as $item => $value) {
-                if (preg_match($pattern, $value)) {
-                    $avatar = 'http://' . $domain['domain'] . '/' . $avatarsDirectory . $value . '?' . time();
-                }
-            }
-            return $avatar;
         }
         if ($avatarType == 'group') {
-            $avatar = $defaultAvatars['defaultGroupAvatar'];
-            $pattern = '/^' . $objectId . '\./';
             $avatarsDirectory = 'groupAvatars/';
-            foreach (scandir($avatarsDirectory) as $item => $value) {
-                if (preg_match($pattern, $value)) {
-                    $avatar = 'http://' . $domain['domain'] . '/' . $avatarsDirectory . $value . '?' . time();
-                }
-            }
-            return $avatar;
         }
+        foreach (scandir($avatarsDirectory) as $item => $value) {
+            if (preg_match($pattern, $value)) {
+                $avatar = 'http://' . $domain['domain'] . '/' . $avatarsDirectory . $value . '?' . time();
+            }
+        }
+        return $avatar;
     }
 }
