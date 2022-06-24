@@ -17,10 +17,9 @@ class RequestProcessor
         }
         $array = explode('\\', get_class($object));
         $this->tableName = $array[count($array) - 1];
-        foreach ($object as $attribute => $value) {
-            $this->attributes[] = $attribute;
-            $this->attributesValue[] = $value;
-        }
+
+        $this->attributes = array_keys(get_object_vars($object));
+        $this->attributesValue = array_values(get_object_vars($object));
     }
 
 

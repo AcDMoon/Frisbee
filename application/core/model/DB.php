@@ -61,14 +61,12 @@ class DB
     {
         if ('' === $attribute) {
             $query = "SELECT * FROM $table";
-            $receivedData = self::execute($query);
-            return $receivedData;
+            return self::execute($query);
         }
         $whereValue = ':' . $attribute;
         $query = "SELECT * FROM $table WHERE $attribute = $whereValue";
         $param = [$attribute => $value];
-        $receivedData = self::execute($query, $param);
-        return $receivedData;
+        return self::execute($query, $param);
     }
 
 
@@ -95,7 +93,7 @@ class DB
         $param = [];
         foreach ($attributes as $item => $value) {
             $whereValue = $whereValue . $value . " = :" . $value . " AND ";
-            $param[$attributes[$item]] = $values[$item];
+            $param[$value] = $values[$item];
         }
         $whereValue = substr_replace($whereValue, " ", iconv_strlen($whereValue) - 5);
         $query = "DELETE FROM $table WHERE $whereValue";
