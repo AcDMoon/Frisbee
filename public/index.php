@@ -5,12 +5,13 @@ use Frisbee\core\Router;
 $GLOBALS['base_dir'] = __DIR__ . '/../application/';
 
 $domain = require $GLOBALS['base_dir'] . 'config/validDomain.php';
-if ('frisbee' === $domain['localDomain']) {
-    $errorMode = 1;
+
+
+if ('frisbee' === $domain['domain']) {
+    error_reporting(E_ALL);
+    ini_set("display_errors", 1);
 }
 
-error_reporting(E_ALL);
-ini_set("display_errors", $errorMode);
 
 spl_autoload_register(function ($class) {
     $prefix = 'Frisbee\\';
