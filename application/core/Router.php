@@ -9,6 +9,7 @@ use Frisbee\controllers\GroupPageController\GroupPageController;
 use Frisbee\controllers\GroupPageController\GroupPageModerationController;
 use Frisbee\controllers\LoginController\LoginController;
 use Frisbee\controllers\MainPageController\MainPageController;
+use Frisbee\controllers\NavbarInfoPagesController\NavbarInfoPagesController;
 use Frisbee\controllers\ProfileController\ProfileController;
 use Frisbee\controllers\ProfileController\ProfileEditor;
 use Frisbee\controllers\RestorePasswordController\RestorePasswordController;
@@ -16,6 +17,7 @@ use Frisbee\controllers\SignupController\SignupController;
 use Frisbee\controllers\SupportController\SupportController;
 use Frisbee\controllers\VerificationController\VerificationController;
 use Frisbee\views\ErrorsView\ErrorsView;
+use Frisbee\views\NavbarInfoPagesView\NavbarInfoPagesView;
 use Frisbee\views\pageWithOnlyOnePrepositionView\pageWithOnlyOnePrepositionView;
 
 class Router
@@ -49,15 +51,15 @@ class Router
 
 
 Router::route('/AboutUs(/{0,1})', function () {
-    AboutUsController::aboutUs();
+    NavbarInfoPagesController::giveAboutUsPage();
 });
 
 Router::route('/Support(/{0,1})', function () {
-    SupportController::support();
+    NavbarInfoPagesController::giveSupportPage();
 });
 
 Router::route('/Donation(/{0,1})', function () {
-    DonationController::donation();
+    NavbarInfoPagesController::giveDonationPage();
 });
 
 Router::route('/SignUp(/{0,1})', function () {
