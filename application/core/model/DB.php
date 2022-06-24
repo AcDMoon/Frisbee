@@ -45,15 +45,14 @@ class DB
     public static function add($table, $attributes, $values): void
     {
         $param = [];
-        for ($i = 0; $i <= count($attributes) - 1; $i++) {
-            $param[$attributes[$i]] = $values[$i];
-        }
-        for ($i = 0; $i <= count($values) - 1; $i++) {
-            $values[$i] = ':' . $attributes[$i];
+        $valuesForQuery = $values;
+        foreach ($attributes as $index => $value) {
+            $param[$value] =  $values[$index];
+            $valuesForQuery[$index] = ':' . $value;
         }
         $attributes = implode(', ', $attributes);
-        $values = implode(', ', $values);
-        $query  = "INSERT INTO $table ( $attributes ) VALUES ( $values )";
+        $valuesForQuery = implode(', ', $valuesForQuery);
+        $query  = "INSERT INTO $table ( $attributes ) VALUES ( $valuesForQuery )";
         self::execute($query, $param);
     }
 
