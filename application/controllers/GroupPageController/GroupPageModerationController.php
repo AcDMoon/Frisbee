@@ -82,9 +82,11 @@ class GroupPageModerationController
     }
 
 
-    private static function setAvatar($avatar, $groupId, $domain)
+    private static function resetAvatar($avatar, $groupId, $domain)
     {
         if ($avatar) {
+            $groups = new Groupss(['groupId' => $groupId, 'isNewAvatar' => 1]);
+            $groups->updateObject();
             $imageType = explode('/', $avatar['type'])[1];
             $newName = $groupId . '.' . $imageType;
             self::deleteAvatar($groupId);
@@ -184,7 +186,7 @@ class GroupPageModerationController
         self::addMemberProcedure($newMemberEmail, $groupId, $addMember, $domain);
         self::addModerators($moderatorsList, $groupId, $domain);
         self::deleteModerators($deleteModeratorsList, $groupId, $domain);
-        self::setAvatar($avatar, $groupId, $domain);
+        self::resetAvatar($avatar, $groupId, $domain);
         self::setNewGroupName($newGroupName, $groupId, $domain);
         self::deleteGroup($deleteGroup, $groupId, $domain);
         self::changeTrackedStatus($currentUserId, $userId, $switch);

@@ -14,5 +14,6 @@ class User extends Entities
     public string $date;
     public string $hash;
     public bool $verification;
+    public string $isNewAvatar;
     protected array $uniqueFields = ['userId', 'email', 'hash'];
 }

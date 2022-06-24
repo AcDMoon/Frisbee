@@ -34,13 +34,14 @@ class ProfileEditor
         }
     }
 
-    private static function changeAvatar()
+    private static function reinstallAvatar()
     {
         if (!self::$data['avatar']) {
             return;
         }
-        $user = new User(['email' => self::$data['primalEmail']]);
+        $user = new User(['email' => self::$data['primalEmail'], 'isNewAvatar' => 1]);
         $userData = $user->getData(['userId']);
+        $user->updateObject();
         $id = $userData[0];
         $imageType = explode('/', self::$data['avatar']['type'])[1];
         $newName = $id . '.' . $imageType;
@@ -48,22 +49,13 @@ class ProfileEditor
         copy($_FILES['avatar']['tmp_name'], 'profileAvatars/' . $newName);
     }
 
-    private static function changeName()
+    private static function changeNameAndDate()
     {
         if (!isset(self::$data['name'])) {
             return;
         }
 
-        $user = new User(['email' => self::$data['primalEmail'], 'name' => self::$data['name']]);
-        $user->updateObject();
-    }
-
-    private static function changeDate()
-    {
-        if (!isset(self::$data['date'])) {
-            return;
-        }
-        $user = new User(['email' => self::$data['primalEmail'], 'date' => self::$data['date']]);
+        $user = new User(['email' => self::$data['primalEmail'], 'name' => self::$data['name'], 'date' => self::$data['date']]);
         $user->updateObject();
     }
 
@@ -92,9 +84,8 @@ class ProfileEditor
     public static function editProfile()
     {
         self::convertPostAndFilesToVariables();
-        self::changeAvatar();
-        self::changeName();
-        self::changeDate();
+        self::reinstallAvatar();
+        self::changeNameAndDate();;
         self::createGroup();
         $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
         header("Location: http://" . $domain['domain'] . "/profile");

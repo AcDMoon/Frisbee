@@ -11,5 +11,6 @@ class Groupss extends Entities
     public string $owners;
     public string $dateOfCreate;
     public int $userValue;
+    public string $isNewAvatar;
     protected array $uniqueFields = ['groupId'];
 }

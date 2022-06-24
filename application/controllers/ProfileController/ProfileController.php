@@ -17,14 +17,21 @@ class ProfileController
         $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
         if (VerificationController::cookieVerification()) {
             $user = new User(['email' => $_COOKIE['email']]);
-            $userInfo = $user->getData(['userId', 'name', 'date','email']);
+            $userObtainedData = $user->getData(['userId', 'name', 'date', 'email', 'isNewAvatar']);
 
-            $userId = $userInfo[0];
-            $avatar = AvatarsController::getAvatar('user', $userId);
-            $userData = ['name' => $userInfo[1], 'date' => $userInfo[2], 'email' => $userInfo[3]];
+            $userId = $userObtainedData[0];
+            if ($userObtainedData[4]) {
+                $avatar = AvatarsController::getAvatar('user', $userId, true);
+                $user = new User(['email' => $_COOKIE['email'], 'isNewAvatar' => 0]);
+                $user->updateObject();
+            } else {
+                $avatar = AvatarsController::getAvatar('user', $userId);
+            }
 
-            $emailGroupTaglist = new EmailGroupTaglist(['userId' => (int) $userId]);
-            $userGroupsId = $emailGroupTaglist->getData(['groupId']);
+            $userData = ['name' => $userObtainedData[1], 'date' => $userObtainedData[2], 'email' => $userObtainedData[3]];
+
+            $emailGroupTagList = new EmailGroupTaglist(['userId' => (int) $userId]);
+            $userGroupsId = $emailGroupTagList->getData(['groupId']);
 
             $groupsData = [];
 
@@ -33,8 +40,8 @@ class ProfileController
             }
 
             foreach ($userGroupsId as $item) {
-                $groupss = new Groupss(['groupId' => (int) $item[0]]);
-                $groupName = $groupss->getData(['groupName'])[0];
+                $groups = new Groupss(['groupId' => (int) $item[0]]);
+                $groupName = $groups->getData(['groupName'])[0];
                 $groupAvatar = AvatarsController::getAvatar('group', $item[0]);
                 $groupsData[] = ['groupUrl' => 'http://' . $domain['domain'] . '/group/' . $item[0],
                     'groupName' => $groupName,

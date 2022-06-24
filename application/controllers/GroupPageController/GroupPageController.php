@@ -82,10 +82,18 @@ class GroupPageController
     private static function collectGroupInfo($groupId, $currentUserId)
     {
         $group = new Groupss(['groupId' => $groupId]);
-        $groupInfo = $group->getData(['groupName']);
+        $groupInfo = $group->getData(['groupName', 'isNewAvatar']);
         self::$groupInfo['groupId'] = $groupId;
         self::$groupInfo['groupName'] = $groupInfo[0];
-        self::$groupInfo['groupAvatar'] = AvatarsController::getAvatar('group', $groupId);
+
+        if ($groupInfo[1]) {
+            self::$groupInfo['groupAvatar'] = AvatarsController::getAvatar('group', $groupId, true);
+            $group = new Groupss(['groupId' => $groupId, 'isNewAvatar' => 0]);
+            $group->updateObject();
+        } else {
+            self::$groupInfo['groupAvatar'] = AvatarsController::getAvatar('group', $groupId);
+        }
+
         self::$groupInfo['currentUserId'] = $currentUserId;
     }
 
