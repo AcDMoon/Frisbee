@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
     formInviteUser = document.getElementById('formInviteUser'),
     formAddModerators = document.getElementById('formAddModerators'),
     addModerators = document.getElementById('addModerators'),
+    formDeleteModerators = document.getElementById('formDeleteModerators'),
+    deleteModerators = document.getElementById('deleteModerators'),
     formGroupAvatar = document.getElementById('formGroupAvatar'),
     formRenameGroup = document.getElementById('formRenameGroup'),
     formDeleteGroup = document.getElementById('formDeleteGroup'),
@@ -43,6 +45,8 @@ document.addEventListener('DOMContentLoaded', function () {
     formInviteUser.addEventListener('submit', formInviteUserSend);
     formAddModerators.addEventListener('submit', formAddModeratorsSend);
     addModerators.addEventListener('hidden.bs.modal', addModeratorsClose);
+    formDeleteModerators.addEventListener('submit', formDeleteModeratorsSend);
+    deleteModerators.addEventListener('hidden.bs.modal', deleteModeratorsClose);
     formGroupAvatar.addEventListener('submit', formGroupAvatarSend);
     formRenameGroup.addEventListener('submit', formRenameGroupSend);
     formDeleteGroup.addEventListener('submit', formDeleteGroupSend);
@@ -71,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function formInviteUserSend(event)
     {
-        const email = formInviteUser.querySelector('#userEmail'),
+        const email = formInviteUser.querySelector('#email'),
         emailErrorsObject = formInviteUser.querySelector('#emailErrors'),
         groupId = formInviteUser.querySelector('#groupId');
 
@@ -110,6 +114,24 @@ document.addEventListener('DOMContentLoaded', function () {
         const addModeratorsWarning = formAddModerators.querySelector('#addModeratorsWarning');
         if (addModeratorsWarning.innerHTML !== '') {
             addModeratorsWarning.innerHTML = '';
+        }
+    }
+    //
+    async function formDeleteModeratorsSend(event)
+    {
+        const deleteModeratorsWarning = formDeleteModerators.querySelector('#deleteModeratorsWarning');
+        if (deleteModeratorsWarning.innerHTML === '') {
+            deleteModeratorsWarning.innerHTML = 'Are you sure you want to take away these members moderator rights? (Click "Add" again to continue)';
+            event.preventDefault();
+        }
+    }
+
+    //
+    async function deleteModeratorsClose(event)
+    {
+        const deleteModeratorsWarning = formDeleteModerators.querySelector('#deleteModeratorsWarning');
+        if (deleteModeratorsWarning.innerHTML !== '') {
+            deleteModeratorsWarning.innerHTML = '';
         }
     }
 
