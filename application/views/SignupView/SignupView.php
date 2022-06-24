@@ -2,7 +2,7 @@
 
 namespace Frisbee\views\SignupView;
 
-use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 
 class SignupView
 {

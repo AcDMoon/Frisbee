@@ -2,7 +2,7 @@
 
 namespace Frisbee\views\GroupPageView;
 
-use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\views\NavbarView\NavbarView;
 
 class GroupPageView
@@ -27,24 +27,35 @@ class GroupPageView
     }
 
 
-    private static function renderModeratorsList($userInGroupInfo)
+    private static function renderModeratorsList($userInGroupInfo, $inputName, $toAdd)
     {
+
+
+
+
         ob_start();
         foreach ($userInGroupInfo as $user) {
-            if ($user['isOwner']) {
-                continue;
+            if ($toAdd) {
+                if ($user['isOwner']) {
+                    continue;
+                }
+            } else {
+                if (!$user['isOwner']) {
+                    continue;
+                }
             }
-            $inputName = 'moderatorsList[]';
-            $isOwner = $user['isOwner'];
             $name = $user['name'];
             $userId = $user['userId'];
-            $data = compact('name', 'userId', 'isOwner', 'inputName');
+            $data = compact('name', 'userId', 'inputName');
             IncludeOrRequireMethods::requireTemplate('groupPageMembersList.php', $data, false);
         }
         $moderatorsList = ob_get_contents();
         ob_end_clean();
         return $moderatorsList;
     }
+
+
+
 
 
     private static function renderUserList($userInGroupInfo)
@@ -85,7 +96,8 @@ class GroupPageView
 
         $deleteList = self::renderDeleteList($userInGroupInfo);
 
-        $addModeratorsList = self::renderModeratorsList($userInGroupInfo);
+        $addModeratorsList = self::renderModeratorsList($userInGroupInfo, 'moderatorsList[]', true);
+        $deleteModeratorsList = self::renderModeratorsList($userInGroupInfo, 'deleteModeratorsList[]', false);
 
         $moderatorButton = '';
         if ($userIsModerator) {
@@ -100,23 +112,24 @@ class GroupPageView
         $usersId = implode(', ', $groupInfo['usersId']);
         $currentUserId = $groupInfo['currentUserId'];
 
-        $scriptPath = '/scripts/groupScript.js';
-        $data = compact('scriptPath');
-        $script = IncludeOrRequireMethods::requireTemplate('script.php', $data);
 
-        $data = compact('groupAvatar', 'groupName', 'navbar', 'deleteList', 'addModeratorsList', 'currentUserId', 'moderatorButton', 'userList', 'groupId', 'url', 'script', 'usersId');
+
+        $data = compact('groupAvatar', 'groupName', 'navbar', 'deleteList', 'addModeratorsList', 'deleteModeratorsList', 'currentUserId', 'moderatorButton', 'userList', 'groupId', 'url', 'usersId');
         $body = IncludeOrRequireMethods::requireTemplate('groupPageBody.php', $data);
         return $body;
     }
-
-
 
 
     public static function renderGroupPage(array $userInfo, array $groupInfo, array $userInGroupInfo, bool $userIsModerator, string $url)
     {
         $head = self::renderHead();
         $body = self::renderBody($userInfo, $groupInfo, $userInGroupInfo, $userIsModerator, $url);
-        $data = compact('body', 'head');
+
+        $scriptPath = '/scripts/groupScript.js';
+        $data = compact('scriptPath');
+        $script = IncludeOrRequireMethods::requireTemplate('script.php', $data);
+
+        $data = compact('body', 'head', 'script');
         IncludeOrRequireMethods::requireTemplate('html.php', $data, false);
     }
 }

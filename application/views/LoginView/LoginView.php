@@ -2,9 +2,7 @@
 
 namespace Frisbee\views\LoginView;
 
-
-
-use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 
 class LoginView
 {

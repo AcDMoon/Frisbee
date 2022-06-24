@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/.idea/inspectionProfiles" />
+      <excludeFolder url="file://$MODULE_DIR$/application/config" />
+      <excludeFolder url="file://$MODULE_DIR$/application/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/public/styles/.sass-cache/d98000b09932bb48d3b99f22c7ff24787eeee3b5" />
+      <excludeFolder url="file://$MODULE_DIR$/public/forFutureDevelopments" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

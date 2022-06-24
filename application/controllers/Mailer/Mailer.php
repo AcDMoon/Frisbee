@@ -2,7 +2,7 @@
 
 namespace Frisbee\controllers\Mailer;
 
-use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use PHPMailer\PHPMailer\PHPMailer;
 
 require $GLOBALS['base_dir'] . 'lib/PHPMailer-master/src/Exception.php';

@@ -2,7 +2,7 @@
 
 namespace Frisbee\views\NavbarView;
 
-use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 
 class NavbarView
 {

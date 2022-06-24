@@ -2,7 +2,7 @@
 
 namespace Frisbee\core\model;
 
-use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use PDO;
 use PDOException;
 
@@ -103,44 +103,6 @@ class DB
         }
         $query = "DELETE FROM $table WHERE $whereValue";
         self::execute($query, $param);
-    }
-
-
-    public static function request(string $method, object $object, string $keyField = '')
-    {
-        $array = explode('\\', get_class($object));
-        $tableName = $array[count($array) - 1];
-        $attributes = [];
-        $attributesValue = [];
-        foreach ($object as $attribute => $value) {
-            $attributes[] = $attribute;
-            $attributesValue[] = $value;
-        }
-
-        if ('add' === $method) {
-            self::add($tableName, $attributes, $attributesValue);
-            return;
-        }
-
-        if ('get' === $method) {
-            if (!isset($attribute)) {
-                $attribute = '';
-                $value = '';
-            }
-            $receivedData = self::get($tableName, $attribute, $value);
-            return $receivedData;
-        }
-
-        if ('update' === $method) {
-            $keyField = [$keyField => $object->$keyField];
-            self::update($tableName, $attributes, $attributesValue, $keyField);
-            return;
-        }
-
-        if ('delete' === $method) {
-            self::delete($tableName, $attribute, $value);
-            return;
-        }
     }
 
 

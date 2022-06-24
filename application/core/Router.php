@@ -10,12 +10,11 @@ use Frisbee\controllers\GroupPageController\GroupPageModerationController;
 use Frisbee\controllers\LoginController\LoginController;
 use Frisbee\controllers\MainPageController\MainPageController;
 use Frisbee\controllers\ProfileController\ProfileController;
-use Frisbee\controllers\ProfileController\ProfileRedactor;
+use Frisbee\controllers\ProfileController\ProfileEditor;
 use Frisbee\controllers\RestorePasswordController\RestorePasswordController;
 use Frisbee\controllers\SignupController\SignupController;
 use Frisbee\controllers\SupportController\SupportController;
 use Frisbee\controllers\VerificationController\VerificationController;
-use Frisbee\models\User\User;
 use Frisbee\views\ErrorsView\ErrorsView;
 use Frisbee\views\pageWithOnlyOnePrepositionView\pageWithOnlyOnePrepositionView;
 
@@ -90,7 +89,7 @@ Router::route('/restore(/{0,1})', function () {
 });
 
 Router::route('/profileRedactor(/{0,1})', function () {
-    ProfileRedactor::redactProfile();
+    ProfileEditor::editProfile();
 });
 
 Router::route('/logout(/{0,1})', function () {
@@ -109,24 +108,9 @@ Router::route('/groupInviteCheck(/{0,1})', function () {
     GroupInviteController::validate();
 });
 
-
 Router::route('/errorss(/{0,1})', function () {
     ErrorsView::renderErrorPage('404');
 });
 
 
-//Only for tests
-Router::route('/deleteMe(/{0,1})', function () {
-    if (isset($_GET['email'])) {
-        $user = new User(['email' => $_GET['email']]);
-        $userId = $user->getInfo(['userId'])[0];
 
-        $user = new User(['userId' => $userId]);
-        $user->deleteObject();
-    }
-});
-
-//Only for tests
-Router::route('/test(/{0,1})', function () {
-    require $GLOBALS['base_dir'] . 'core/model/test.php';
-});

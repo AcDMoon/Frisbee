@@ -1,6 +1,6 @@
 <?php
 
-namespace Frisbee\controllers\IncludeOrRequireMethods;
+namespace Frisbee\views\IncludeOrRequireMethods;
 
 class IncludeOrRequireMethods
 {

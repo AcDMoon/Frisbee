@@ -3,7 +3,7 @@
 namespace Frisbee\views\MainPageView;
 
 
-use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\views\NavbarView\NavbarView;
 
 class MainPageView

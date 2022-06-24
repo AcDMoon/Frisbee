@@ -2,7 +2,7 @@
 
 namespace Frisbee\controllers\Cookie;
 
-use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 
 class Cookie
 {

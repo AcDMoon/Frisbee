@@ -2,7 +2,7 @@
 
 namespace Frisbee\views\RestorePasswordView;
 
-use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 
 class RestorePasswordView
 {
@@ -10,7 +10,12 @@ class RestorePasswordView
     {
         $head = self::renderHead();
         $body = self::renderBody($data);
-        $data = compact('body', 'head');
+
+        $scriptPath = '/scripts/restorePasswordScript.js';
+        $requireData = compact('scriptPath');
+        $script = IncludeOrRequireMethods::requireTemplate('script.php', $requireData);
+
+        $data = compact('body', 'head', 'script');
         IncludeOrRequireMethods::requireTemplate('html.php', $data, false);
     }
 
@@ -27,11 +32,7 @@ class RestorePasswordView
     private static function renderBody($data)
     {
         if (isset($data['emailFromHash'])) {
-            $scriptPath = '/scripts/restorePasswordScript.js';
-            $requireData = compact('scriptPath');
-            $script = IncludeOrRequireMethods::requireTemplate('script.php', $requireData);
-
-            $data = compact('data', 'script');
+            $data = compact('data');
             $body = IncludeOrRequireMethods::requireTemplate('restorePasswordBody(passwordForm).php', $data);
             return $body;
         }
