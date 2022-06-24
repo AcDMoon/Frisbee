@@ -7,7 +7,7 @@ use Frisbee\models\User\User;
 
 class GroupInviteController
 {
-    private static function postDataAvailability()
+    private static function convertPostToVariables(): array
     {
         $email = $_POST['email'] ?? '';
         $groupId = $_POST['groupId'] ?? '';
@@ -15,11 +15,11 @@ class GroupInviteController
     }
 
 
-    private static function emailIsExistCheck($email)
+    private static function emailIsExistCheck($email): bool
     {
         $user = new User(['email' => $email]);
-        $userInfo = $user->getInfo(['email']);
-        if (!$userInfo) {
+        $userData = $user->getData(['email']);
+        if (!$userData) {
             return false;
         }
         return true;
@@ -29,11 +29,11 @@ class GroupInviteController
     private static function userAlreadyInGroupCheck($email, $groupId)
     {
         $user = new User(['email' => $email]);
-        $userId = $user->getInfo(['userId'])[0];
+        $userId = $user->getData(['userId'])[0];
 
 
         $usersGroups = new EmailGroupTaglist(['groupId' => $groupId, 'userId' => $userId]);
-        $userAlreadyInGroup = $usersGroups->getInfo();
+        $userAlreadyInGroup = $usersGroups->getData();
 
         if ($userAlreadyInGroup) {
             return true;
@@ -44,7 +44,7 @@ class GroupInviteController
 
     public static function validate()
     {
-        $postData = self::postDataAvailability();
+        $postData = self::convertPostToVariables();
         extract($postData);
 
         $emailIsExist = self::emailIsExistCheck($email);

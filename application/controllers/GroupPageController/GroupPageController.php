@@ -3,7 +3,7 @@
 namespace Frisbee\controllers\GroupPageController;
 
 use Frisbee\controllers\AvatarsController\AvatarsController;
-use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\controllers\VerificationController\VerificationController;
 use Frisbee\models\BirthdayMonitoring\BirthdayMonitoring;
 use Frisbee\models\EmailGroupTaglist\EmailGroupTaglist;
@@ -23,7 +23,7 @@ class GroupPageController
     private static function groupExist($groupId)
     {
         $group = new Groupss(['groupId' => $groupId]);
-        $groupInfo = $group->getInfo(['groupId']);
+        $groupInfo = $group->getData(['groupId']);
         if ($groupInfo) {
             return;
         }
@@ -35,7 +35,7 @@ class GroupPageController
     private static function userOnGroupCheck($userId, $groupId)
     {
         $emailGroupTaglist = new EmailGroupTaglist(['groupId' => $groupId]);
-        $userInGroup = $emailGroupTaglist->getInfo(['userId']);
+        $userInGroup = $emailGroupTaglist->getData(['userId']);
         if (count($userInGroup) == 1) {
             if ($userInGroup[0] == $userId) {
                 return;
@@ -56,7 +56,7 @@ class GroupPageController
     private static function userIsOwner($groupId, $userId)
     {
         $owners = new Owners(['groupId' => $groupId]);
-        $ownersInfo = $owners->getInfo(['userId']);
+        $ownersInfo = $owners->getData(['userId']);
         if (count($ownersInfo) == 1) {
             if ($ownersInfo[0] == $userId) {
                 return true;
@@ -82,7 +82,7 @@ class GroupPageController
     private static function collectGroupInfo($groupId, $currentUserId)
     {
         $group = new Groupss(['groupId' => $groupId]);
-        $groupInfo = $group->getInfo(['groupName']);
+        $groupInfo = $group->getData(['groupName']);
         self::$groupInfo['groupId'] = $groupId;
         self::$groupInfo['groupName'] = $groupInfo[0];
         self::$groupInfo['groupAvatar'] = AvatarsController::getAvatar('group', $groupId);
@@ -93,7 +93,7 @@ class GroupPageController
     private static function trackedUserCheck($currentUserId, $userId)
     {
         $birthdayMonitoring = new BirthdayMonitoring(['userId' => $currentUserId]);
-        $trackedIdList = $birthdayMonitoring->getInfo(['monitoringId']);
+        $trackedIdList = $birthdayMonitoring->getData(['monitoringId']);
 
         if (!$trackedIdList) {
             return 'off';
@@ -119,18 +119,18 @@ class GroupPageController
     private static function collectUsersGroupInfo($groupId, $currentUserId)
     {
         $emailGroupTaglist = new EmailGroupTaglist(['groupId' => $groupId]);
-        $usersInGropId = $emailGroupTaglist->getInfo(['userId']);
+        $usersInGropId = $emailGroupTaglist->getData(['userId']);
 
         $usersInGroup = [];
 
         if (count($usersInGropId) == 1) {
             self::$groupInfo['usersId'][] = $usersInGropId[0];
             $user = new User(['userId' => $usersInGropId[0]]);
-            $userInfo = $user->getInfo(['name']);
+            $userInfo = $user->getData(['name']);
             $userAvatar = AvatarsController::getAvatar('group', $usersInGropId[0]);
 
             $birthdayMonitoring = new BirthdayMonitoring(['userId' => $usersInGropId[0], 'monitoringId' => $usersInGropId[0]]);
-            $trackedIdList = $birthdayMonitoring->getInfo();
+            $trackedIdList = $birthdayMonitoring->getData();
 
             $userIsTracked = 'off';
             if ($trackedIdList) {
@@ -143,7 +143,7 @@ class GroupPageController
 
                 $isOwner = self::userIsOwner($groupId, $userId[0]);
                 $user = new User(['userId' => $userId[0]]);
-                $userInfo = $user->getInfo(['name']);
+                $userInfo = $user->getData(['name']);
                 $userAvatar = AvatarsController::getAvatar('user', $userId[0]);
 
                 $userIsTracked = self::trackedUserCheck($currentUserId, $userId[0]);
@@ -162,7 +162,7 @@ class GroupPageController
         self::groupExist($groupId);
         if (VerificationController::cookieVerification()) {
             $user = new User(['email' => $_COOKIE['email']]);
-            $userInfo = $user->getInfo(['userId', 'name']);
+            $userInfo = $user->getData(['userId', 'name']);
             self::userOnGroupCheck($userInfo[0], $groupId);
             $isModerator = self::userIsOwner($groupId, $userInfo[0]);
             self::collectUserInfo($userInfo[0], $userInfo[1]);

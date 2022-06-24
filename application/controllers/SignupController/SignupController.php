@@ -2,13 +2,13 @@
 
 namespace Frisbee\controllers\SignupController;
 
-use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\controllers\VerificationController\VerificationController;
 use Frisbee\views\SignupView\SignupView;
 
 class SignupController
 {
-    private static function postDataAvailability()
+    private static function convertPostToVariables()
     {
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
@@ -32,7 +32,7 @@ class SignupController
 
     public static function signup()
     {
-        $postData = self::postDataAvailability();
+        $postData = self::convertPostToVariables();
         extract($postData);
 
         self::cookieCheck();

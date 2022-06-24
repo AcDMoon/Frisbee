@@ -3,7 +3,7 @@
 namespace Frisbee\controllers\SignupController;
 
 use Frisbee\controllers\Cookie\Cookie;
-use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\controllers\Mailer\Mailer;
 use Frisbee\models\User\User;
 
@@ -23,7 +23,7 @@ class Registration
 
         if ($email !== '') {
             $user = new User(['email' => $email]);
-            $userInfo = $user->getInfo(['verification']);
+            $userInfo = $user->getData(['verification']);
             $emailIsset = '';
             if ($userInfo) {
                 $emailIsset = $userInfo[0];
@@ -132,7 +132,7 @@ class Registration
         if ($result) {
             $hash = self::hashData($email, $password);
             $user = new User(['email' => $email, 'password' => $password, 'name' => $name, 'date' => $date, 'hash' => $hash['emailHash']]);
-            $user->addInfo();
+            $user->addData();
             Cookie::setCookie($email, $hash['passwordHash']);
             $title = 'Frisbee - Email verification';
             $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');

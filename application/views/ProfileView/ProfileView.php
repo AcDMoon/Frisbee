@@ -2,7 +2,7 @@
 
 namespace Frisbee\views\ProfileView;
 
-use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\views\NavbarView\NavbarView;
 
 class ProfileView
@@ -17,7 +17,7 @@ class ProfileView
         return $head;
     }
 
-    private static function renderBody(string $avatar, array $data, array $groupsInfo)
+    private static function renderBody(string $avatar, array $data, array $groupsData)
     {
         extract($data);
         $navbar = NavbarView::renderNavbar($avatar, $name);
@@ -25,7 +25,7 @@ class ProfileView
 
 
         ob_start();
-        foreach ($groupsInfo as $group) {
+        foreach ($groupsData as $group) {
             $groupName = $group['groupName'];
             $groupUrl = $group['groupUrl'];
             $groupAvatar = $group['groupAvatar'];
@@ -35,20 +35,22 @@ class ProfileView
         $groups = ob_get_contents();
         ob_end_clean();
 
-        $scriptPath = '/scripts/profileScript.js';
-        $data = compact('scriptPath');
-        $script = IncludeOrRequireMethods::requireTemplate('script.php', $data);
-
-        $data = compact('avatar', 'name', 'navbar', 'date', 'groups', 'email', 'script');
+        $data = compact('avatar', 'name', 'navbar', 'date', 'groups', 'email');
         $body = IncludeOrRequireMethods::requireTemplate('profileBody.php', $data);
         return $body;
     }
 
-    public static function renderProfilePage(string $avatar, array $data, array $groupsInfo)
+    public static function renderProfilePage(string $avatar, array $data, array $groupsData)
     {
         $head = self::renderHead();
-        $body = self::renderBody($avatar, $data, $groupsInfo);
-        $data = compact('body', 'head');
+        $body = self::renderBody($avatar, $data, $groupsData);
+
+        $scriptPath = '/scripts/profileScript.js';
+        $data = compact('scriptPath');
+        $script = IncludeOrRequireMethods::requireTemplate('script.php', $data);
+
+
+        $data = compact('body', 'head', 'script');
         IncludeOrRequireMethods::requireTemplate('html.php', $data, false);
     }
 }

@@ -2,14 +2,14 @@
 
 namespace Frisbee\controllers\RestorePasswordController;
 
-use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\controllers\Mailer\Mailer;
 use Frisbee\models\User\User;
 use Frisbee\views\RestorePasswordView\RestorePasswordView;
 
 class RestorePasswordController
 {
-    private static function postOrGetDataAvailability()
+    private static function convertPostAndGetToVariables()
     {
         $hash = $_GET['hash'] ?? '';
         $email = $_POST['email'] ?? '';
@@ -24,7 +24,7 @@ class RestorePasswordController
     private static function mailCheckProcedure($email)
     {
         $user = new User(['email' => $email]);
-        $verification = $user-> getInfo(['verification'])[0];
+        $verification = $user-> getData(['verification'])[0];
         if ($verification) {
             $hash = md5($email . time() . rand(100000, 999999));
             $user = new User(['email' => $email, 'hash' => $hash]);
@@ -45,7 +45,7 @@ class RestorePasswordController
     private static function hashIsCorrect($hash)
     {
         $user = new User(['hash' => $hash]);
-        $userEmail = $user->getInfo(['email'])[0];
+        $userEmail = $user->getData(['email'])[0];
         if ($userEmail) {
             $user = new User(['hash' => '']);
             $user->updateObject();
@@ -68,7 +68,7 @@ class RestorePasswordController
 
     public static function passwordResetNavigator()
     {
-        $postOrGetData = self::postOrGetDataAvailability();
+        $postOrGetData = self::convertPostAndGetToVariables();
         extract($postOrGetData);
 
 

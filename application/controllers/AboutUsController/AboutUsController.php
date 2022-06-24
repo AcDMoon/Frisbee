@@ -15,10 +15,10 @@ class AboutUsController
         $name = '';
         if (VerificationController::cookieVerification()) {
             $users = new User(['email' => $_COOKIE['email']]);
-            $userInfo = $users->getInfo(['userId', 'name']);
-            $userId = $userInfo[0];
+            $userData = $users->getData(['userId', 'name']);
+            $userId = $userData[0];
             $avatar = AvatarsController::getAvatar('user', $userId);
-            $name = $userInfo[1];
+            $name = $userData[1];
         }
         AboutUsView::renderAboutUsPage($avatar, $name);
     }

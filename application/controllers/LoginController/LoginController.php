@@ -3,13 +3,13 @@
 namespace Frisbee\controllers\LoginController;
 
 use Frisbee\controllers\Cookie\Cookie;
-use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\controllers\VerificationController\VerificationController;
 use Frisbee\views\LoginView\LoginView;
 
 class LoginController
 {
-    private static function postOrGetDataAvailability()
+    private static function convertPostAndGetToVariables()
     {
         $destination = $_GET['destination'] ?? '';
         $email = $_POST['email'] ?? '';
@@ -63,7 +63,7 @@ class LoginController
 
     public static function login()
     {
-        $postOrGetData = self::postOrGetDataAvailability();
+        $postOrGetData = self::convertPostAndGetToVariables();
         extract( $postOrGetData);
 
         self::cookieIsset($destination);

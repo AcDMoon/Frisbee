@@ -2,37 +2,24 @@
 
 namespace Frisbee\controllers\ProfileController;
 
-use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\core\model\DB;
 use Frisbee\models\EmailGroupTaglist\EmailGroupTaglist;
 use Frisbee\models\Groupss\Groupss;
 use Frisbee\models\Owners\Owners;
 use Frisbee\models\User\User;
 
-class ProfileRedactor
+class ProfileEditor
 {
     private static $data = [];
 
 
-    private static function postOrGetDataAvailability()
+    private static function convertPostAndFilesToVariables()
     {
-        $primalEmail = $_POST['primalEmail'];
-        $newData = [];
-
-        if (isset($_POST['name'])) {
-            $newData['name'] = $_POST['name'];
+        foreach ($_POST as $item => $value) {
+            self::$data[$item] = $value;
         }
-        if (isset($_POST['date'])) {
-            $newData['date'] = $_POST['date'];
-        }
-        if (isset($_FILES['avatar'])) {
-            $newData['avatar'] = $_FILES['avatar'];
-        }
-        if (isset($_POST['newGroup'])) {
-            $newData['newGroup'] = $_POST['newGroup'];
-        }
-        $postOrGetData = compact('primalEmail', 'newData');
-        return $postOrGetData;
+        self::$data['avatar'] = $_FILES['avatar'] ?? '';
     }
 
 
@@ -49,12 +36,12 @@ class ProfileRedactor
 
     private static function changeAvatar()
     {
-        if (!isset(self::$data['avatar'])) {
+        if (!self::$data['avatar']) {
             return;
         }
         $user = new User(['email' => self::$data['primalEmail']]);
-        $userInfo = $user->getInfo(['userId']);
-        $id = $userInfo[0];
+        $userData = $user->getData(['userId']);
+        $id = $userData[0];
         $imageType = explode('/', self::$data['avatar']['type'])[1];
         $newName = $id . '.' . $imageType;
         self::deleteAvatar($id);
@@ -66,7 +53,7 @@ class ProfileRedactor
         if (!isset(self::$data['name'])) {
             return;
         }
-        
+
         $user = new User(['email' => self::$data['primalEmail'], 'name' => self::$data['name']]);
         $user->updateObject();
     }
@@ -88,29 +75,23 @@ class ProfileRedactor
         date_default_timezone_set('America/Los_Angeles');
         $date = date('Y-m-d', time());
         $group = new Groupss(['groupName' => self::$data['newGroup'], 'dateOfCreate' => $date]);
-        $group->addInfo();
+        $group->addData();
 
         $groupId = DB::getLastId();
 
         $user = new User(['email' => self::$data['primalEmail']]);
-        $userId = $user->getInfo(['userId'])[0];
+        $userId = $user->getData(['userId'])[0];
 
         $emailGroupTaglist = new EmailGroupTaglist(['userId' => $userId, 'groupId' => $groupId]);
-        $emailGroupTaglist->addInfo();
+        $emailGroupTaglist->addData();
 
         $owners = new Owners(['userId' => $userId, 'groupId' => $groupId]);
-        $owners->addInfo();
+        $owners->addData();
     }
 
-    public static function redactProfile()
+    public static function editProfile()
     {
-        $postOrGetData = self::postOrGetDataAvailability();
-        extract($postOrGetData);
-
-        self::$data['primalEmail'] = $primalEmail;
-        foreach ($newData as $item => $value) {
-            self::$data[$item] = $value;
-        }
+        self::convertPostAndFilesToVariables();
         self::changeAvatar();
         self::changeName();
         self::changeDate();

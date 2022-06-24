@@ -3,7 +3,7 @@
 namespace Frisbee\controllers\ProfileController;
 
 use Frisbee\controllers\AvatarsController\AvatarsController;
-use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\controllers\VerificationController\VerificationController;
 use Frisbee\models\EmailGroupTaglist\EmailGroupTaglist;
 use Frisbee\models\Groupss\Groupss;
@@ -17,16 +17,16 @@ class ProfileController
         $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
         if (VerificationController::cookieVerification()) {
             $user = new User(['email' => $_COOKIE['email']]);
-            $userInfo = $user->getInfo(['userId', 'name', 'date','email']);
+            $userInfo = $user->getData(['userId', 'name', 'date','email']);
 
             $userId = $userInfo[0];
             $avatar = AvatarsController::getAvatar('user', $userId);
             $userData = ['name' => $userInfo[1], 'date' => $userInfo[2], 'email' => $userInfo[3]];
 
             $emailGroupTaglist = new EmailGroupTaglist(['userId' => (int) $userId]);
-            $userGroupsId = $emailGroupTaglist->getInfo(['groupId']);
+            $userGroupsId = $emailGroupTaglist->getData(['groupId']);
 
-            $groupsInfo = [];
+            $groupsData = [];
 
             if (count($userGroupsId) == 1) {
                 $userGroupsId = [$userGroupsId];
@@ -34,14 +34,14 @@ class ProfileController
 
             foreach ($userGroupsId as $item) {
                 $groupss = new Groupss(['groupId' => (int) $item[0]]);
-                $groupName = $groupss->getInfo(['groupName'])[0];
+                $groupName = $groupss->getData(['groupName'])[0];
                 $groupAvatar = AvatarsController::getAvatar('group', $item[0]);
-                $groupsInfo[] = ['groupUrl' => 'http://' . $domain['domain'] . '/group/' . $item[0],
+                $groupsData[] = ['groupUrl' => 'http://' . $domain['domain'] . '/group/' . $item[0],
                     'groupName' => $groupName,
                     'groupAvatar' => $groupAvatar];
             }
 
-            ProfileView::renderProfilePage($avatar, $userData, $groupsInfo);
+            ProfileView::renderProfilePage($avatar, $userData, $groupsData);
         } else {
             header("Location: http://" . $domain['domain'] . "/login");
             exit();

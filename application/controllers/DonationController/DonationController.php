@@ -15,7 +15,7 @@ class DonationController
         $name = '';
         if (VerificationController::cookieVerification()) {
             $users = new User(['email' => $_COOKIE['email']]);
-            $userInfo = $users->getInfo(['userId', 'name']);
+            $userInfo = $users->getData(['userId', 'name']);
             $userId = $userInfo[0];
             $avatar = AvatarsController::getAvatar('user', $userId);
             $name = $userInfo[1];

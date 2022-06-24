@@ -32,7 +32,7 @@ class Authorization
         }
 
         $user = new User(['email' => $email]);
-        $userVerification = $user->getInfo(['verification']);
+        $userVerification = $user->getData(['verification']);
 
         if (!$userVerification) {
             self::$errors['email_error'] = 'This user does not exist!';

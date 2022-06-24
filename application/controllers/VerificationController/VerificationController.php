@@ -3,7 +3,7 @@
 namespace Frisbee\controllers\VerificationController;
 
 use Frisbee\controllers\Cookie\Cookie;
-use Frisbee\controllers\IncludeOrRequireMethods\IncludeOrRequireMethods;
+use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\models\User\User;
 use Frisbee\views\ErrorsView\ErrorsView;
 
@@ -25,7 +25,7 @@ class VerificationController
         $hash = self::hashAvailability();
 
         $user = new User(['hash' => $hash]);
-        $userInfo = $user->getInfo(['hash','userId']);
+        $userInfo = $user->getData(['hash','userId']);
         if ($userInfo) {
             $userId = $userInfo[1];
             $user = new User(['userId' => $userId, 'verification' => '1', 'hash' => '']);
@@ -40,7 +40,7 @@ class VerificationController
     public static function passwordVerification(string $email, string $pass): bool
     {
         $user = new User(['email' => $email]);
-        $userInfo = $user->getInfo(['password']);
+        $userInfo = $user->getData(['password']);
         $userPassword = '';
         if ($userInfo) {
             $userPassword = $userInfo[0];
@@ -68,7 +68,7 @@ class VerificationController
     private static function cookieIsCorrect(string $cookieEmail, string $cookiePassword): bool
     {
         $user = new User(['email' => $cookieEmail]);
-        $userInfo = $user->getInfo(['verification']);
+        $userInfo = $user->getData(['verification']);
         if (!$userInfo or  0 == $userInfo[0]) {
             return false;
         }

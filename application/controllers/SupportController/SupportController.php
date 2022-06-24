@@ -15,7 +15,7 @@ class SupportController
         $name = '';
         if (VerificationController::cookieVerification()) {
             $user = new User(['email' => $_COOKIE['email']]);
-            $userInfo = $user->getInfo(['userId','name']);
+            $userInfo = $user->getData(['userId','name']);
             $userId = $userInfo[0];
             $avatar = AvatarsController::getAvatar('user', $userId);
             $name = $userInfo[1];
