@@ -6,6 +6,7 @@ use Frisbee\core\model\Entities;
 
 class User extends Entities
 {
+    protected string $tableName = 'User';
     public int $userId;
     public string $email;
     public string $password;

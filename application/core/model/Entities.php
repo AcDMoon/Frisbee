@@ -25,7 +25,7 @@ abstract class Entities
 
     public function getData(array $attributes = []): array
     {
-        $RequestProcessor = new RequestProcessor($this);
+        $RequestProcessor = new RequestProcessor($this, $this->tableName);
         $receivedData = $RequestProcessor->getProcessor();
         if ([] === $attributes) {
             return $receivedData;
@@ -42,19 +42,20 @@ abstract class Entities
             return $objectsData[0];
         }
         return $objectsData;
-
     }
 
 
     public function deleteObject()
     {
-        $RequestProcessor = new RequestProcessor($this);
+        $tableName = self::getTableName();
+        $RequestProcessor = new RequestProcessor($this, $tableName);
         $RequestProcessor->deleteProcessor();
     }
 
 
     public function updateObject()
     {
+        $tableName = self::getTableName();
         $keyFiled = '';
         foreach ($this->uniqueFields as $uniqueField) {
             if (isset($this->$uniqueField)) {
@@ -62,14 +63,15 @@ abstract class Entities
                 break;
             }
         }
-        $RequestProcessor = new RequestProcessor($this, $keyFiled);
+        $RequestProcessor = new RequestProcessor($this, $tableName, $keyFiled);
         $RequestProcessor->updateProcessor();
     }
 
 
     public function addData()
     {
-        $RequestProcessor = new RequestProcessor($this);
+        $tableName = self::getTableName();
+        $RequestProcessor = new RequestProcessor($this, $tableName);
         $RequestProcessor->addProcessor();
     }
 }

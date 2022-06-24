@@ -10,13 +10,13 @@ class RequestProcessor
     private $keyField;
 
 
-    public function __construct(object $object, string $keyField = '')
+    public function __construct(object $object, $tableName, string $keyField = '')
     {
         if ($keyField) {
             $this->keyField = [$keyField => $object->$keyField];
         }
-        $array = explode('\\', get_class($object));
-        $this->tableName = $array[count($array) - 1];
+
+        $this->tableName = $tableName;
 
         $this->attributes = array_keys(get_object_vars($object));
         $this->attributesValue = array_values(get_object_vars($object));

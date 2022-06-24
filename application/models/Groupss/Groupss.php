@@ -6,6 +6,7 @@ use Frisbee\core\model\Entities;
 
 class Groupss extends Entities
 {
+    protected string $tableName = 'Groupss';
     public int $groupId;
     public string $groupName;
     public string $owners;
