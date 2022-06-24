@@ -1,0 +1,12 @@
+.idea/inspectionProfiles/
+application/config/
+application/core/model/test.php
+application/lib/
+composer.json
+composer.lock
+public/forFutureDevelopments/
+public/images/plus.png
+public/images/www.jpg
+public/styles/.sass-cache/d98000b09932bb48d3b99f22c7ff24787eeee3b5/
+vendor/
+
