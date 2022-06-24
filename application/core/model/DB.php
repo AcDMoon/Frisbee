@@ -93,14 +93,12 @@ class DB
     public static function delete($table, $attributes, $values): void
     {
         $whereValue = "";
-        for ($i = 0; $i <= count($attributes) - 1; $i++) {
-            $whereValue = $whereValue . $attributes[$i] . " = :" . $attributes[$i] . " AND ";
+        $param = [];
+        foreach ($attributes as $item => $value) {
+            $whereValue = $whereValue . $value . " = :" . $value . " AND ";
+            $param[$attributes[$item]] = $values[$item];
         }
         $whereValue = substr_replace($whereValue, " ", iconv_strlen($whereValue) - 5);
-        $param = [];
-        for ($i = 0; $i <= count($attributes) - 1; $i++) {
-            $param[$attributes[$i]] = $values[$i];
-        }
         $query = "DELETE FROM $table WHERE $whereValue";
         self::execute($query, $param);
     }
