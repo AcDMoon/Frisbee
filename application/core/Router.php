@@ -75,7 +75,7 @@ Router::route('/', function () {
 });
 
 Router::route('/Profile(/{0,1})', function () {
-    ProfileController::profile();
+    ProfileController::giveProfilePage();
 });
 
 Router::route('/EmailConfirm(/{0,1})', function () {

@@ -12,7 +12,7 @@ use Frisbee\views\ProfileView\ProfileView;
 
 class ProfileController
 {
-    public static function profile()
+    public static function giveProfilePage()
     {
         $domain = IncludeOrRequireMethods::requireConfig('validDomain.php');
         if (VerificationController::cookieVerification()) {
