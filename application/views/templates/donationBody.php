@@ -1,5 +1,3 @@
-<body class="background">
-
 <?=$navbar?>
 
 <main class="container my-5">
@@ -8,5 +6,4 @@
     <p class="fs-3"> **** **** **** ****</p>
 </main>
 
-</body>
 

@@ -1,4 +1,4 @@
-<body class="background">
+
 
 <?=$navbar?>
 
@@ -13,9 +13,13 @@
     <form action="support" method="post">
 
         <textarea class="form-control" rows="10"></textarea>
-        <button class="mt-4 w-25 btn btn-lg btn-dark" type="submit">Send</button>
+        <button class="mt-4 w-25 btn btn-dark" type="submit">Send</button>
 
     </form>
 </main>
 
-</body>
+
+
+
+
+

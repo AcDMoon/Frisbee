@@ -4,7 +4,7 @@
     <div class="col form-switch my-auto pe-0">
         <?php $aa = 'checked' ?>
         <form action="" method="post" enctype="multipart/form-data" id="formGroupMember" name="formsGroupMembers">
-            <input class="form-check-input" type="checkbox" role="switch" id="memberSwitch" name="memberSwitch" value="<?=$userIsTracked?>" <?=$isChecked?>>
+            <input class="form-check-input" type="checkbox" role="switch" id="memberSwitch" name="memberSwitch" title="Turns birthdays tracking on or off " value="<?=$userIsTracked?>" <?=$isChecked?>>
             <input type="hidden" name="userId" id="userId" value="<?=$userId?>">
         </form>
     </div>

@@ -2,8 +2,8 @@
 header($header);
 ?>
 
-<body class="background text-center">
-<div class="container">
+
+<div class="container text-center">
     <h1 class="my-5 col-12"> <?=$h?> </h1>
     <h5 class="my-5 col-12"> <?=$errorDescription?> </h5>
 
@@ -16,4 +16,3 @@ header($header);
 
 
 
-</body>

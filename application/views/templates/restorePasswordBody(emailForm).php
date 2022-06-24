@@ -1,6 +1,6 @@
-<body class="background text-center">
 
-<main>
+
+<main class="text-center">
 
     <form class="border border-dark p-5 pb-1 radius" action="restore" method="post">
 
@@ -27,4 +27,3 @@
 
     </form>
 </main>
-</body>

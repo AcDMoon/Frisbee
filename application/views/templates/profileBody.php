@@ -1,4 +1,4 @@
-<body class="background">
+
 
 <?=$navbar?>
 
@@ -157,7 +157,7 @@
                     <?=$groups?>
 
                     <button class="row justify-content-center col-12 col-sm-9 col-md-7 col-lg-5 bg-light radius mx-4 mb-4" data-bs-toggle="modal" data-bs-target="#createGroup">
-                        <img class="p-1 img-fluid col-3 my-auto" src="/images/plus.webp">
+                        <img class="p-1 img-fluid col-3 my-auto" src="/images/plus.png">
                         <p class="col fw-bold fs-6 no_wrap my-auto pe-0">Create new group</p>
                     </button>
 
@@ -172,66 +172,20 @@
                     Upcoming birthdays
                 </div>
 
-                <div class="col-12 no_wrap border-bottom text-center border-dark bg-warning">
-                    Find
-                </div>
+                <input class="col-12 no_wrap border-bottom text-center border-dark" placeholder="find"></input>
 
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2 ">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
+                <?php $exaple = '<div class="col-12 no_wrap border-bottom border-dark p-0 ps-2 "><p class="m-0 fw-bold">Джозеф Джостар Абдулович</p><p class="m-0 fst-italic">Мои лучшие друзья</p><p class="m-0 fst-normal">1 Апреля</p></div>'?>
 
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
+                <?php
+                for ($i = 0; $i <= 7; $i++) {
+                    echo ($exaple);
+                }
+                ?>
+
             </div>
         </div>
     </div>
 
 
 </main>
-<?=$script?>
-</body>
+

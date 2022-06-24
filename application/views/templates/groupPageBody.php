@@ -1,4 +1,4 @@
-<body class="background">
+
 
 <?=$navbar?>
 
@@ -17,7 +17,7 @@
                 <input type="hidden" name="addMember" value="true">
 
                 <div class="modal-body row justify-content-center form-floating mx-auto pb-0">
-                    <input type="email" class="form-control ms-1" name="newMemberEmail" id="userEmail" placeholder="Email">
+                    <input type="email" class="form-control ms-1" name="email" id="email" placeholder="Email">
                     <label class="mx-3 mt-3" for="userEmail">Enter email</label>
                 </div>
 
@@ -63,6 +63,37 @@
     </div>
 </div>
 
+<div class="modal fade" id="deleteModerators" tabindex="-1" aria-labelledby="deleteModeratorsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="<?=$url . 'editGroup'?>" method="post" enctype="multipart/form-data" id="formDeleteModerators">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="">Select moderators</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <input type="hidden" name="groupId" value="<?=$groupId?>">
+
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row d-flex">
+
+                            <?=$deleteModeratorsList?>
+
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-center" style="color: red" id="deleteModeratorsWarning"></p>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary profile_info mx-auto" type="submit">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="addModerators" tabindex="-1" aria-labelledby="addModeratorsLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -99,7 +130,7 @@
         <div class="modal-content">
             <form action="<?=$url . 'editGroup'?>" method="post" id="formGroupAvatar" enctype="multipart/form-data">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="downloadGroupAvatarLabel">Download avatar</h5>
+                    <h5 class="modal-title" id="downloadGroupAvatarLabel">Upload avatar</h5>
                 </div>
 
                 <input type="hidden" name="groupId" value="<?=$groupId?>">
@@ -124,7 +155,7 @@
         <div class="modal-content">
             <form action="<?=$url . 'editGroup'?>" method="post" enctype="multipart/form-data" id="formRenameGroup">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="renameGroupLabel">Add member</h5>
+                    <h5 class="modal-title" id="renameGroupLabel">Rename group</h5>
                 </div>
 
                 <input type="hidden" name="groupId" id="groupId" value="<?=$groupId?>">
@@ -172,7 +203,7 @@
     </div>
 </div>
 
-<main class="container ">
+<main class="container mt-5">
 
     <?=$moderatorButton?>
 
@@ -212,7 +243,7 @@
                     <?=$userList?>
 
                     <button class="row justify-content-center col-12 col-sm-9 col-md-7 col-lg-5 bg-light radius mx-4 mb-4" data-bs-toggle="modal" data-bs-target="#addMember">
-                        <img class="p-1 img-fluid col-2 group-image my-auto" src="<?=$url . 'images/plus.webp'?>">
+                        <img class="p-1 img-fluid col-2 group-image my-auto" src="<?=$url . 'images/plus.png'?>">
                         <p class="col fw-bold fs-6 no_wrap my-auto pe-0">Add new member</p>
                     </button>
 
@@ -225,65 +256,20 @@
                     Upcoming birthdays
                 </div>
 
-                <div class="col-12 no_wrap border-bottom text-center border-dark bg-warning">
-                    Find
-                </div>
+                <input class="col-12 no_wrap border-bottom text-center border-dark" placeholder="find"></input>
 
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2 ">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
+                <?php $exaple = '<div class="col-12 no_wrap border-bottom border-dark p-0 ps-2 "><p class="m-0 fw-bold">Джозеф Джостар Абдулович</p><p class="m-0 fst-italic">Мои лучшие друзья</p><p class="m-0 fst-normal">1 Апреля</p></div>'?>
 
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
-                <div class="col-12 no_wrap border-bottom border-dark p-0 ps-2">
-                    <p class="m-0 fw-bold">Джозеф Джостар Абдулович</p>
-                    <p class="m-0 fst-italic">Мои лучшие друзья</p>
-                    <p class="m-0 fst-normal">1 Апреля</p>
-                </div>
+
+                <?php
+                for ($i = 0; $i <= 7; $i++) {
+                    echo ($exaple);
+                }
+                ?>
+
+
             </div>
         </div>
     </div>
 
 </main>
-<?=$script?>
-</body>

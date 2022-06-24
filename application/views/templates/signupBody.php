@@ -1,6 +1,6 @@
-<body class="background text-center">
 
-<main>
+
+<main class="text-center">
     <form class="border border-dark p-5 pb-1 radius" action="signup" method="post">
 
         <h1 class="mb-3 ">Sign up</h1>
@@ -61,4 +61,3 @@
     </form>
 </main>
 
-</body>

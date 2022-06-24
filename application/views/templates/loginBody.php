@@ -1,6 +1,6 @@
-<body class="background text-center">
 
-<main>
+
+<main class="text-center">
     <?php if ($destination) {
         $destination = '?destination='.$destination;
     }?>
@@ -47,4 +47,3 @@
 
     </form>
 </main>
-</body>

@@ -1,4 +1,3 @@
-<body class="background text-center">
 
 <main>
 
@@ -27,5 +26,3 @@
 
     </form>
 </main>
-<?=$script?>
-</body>

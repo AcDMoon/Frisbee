@@ -1,4 +1,3 @@
-<body class="background">
 <?=$navbar?>
 <main class="container my-5">
     <h1>Site history</h1>
@@ -6,5 +5,5 @@
     <p class="fs-3">This situation struck a nerve with me. I decided that it would be nice to create a service that would help me and others not to get into such situations.</p>
 
 </main>
-</body>
+
 
