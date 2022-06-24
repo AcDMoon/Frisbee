@@ -7,30 +7,41 @@ abstract class Entities
     public function __construct($data)
     {
         foreach ($data as $field => $value) {
+            $value = self::remakeTheValueToProtectFromInjections($value);
             $this->$field = $value;
         }
     }
 
+    private static function remakeTheValueToProtectFromInjections($value)
+    {
+        $value = str_replace("&", '&#38;', $value);
+        $value = str_replace(':', '&#58;', $value);
+        $value = str_replace('"', '&quot;', $value);
+        $value = str_replace("'", '&#39;', $value);
+        $value = str_replace('<', '&lt;', $value);
+        return str_replace('>', '&gt;', $value);
+    }
 
-    public function getInfo(array $attributes = []): array
+
+    public function getData(array $attributes = []): array
     {
         $RequestProcessor = new RequestProcessor($this);
         $receivedData = $RequestProcessor->getProcessor();
         if ([] === $attributes) {
             return $receivedData;
         }
-        $objectsInfo = [];
+        $objectsData = [];
         foreach ($receivedData as $object) {
-            $objectInfo = [];
+            $objectData = [];
             foreach ($attributes as $attribute) {
-                $objectInfo[] = $object[$attribute];
+                $objectData[] = $object[$attribute];
             }
-            $objectsInfo[] = $objectInfo;
+            $objectsData[] = $objectData;
         }
-        if (count($objectsInfo) === 1) {
-            return $objectsInfo[0];
+        if (count($objectsData) === 1) {
+            return $objectsData[0];
         }
-        return $objectsInfo;
+        return $objectsData;
 
     }
 
@@ -56,7 +67,7 @@ abstract class Entities
     }
 
 
-    public function addInfo()
+    public function addData()
     {
         $RequestProcessor = new RequestProcessor($this);
         $RequestProcessor->addProcessor();
