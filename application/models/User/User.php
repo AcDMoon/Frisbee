@@ -11,7 +11,7 @@ class User extends Entities
     public string $email;
     public string $password;
     public string $name;
-    public bool $siteRole;
+    public int $siteRole;
     public string $date;
     public string $hash;
     public bool $verification;
