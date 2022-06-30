@@ -1,10 +1,10 @@
 <?php
 
-namespace Frisbee\models\Taglist;
+namespace Frisbee\models\TagList;
 
 use Frisbee\core\model\Entities;
 
-class Taglist extends Entities
+class TagList extends Entities
 {
     protected string $tableName = 'Taglist';
     public int $taglistId;
