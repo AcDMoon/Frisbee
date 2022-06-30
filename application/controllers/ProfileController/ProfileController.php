@@ -6,7 +6,7 @@ use Frisbee\controllers\AvatarsController\AvatarsController;
 use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\controllers\VerificationController\VerificationController;
 use Frisbee\models\EmailGroupTaglist\EmailGroupTaglist;
-use Frisbee\models\Groupss\Groupss;
+use Frisbee\models\Group\Group;
 use Frisbee\models\User\User;
 use Frisbee\views\ProfileView\ProfileView;
 
@@ -40,7 +40,7 @@ class ProfileController
             }
 
             foreach ($userGroupsId as $item) {
-                $groups = new Groupss(['groupId' => (int) $item[0]]);
+                $groups = new Group(['groupId' => (int) $item[0]]);
                 $groupName = $groups->getData(['groupName'])[0];
                 $groupAvatar = AvatarsController::getAvatar('group', $item[0]);
                 $groupsData[] = ['groupUrl' => 'http://' . $domain['domain'] . '/group/' . $item[0],

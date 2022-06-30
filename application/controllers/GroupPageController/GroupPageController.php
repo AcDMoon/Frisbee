@@ -7,7 +7,7 @@ use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\controllers\VerificationController\VerificationController;
 use Frisbee\models\BirthdayMonitoring\BirthdayMonitoring;
 use Frisbee\models\EmailGroupTaglist\EmailGroupTaglist;
-use Frisbee\models\Groupss\Groupss;
+use Frisbee\models\Group\Group;
 use Frisbee\models\Owners\Owners;
 use Frisbee\models\User\User;
 use Frisbee\views\ErrorsView\ErrorsView;
@@ -22,7 +22,7 @@ class GroupPageController
 
     private static function groupExist($groupId)
     {
-        $group = new Groupss(['groupId' => $groupId]);
+        $group = new Group(['groupId' => $groupId]);
         $groupInfo = $group->getData(['groupId']);
         if ($groupInfo) {
             return;
@@ -81,14 +81,14 @@ class GroupPageController
 
     private static function collectGroupInfo($groupId, $currentUserId)
     {
-        $group = new Groupss(['groupId' => $groupId]);
+        $group = new Group(['groupId' => $groupId]);
         $groupInfo = $group->getData(['groupName', 'isNewAvatar']);
         self::$groupInfo['groupId'] = $groupId;
         self::$groupInfo['groupName'] = $groupInfo[0];
 
         if ($groupInfo[1]) {
             self::$groupInfo['groupAvatar'] = AvatarsController::getAvatar('group', $groupId, true);
-            $group = new Groupss(['groupId' => $groupId, 'isNewAvatar' => 0]);
+            $group = new Group(['groupId' => $groupId, 'isNewAvatar' => 0]);
             $group->updateObject();
         } else {
             self::$groupInfo['groupAvatar'] = AvatarsController::getAvatar('group', $groupId);

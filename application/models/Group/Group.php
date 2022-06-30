@@ -1,10 +1,10 @@
 <?php
 
-namespace Frisbee\models\Groupss;
+namespace Frisbee\models\Group;
 
 use Frisbee\core\model\Entities;
 
-class Groupss extends Entities
+class Group extends Entities
 {
     protected string $tableName = 'Groupss';
     public int $groupId;

@@ -5,7 +5,7 @@ namespace Frisbee\controllers\ProfileController;
 use Frisbee\views\IncludeOrRequireMethods\IncludeOrRequireMethods;
 use Frisbee\core\model\DB;
 use Frisbee\models\EmailGroupTaglist\EmailGroupTaglist;
-use Frisbee\models\Groupss\Groupss;
+use Frisbee\models\Group\Group;
 use Frisbee\models\Owners\Owners;
 use Frisbee\models\User\User;
 
@@ -66,7 +66,7 @@ class ProfileEditor
         }
         date_default_timezone_set('America/Los_Angeles');
         $date = date('Y-m-d', time());
-        $group = new Groupss(['groupName' => self::$data['newGroup'], 'dateOfCreate' => $date]);
+        $group = new Group(['groupName' => self::$data['newGroup'], 'dateOfCreate' => $date]);
         $group->addData();
 
         $groupId = DB::getLastId();

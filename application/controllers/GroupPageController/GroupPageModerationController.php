@@ -7,7 +7,7 @@ use Frisbee\controllers\Mailer\Mailer;
 use Frisbee\models\BirthdayMonitoring\BirthdayMonitoring;
 use Frisbee\models\EmailGroupTaglist\EmailGroupTaglist;
 use Frisbee\models\GroupsInvites\GroupsInvites;
-use Frisbee\models\Groupss\Groupss;
+use Frisbee\models\Group\Group;
 use Frisbee\models\Owners\Owners;
 use Frisbee\models\User\User;
 use Frisbee\views\ErrorsView\ErrorsView;
@@ -85,7 +85,7 @@ class GroupPageModerationController
     private static function resetAvatar($avatar, $groupId, $domain)
     {
         if ($avatar) {
-            $groups = new Groupss(['groupId' => $groupId, 'isNewAvatar' => 1]);
+            $groups = new Group(['groupId' => $groupId, 'isNewAvatar' => 1]);
             $groups->updateObject();
             $imageType = explode('/', $avatar['type'])[1];
             $newName = $groupId . '.' . $imageType;
@@ -100,7 +100,7 @@ class GroupPageModerationController
     private static function setNewGroupName($newGroupName, $groupId, $domain)
     {
         if ($newGroupName) {
-            $group = new Groupss(['groupId' => $groupId, 'groupName' => $newGroupName]);
+            $group = new Group(['groupId' => $groupId, 'groupName' => $newGroupName]);
             $group->updateObject();
             header("Location: http://" . $domain['domain'] . "/group/" . $groupId);
             exit();
@@ -111,7 +111,7 @@ class GroupPageModerationController
     private static function deleteGroup($deleteGroup, $groupId, $domain)
     {
         if ($deleteGroup) {
-            $group = new Groupss(['groupId' => $groupId]);
+            $group = new Group(['groupId' => $groupId]);
             $group->deleteObject();
             header("Location: http://" . $domain['domain'] . "/Profile");
             exit();
@@ -135,7 +135,7 @@ class GroupPageModerationController
             $groupsInvites = new GroupsInvites(['userId' => $userId, 'groupId' => $groupId, 'hash' => $hash]);
             $groupsInvites->addData();
 
-            $group = new Groupss(['groupId' => $groupId]);
+            $group = new Group(['groupId' => $groupId]);
             $groupName = $group->getData(['groupName'])[0];
 
             $title = "Frisbee - You have been invited to the $groupName group";
