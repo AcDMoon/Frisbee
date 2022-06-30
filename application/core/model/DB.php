@@ -59,7 +59,7 @@ class DB
 
     public static function get($table, $attribute, $value)
     {
-        if ('' === $attribute) {
+        if (-1 === $value) {
             $query = "SELECT * FROM $table";
             return self::execute($query);
         }
