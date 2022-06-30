@@ -85,8 +85,7 @@ class GroupPageView
         $style = 'http://' . $domain['domain'] . '/styles/group-page-style.css';
         $title = 'Group';
         $data = compact('style', 'title');
-        $head = IncludeOrRequireMethods::requireTemplate('head.php', $data);
-        return $head;
+        return IncludeOrRequireMethods::requireTemplate('head.php', $data);
     }
 
 
@@ -115,8 +114,7 @@ class GroupPageView
 
 
         $data = compact('groupAvatar', 'groupName', 'navbar', 'deleteList', 'addModeratorsList', 'deleteModeratorsList', 'currentUserId', 'moderatorButton', 'userList', 'groupId', 'url', 'usersId');
-        $body = IncludeOrRequireMethods::requireTemplate('groupPageBody.php', $data);
-        return $body;
+        return IncludeOrRequireMethods::requireTemplate('groupPageBody.php', $data);
     }
 
 

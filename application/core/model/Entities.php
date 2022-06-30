@@ -47,15 +47,13 @@ abstract class Entities
 
     public function deleteObject()
     {
-        $tableName = self::getTableName();
-        $RequestProcessor = new RequestProcessor($this, $tableName);
+        $RequestProcessor = new RequestProcessor($this, $this->tableName);
         $RequestProcessor->deleteProcessor();
     }
 
 
     public function updateObject()
     {
-        $tableName = self::getTableName();
         $keyFiled = '';
         foreach ($this->uniqueFields as $uniqueField) {
             if (isset($this->$uniqueField)) {
@@ -63,15 +61,14 @@ abstract class Entities
                 break;
             }
         }
-        $RequestProcessor = new RequestProcessor($this, $tableName, $keyFiled);
+        $RequestProcessor = new RequestProcessor($this, $this->tableName, $keyFiled);
         $RequestProcessor->updateProcessor();
     }
 
 
     public function addData()
     {
-        $tableName = self::getTableName();
-        $RequestProcessor = new RequestProcessor($this, $tableName);
+        $RequestProcessor = new RequestProcessor($this, $this->tableName);
         $RequestProcessor->addProcessor();
     }
 }

@@ -26,7 +26,7 @@ class Cookie
         );
     }
 
-    //delete public after all tests be done
+
     public static function purgeCookie()
     {
         setcookie(

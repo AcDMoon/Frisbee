@@ -2,9 +2,9 @@
 
 namespace Frisbee\core;
 
-use Frisbee\controllers\AboutUsController\AboutUsController;
-use Frisbee\controllers\DonationController\DonationController;
-use Frisbee\controllers\GroupPageController\GroupInviteController;
+use Frisbee\controllers\AdminController\AdminController;
+use Frisbee\controllers\AdminRequestController\AdminRequestController;
+use risbee\controllers\GroupPageController\GroupInviteController;
 use Frisbee\controllers\GroupPageController\GroupPageController;
 use Frisbee\controllers\GroupPageController\GroupPageModerationController;
 use Frisbee\controllers\LoginController\LoginController;
@@ -14,10 +14,8 @@ use Frisbee\controllers\ProfileController\ProfileController;
 use Frisbee\controllers\ProfileController\ProfileEditor;
 use Frisbee\controllers\RestorePasswordController\RestorePasswordController;
 use Frisbee\controllers\SignupController\SignupController;
-use Frisbee\controllers\SupportController\SupportController;
 use Frisbee\controllers\VerificationController\VerificationController;
 use Frisbee\views\ErrorsView\ErrorsView;
-use Frisbee\views\NavbarInfoPagesView\NavbarInfoPagesView;
 use Frisbee\views\pageWithOnlyOnePrepositionView\pageWithOnlyOnePrepositionView;
 
 class Router
@@ -114,5 +112,13 @@ Router::route('/errorss(/{0,1})', function () {
     ErrorsView::renderErrorPage('404');
 });
 
+Router::route('/admin(/{0,1})', function () {
+    AdminController::giveAdminPage();
+});
+
+Router::route('/adminRequest(/{0,1})', function () {
+    $_POST = json_decode(file_get_contents('php://input'), true);
+    AdminRequestController::processRequest();
+});
 
 
